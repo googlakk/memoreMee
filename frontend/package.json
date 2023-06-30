@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.16",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -22,7 +24,13 @@
     "react-router-dom": "^6.13.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/client-preset": "4.0.1",
+    "@graphql-codegen/introspection": "4.0.0",
+    "@graphql-codegen/near-operation-file-preset": "^2.5.0",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^20.3.2",
     "@types/react": "^18.0.37",
