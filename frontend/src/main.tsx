@@ -1,9 +1,6 @@
-import App from './App.tsx'
-import { ChakraProvider } from '@chakra-ui/react'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <ChakraProvider>
-    <App/>
-  </ChakraProvider>
-)
+import { App } from "@app";
+import ReactDOM from "react-dom/client";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <App />
+);

@@ -18,7 +18,28 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./src",
+    "paths": {
+      // app layer
+      "@app": ["app/index.ts", "app/index.tsx"],
+      "@app/*": ["app/*"],
+      // pages layer
+      "@pages": ["pages/index.ts", "pages/index.tsx"],
+      "@pages/*": ["pages/*"],
+      // widgets layer
+      "@widgets": ["widgets/index.ts", "widgets/index.tsx"],
+      "@widgets/*": ["widgets/*"],
+      // features layer
+      "@features": ["features/index.ts", "features/index.tsx"],
+      "@features/*": ["features/*"],
+      // entites layer
+      "@entities": ["entities/index.ts", "entities/index.tsx"],
+      "@entities/*": ["entities/*"],
+      // shared layer
+      "@shared": ["shared/index.ts", "shared/index.tsx"],
+      "@shared/*": ["shared/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

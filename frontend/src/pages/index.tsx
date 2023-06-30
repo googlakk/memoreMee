@@ -1,29 +1,18 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import { Anzan } from "./Anzan/Anzan";
-import Dashboard from "./MainPage/Dashboard";
-import { FC } from "react";
-import LoginPage from "./LoginPage/LoginPage";
+import { HomePage } from "./home";
+import { LoginPage } from "./login";
+import { ROUTES } from "./routes";
+import { RegisterPage } from "./register";
 
-const router = createBrowserRouter(
-    [
-        {
-            path: "/",
-            element: <LoginPage/>,
-        },
-        {
-            path:"/main",
-            element: <Dashboard/>
-        },
-        
-        {
-            path:"/anzan",
-            element: <Anzan/>
-        }
-    ]
-)
+const Routing: React.FC = () => {
+  return (
+    <Routes>
+      <Route path={ROUTES.HOME} element={<HomePage />} />
+      <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+    </Routes>
+  );
+};
 
-const Routing:FC = () => {
-    return <RouterProvider router={router}/>
-}
 export default Routing;
