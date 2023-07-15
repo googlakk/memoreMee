@@ -7,20 +7,33 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.16",
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.1.1",
     "@types/ramda": "^0.29.3",
     "framer-motion": "^10.12.16",
+    "graphql": "^16.7.1",
     "ramda": "^0.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.13.0"
+    "react-hook-form": "^7.45.1",
+    "react-router-dom": "^6.13.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/client-preset": "4.0.1",
+    "@graphql-codegen/introspection": "4.0.0",
+    "@graphql-codegen/near-operation-file-preset": "^2.5.0",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^20.3.2",
     "@types/react": "^18.0.37",
@@ -32,7 +45,7 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
-    "typescript": "^5.0.2",
+    "typescript": "^5.1.6",
     "vite": "^4.3.9"
   }
 }
