@@ -31,12 +31,11 @@ export const RegisterForm: React.FC = () => {
         <CardBody>
           <form onSubmit={handleSubmit}>
             <Stack direction="column">
-              <FormControl>
+              <FormControl isInvalid={!!validationErrors.username}>
                 <FormLabel>Login</FormLabel>
                 <Input
                   type="text"
                   placeholder="Login"
-                  isInvalid={!!validationErrors.username}
                   {...methods.register("username")}
                 />
                 <FormErrorMessage>
@@ -44,12 +43,11 @@ export const RegisterForm: React.FC = () => {
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl>
+              <FormControl isInvalid={!!validationErrors.email}>
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="text"
                   placeholder="E-mail"
-                  isInvalid={!!validationErrors.email}
                   {...methods.register("email")}
                 />
                 <FormErrorMessage>
@@ -57,12 +55,11 @@ export const RegisterForm: React.FC = () => {
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl>
+              <FormControl isInvalid={!!validationErrors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
                   placeholder="Password"
-                  isInvalid={!!validationErrors.password}
                   {...methods.register("password")}
                 />
                 <FormErrorMessage>

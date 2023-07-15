@@ -29,7 +29,7 @@ export const useLoginForm = () => {
       }),
     [methods.handleSubmit]
   );
-  console.log(validationErrors);
+
   return {
     control,
     methods,
