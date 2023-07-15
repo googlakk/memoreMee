@@ -1,19 +1,18 @@
 import * as Yup from "yup";
 
-import { UsersPermissionsRegisterInput } from "@shared/api/models.gen";
 import { useForm } from "react-hook-form";
+import { useLoginMutation } from "../api/mutations.gen";
 import { useMemo } from "react";
-import { useRegisterMutation } from "../api/mutations.gen";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const REGISTER_FORM_SCHEMA = Yup.object({
-  username: Yup.string().required(),
-  email: Yup.string().email().required(),
-  password: Yup.string().required(),
+const REGISTER_FORM_SCHEMA = Yup.object().shape({
+  identifier: Yup.string().email().required().defined(),
+  password: Yup.string().required().defined(),
+  provider: Yup.string().optional(),
 });
 
-export const useRegisterForm = () => {
-  const [register, { data, loading, error }] = useRegisterMutation();
+export const useLoginForm = () => {
+  const [login, { data, loading, error }] = useLoginMutation();
 
   const {
     control,
@@ -26,11 +25,11 @@ export const useRegisterForm = () => {
   const handleSubmit = useMemo(
     () =>
       methods.handleSubmit((data) => {
-        register({ variables: { input: data } });
+        login({ variables: { input: data } });
       }),
     [methods.handleSubmit]
   );
-
+  console.log(validationErrors);
   return {
     control,
     methods,
