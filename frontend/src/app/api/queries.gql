@@ -1,0 +1,15 @@
+query CurrentUser {
+  me {
+    id
+    username
+    email
+    confirmed
+    blocked
+    role {
+      id
+      name
+      type
+      description
+    }
+  }
+}

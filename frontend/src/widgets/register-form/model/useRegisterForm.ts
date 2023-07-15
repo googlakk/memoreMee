@@ -1,8 +1,15 @@
 import * as Yup from "yup";
 
-import { UsersPermissionsRegisterInput } from "@shared/api/models.gen";
+import {
+  UsersPermissionsLoginPayload,
+  UsersPermissionsRegisterInput,
+} from "@shared/api/models.gen";
+import { useEffect, useMemo } from "react";
+
+import { ROUTES } from "@pages/routes";
+import { useAuthContext } from "@app/hooks";
 import { useForm } from "react-hook-form";
-import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../api/mutations.gen";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -14,6 +21,18 @@ const REGISTER_FORM_SCHEMA = Yup.object({
 
 export const useRegisterForm = () => {
   const [register, { data, loading, error }] = useRegisterMutation();
+
+  const { setUser } = useAuthContext();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data?.register && data.register.jwt) {
+      window.localStorage.setItem("jwt", data.register.jwt);
+      setUser(data.register.user);
+      navigate(ROUTES.HOME);
+    }
+  }, [data?.register]);
 
   const {
     control,

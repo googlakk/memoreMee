@@ -2,8 +2,9 @@ import { Button, Heading } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { FC } from "react";
+import { withAuthMiddleware } from "@app/hocs";
 
-export const HomePage: FC = () => {
+const HomePage: FC = () => {
   const navigate = useNavigate();
   return (
     <>
@@ -14,3 +15,5 @@ export const HomePage: FC = () => {
     </>
   );
 };
+
+export default withAuthMiddleware(HomePage);

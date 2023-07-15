@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { LoginForm } from "@widgets/login-form/ui";
+import { withGuestMiddleware } from "@app/hocs";
 
-export const LoginPage: FC = () => {
+const LoginPage: FC = () => {
   return <LoginForm />;
 };
+
+export default withGuestMiddleware(LoginPage);

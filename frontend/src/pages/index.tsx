@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
-import { HomePage } from "./home";
-import { LoginPage } from "./login";
+import HomePage from "./home";
+import LoginPage from "./login";
 import { ROUTES } from "./routes";
-import { RegisterPage } from "./register";
+import RegisterPage from "./register";
 
 const Routing: React.FC = () => {
   return (
