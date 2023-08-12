@@ -1,0 +1,7 @@
+.card{
+    width: 249px;
+height: 161px;
+flex-shrink: 0;
+border-radius: 20px;
+background: #EB9DFF;
+}
