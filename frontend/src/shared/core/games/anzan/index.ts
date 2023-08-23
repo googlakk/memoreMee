@@ -9,11 +9,9 @@ export function random(min: number, max?: number): number {
   return Math.floor(randomNumber);
 }
 
-console.log(random(0, 5));
-
 export enum OPERATIONS {
-  PLUS,
-  MINUS,
+  PLUS = "+",
+  MINUS = "-",
 }
 
 export type AnzanConfig = {
@@ -24,7 +22,7 @@ export type AnzanConfig = {
   usedNumber: number[]; // какие цифры будем использовать
 };
 
-export class Anzan {
+export class AnzanCore {
   protected config: AnzanConfig;
   private answer = 0;
 
@@ -43,7 +41,7 @@ export class Anzan {
     const number = Number.parseInt(`${operation}${numbers.join("")}`);
 
     this.answer = this.answer + number;
-
+    console.log(this.answer);
     return number;
   }
 
@@ -51,3 +49,14 @@ export class Anzan {
     return this.answer;
   }
 }
+
+const game = new AnzanCore({
+  operations: [OPERATIONS.PLUS],
+  numberDepth: 2,
+  usedNumber: [2, 3, 9],
+});
+
+console.log(game.generateNumber());
+console.log(game.generateNumber());
+console.log(game.generateNumber());
+console.log(game.getAnswer());

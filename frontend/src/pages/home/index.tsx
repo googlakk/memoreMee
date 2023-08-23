@@ -33,11 +33,57 @@ const HomePage: FC = () => {
           </nav>
         </div>
         <div className={st.container}>
-          <div className={st.title}>
-            <h2 className={st.name}>Привет, Айназик!👋</h2>
-            <h3 className={st.description}>Давай развиваться вместе!:)</h3>
+          <div>
+            <div className={st.title}>
+              <h2 className={st.name}>Привет, Айназик!👋</h2>
+              <h3 className={st.description}>Давай развиваться вместе!:)</h3>
+            </div>
+            <div className={st.cards_container}>
+              <Card
+                color="#EB9DFF"
+                src="/arif.png"
+                title="Ментальная арифметика"
+                time={234}
+              />
+              <Card
+                color="#7583FF"
+                src="/spellingBee.png"
+                title="Spelling bee"
+                time={234}
+              />
+              <Card
+                color="#EB9DFF"
+                src="/memore.png"
+                title="Меmory"
+                time={234}
+              />
+              <Card
+                color="#7583FF"
+                src="/memore.png"
+                title="Меmory"
+                time={234}
+              />
+              <Card
+                color="#EB9DFF"
+                src="/memore.png"
+                title="Меmory"
+                time={234}
+              />
+              <Card
+                color="#7583FF"
+                src="/spellingBee.png"
+                title="Spelling bee"
+                time={234}
+              />
+            </div>
           </div>
-          <Card />
+          <div className={st.profile}>
+            <h2>Личный кабинет ученика</h2>
+            <div className={st.avatar_container}>
+              <img className={st.avatar} src={slon} alt="" />
+            </div>
+            <div className={st.name}>Мучаилов Эмир Болотович</div>
+          </div>
         </div>
       </div>
     </>
