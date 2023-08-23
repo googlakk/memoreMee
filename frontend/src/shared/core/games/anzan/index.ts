@@ -23,7 +23,7 @@ export type AnzanConfig = {
 };
 
 export class AnzanCore {
-  protected config: AnzanConfig;
+  private config: AnzanConfig;
   private answer = 0;
 
   constructor(config: AnzanConfig) {
@@ -41,7 +41,6 @@ export class AnzanCore {
     const number = Number.parseInt(`${operation}${numbers.join("")}`);
 
     this.answer = this.answer + number;
-    console.log(this.answer);
     return number;
   }
 
@@ -50,13 +49,68 @@ export class AnzanCore {
   }
 }
 
-const game = new AnzanCore({
-  operations: [OPERATIONS.PLUS],
-  numberDepth: 2,
-  usedNumber: [2, 3, 9],
-});
+export type AnzanGameManagerSettings = {
+  speed: number;
+  players: number;
+  numsCount: number;
+};
 
-console.log(game.generateNumber());
-console.log(game.generateNumber());
-console.log(game.generateNumber());
-console.log(game.getAnswer());
+export class AnzanGameManager {
+  private settings: AnzanGameManagerSettings;
+
+  private games: AnzanCore[];
+
+  private subscribers: Array<() => void> = [];
+  private onFinishSubscribers: Array<() => void> = [];
+
+  constructor(settings: AnzanGameManagerSettings, config: AnzanConfig) {
+    this.settings = settings;
+
+    this.games = new Array(settings.players)
+      .fill(null)
+      .map(() => new AnzanCore(config));
+  }
+
+  start() {
+    let count = 1;
+
+    this.notifySubscribers();
+
+    const timerId = window.setInterval(() => {
+      if (count + 1 > this.settings.numsCount) {
+        window.clearInterval(timerId);
+        return this.finish();
+      }
+
+      this.notifySubscribers();
+
+      count++;
+    }, this.settings.speed);
+
+    return () => window.clearInterval(timerId);
+  }
+
+  getNumbers() {
+    return this.games.map((game) => game.generateNumber());
+  }
+
+  getAnswers() {
+    return this.games.map((game) => game.getAnswer());
+  }
+
+  subscribe(cb: () => void) {
+    this.subscribers.push(cb);
+  }
+
+  notifySubscribers() {
+    this.subscribers.forEach((cb) => cb());
+  }
+
+  onFinish(cb: () => void) {
+    this.onFinishSubscribers.push(cb);
+  }
+
+  finish() {
+    this.onFinishSubscribers.forEach((cb) => cb());
+  }
+}

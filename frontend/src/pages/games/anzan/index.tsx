@@ -1,38 +1,71 @@
-import { AnzanConfig, AnzanCore, OPERATIONS } from "@shared/core";
-import { FC, useEffect, useState } from "react";
+import { AnzanConfig, AnzanGameManager } from "@shared/core";
+import { FC, useMemo, useState } from "react";
 
 import AnzanAnswerForm from "@widgets/anzan-answer-form";
 import AnzanCounter from "@widgets/anzan-counter";
 import AnzanResult from "@widgets/anzan-result";
 import AnzanSettingForm from "@widgets/anzan-setting-form/ui";
 
+enum ANZAN_STEPS {
+  SETUP,
+  QUESTIONS,
+  ANSWER,
+  RESULTS,
+}
+
 const Anzan: FC = () => {
-  const [step, setStep] = useState<"setup" | "counter" | "answer" | "result">(
-    "setup"
-  );
+  const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.SETUP);
+  const [speed, setSpeed] = useState<number | null>(null);
+  const [numsCount, setNumsCount] = useState<number | null>(null);
 
-  return (
-    <>
-      {step === "setup" && (
-        <AnzanSettingForm
-          onSave={() => {
-            // set config
+  const [config, setConfig] = useState<null | AnzanConfig>(null);
 
-            setStep("counter");
-          }}
-        />
-      )}
-      {step === "counter" && <AnzanCounter counts={2} />}
-      {step === "answer" && (
-        <AnzanAnswerForm
-          onAnswer={(answer) => {
-            // return answer
-          }}
-        />
-      )}
-      {step === "result" && <AnzanResult userAnwer={5} rightAnswer={3} />}
-    </>
-  );
+  const [answer, setAnswer] = useState<number | null>(null);
+
+  const [playersCount, setPlayersCount] = useState(1);
+
+  const manager = useMemo(() => {
+    if (!playersCount || !speed || !numsCount || !config) return null;
+
+    return new AnzanGameManager(
+      { players: playersCount, speed: speed * 1000, numsCount },
+      config
+    );
+  }, [playersCount, speed, config]);
+
+  const steps = {
+    [ANZAN_STEPS.SETUP]: (
+      <AnzanSettingForm
+        onSave={(settings) => {
+          setConfig(settings.config);
+          setSpeed(settings.speed);
+          setNumsCount(settings.numsCount);
+          setStep(ANZAN_STEPS.QUESTIONS);
+        }}
+      />
+    ),
+    [ANZAN_STEPS.QUESTIONS]: !!manager && (
+      <AnzanCounter
+        manager={manager}
+        onFinish={() => {
+          setStep(ANZAN_STEPS.ANSWER);
+        }}
+      />
+    ),
+    [ANZAN_STEPS.ANSWER]: (
+      <AnzanAnswerForm
+        onAnswer={(answer) => {
+          setAnswer(answer);
+          setStep(ANZAN_STEPS.RESULTS);
+        }}
+      />
+    ),
+    [ANZAN_STEPS.RESULTS]: answer !== null && !!manager && (
+      <AnzanResult userAnwer={answer} rightAnswer={manager.getAnswers()[0]} />
+    ),
+  };
+
+  return steps[step];
 };
 
 export default Anzan;

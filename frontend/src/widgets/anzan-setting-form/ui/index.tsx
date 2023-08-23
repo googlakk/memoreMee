@@ -1,13 +1,20 @@
 import { AnzanConfig, AnzanCore, OPERATIONS } from "@shared/core";
 import { Button, ButtonGroup, Card, Center, Container } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 
 import MyButton from "./myButton";
 import MyInput from "./myInput";
 
-const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
-  const usedNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const depths = [1, 2, 3, 4, 5, 6];
+const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const DEPTH = [1, 2, 3, 4, 5, 6];
+
+const AnzanSettingForm: FC<{
+  onSave: (settings: {
+    config: AnzanConfig;
+    speed: number;
+    numsCount: number;
+  }) => void;
+}> = ({ onSave }) => {
   const [speed, setSpeed] = useState(1);
   const [numsCount, setNumsCount] = useState(5);
 
@@ -16,24 +23,22 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
     numberDepth: 1,
     usedNumber: [1, 2, 3, 4, 5, 6, 7, 8, 9],
   });
-  const [answer, setAnswer] = useState(0);
-  const [generatedNumber, setGeneratedNumber] = useState<number | null>(null);
-
-  console.log(generatedNumber);
-  console.log(answer);
 
   const handleChangeSpeed = (num: number) => {
     setSpeed(num);
   };
+
   const handleChangeNumsCount = (num: number) => {
     setNumsCount(num);
   };
+
   const handleChangeNumberDepth = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
       numberDepth: number,
     }));
   };
+
   const handleChangeUsedNumbers = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
@@ -42,6 +47,7 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
         : [...prevConfig.usedNumber, number],
     }));
   };
+
   const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
@@ -49,35 +55,38 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
     }));
   };
 
-  const startGame = () => {
-    const newGame = new AnzanCore(config);
-    let count = 1;
-    const interval = setInterval(() => {
-      if (count === numsCount) {
-        window.clearInterval(interval);
-      }
-      setGeneratedNumber(newGame.generateNumber());
-      setGeneratedNumber(newGame.generateNumber());
-      count++;
-    }, speed * 1000);
-    setAnswer(newGame.getAnswer());
-  };
+  const handleSaveConfig = useCallback(() => {
+    onSave({ config, speed, numsCount });
+  }, [onSave, config, speed, numsCount]);
+
   return (
     <Center h="100vh" bgColor={"lightgray"} p={6}>
       <Card>
         <Container mb={2}>
           <h1>Выберите выражение</h1>
 
-          <MyButton
+          <Button
             title="+"
-            handleChange={() => handleChangeOperation([OPERATIONS.PLUS])}
+            variant="outline"
+            onClick={() => handleChangeOperation([OPERATIONS.PLUS])}
+            colorScheme={
+              config.operations.length === 1 &&
+              config.operations[0] === OPERATIONS.PLUS
+                ? `green`
+                : `gray`
+            }
           />
 
           <Button
             mr={2}
             onClick={() => handleChangeOperation([OPERATIONS.MINUS])}
-            colorScheme="teal"
             variant="outline"
+            colorScheme={
+              config.operations.length === 1 &&
+              config.operations[0] === OPERATIONS.MINUS
+                ? `green`
+                : `gray`
+            }
           >
             -
           </Button>
@@ -86,8 +95,8 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
             onClick={() =>
               handleChangeOperation([OPERATIONS.PLUS, OPERATIONS.MINUS])
             }
-            colorScheme="teal"
             variant="outline"
+            colorScheme={config.operations.length === 2 ? `green` : `gray`}
           >
             + -
           </Button>
@@ -95,7 +104,7 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
         <Container mb={4}>
           <h1>Используемые цифры</h1>
           <ButtonGroup variant="outline" spacing="2">
-            {usedNumbers.map((num) => (
+            {USED_NUMBERS.map((num) => (
               <Button
                 key={num}
                 colorScheme={config.usedNumber.includes(num) ? `green` : `gray`}
@@ -120,8 +129,9 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
         <Container mb={4}>
           <h1>Разрадность чисел</h1>
           <ButtonGroup variant="outline" spacing="4">
-            {depths.map((depth) => (
+            {DEPTH.map((depth) => (
               <Button
+                key={depth}
                 onClick={() => handleChangeNumberDepth(depth)}
                 colorScheme={config.numberDepth === depth ? `green` : `gray`}
               >
@@ -131,15 +141,13 @@ const AnzanSettingForm: FC<{ onSave: (config: AnzanConfig) => void }> = () => {
           </ButtonGroup>
         </Container>
         <Button
-          onClick={() => startGame()}
+          onClick={handleSaveConfig}
           mr={2}
           colorScheme="teal"
           variant="outline"
         >
           Применить
         </Button>
-        <h1>{answer}</h1>
-        <h2>{generatedNumber}</h2>
       </Card>
     </Center>
   );

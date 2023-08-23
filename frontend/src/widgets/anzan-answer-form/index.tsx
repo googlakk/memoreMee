@@ -1,14 +1,29 @@
-import AnzanResult from "@widgets/anzan-result";
-import { FC } from "react";
+import { Button, Form, Input } from "react-daisyui";
+import { FC, useCallback, useState } from "react";
 
-const AnzanAnswerForm: FC<{ onAnswer: (answer: number) => void }> = ({
-  answer,
-}) => {
+type AnzanAnswerFormProps = { onAnswer: (answer: number) => void };
+
+const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer }) => {
+  const [answer, setAnswer] = useState("");
+
+  const handleAnswer = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      onAnswer(Number(answer));
+    },
+    [onAnswer, answer]
+  );
+
   return (
-    <>
-      <input type="number" />
-      <AnzanResult answer={answer} />
-    </>
+    <Form onSubmit={handleAnswer}>
+      <Input
+        type="number"
+        placeholder="Введите ответ"
+        value={answer}
+        onChange={(e) => setAnswer(e.target.value)}
+      />
+      <Button type="submit">Готово</Button>
+    </Form>
   );
 };
 

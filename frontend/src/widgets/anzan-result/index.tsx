@@ -1,13 +1,10 @@
 import { FC } from "react";
 
 const AnzanResult: FC<{ rightAnswer: number; userAnwer: number }> = ({
-  answer,
+  userAnwer,
+  rightAnswer,
 }) => {
-  return (
-    <>
-      <h1>{answer}</h1>
-    </>
-  );
+  return <>{userAnwer == rightAnswer ? "Ответ верный" : "Game over!"}</>;
 };
 
 export default AnzanResult;
