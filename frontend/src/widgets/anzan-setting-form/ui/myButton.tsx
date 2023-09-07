@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-daisyui";
 import { FC } from "react";
 import { OPERATIONS } from "@shared/core";
 
@@ -8,20 +8,10 @@ interface FuncProps {
   handleChange: (val: any) => void;
   title: string;
 }
-const MyButton: FC<FuncProps> = ({
-  usedNumbers,
-  depth,
-  handleChange,
-  title,
-}) => {
+const MyButton: FC<FuncProps> = ({ handleChange, title }) => {
   return (
     <>
-      <Button
-        mr={2}
-        onClick={(val) => handleChange(val)}
-        colorScheme="teal"
-        variant="outline"
-      >
+      <Button color="accent" onClick={handleChange}>
         {title}
       </Button>
     </>

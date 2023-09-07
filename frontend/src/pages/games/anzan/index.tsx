@@ -20,7 +20,7 @@ const Anzan: FC = () => {
 
   const [config, setConfig] = useState<null | AnzanConfig>(null);
 
-  const [answer, setAnswer] = useState<number | null>(null);
+  const [answer, setAnswer] = useState<number[]>([]);
 
   const [playersCount, setPlayersCount] = useState(1);
 
@@ -40,6 +40,7 @@ const Anzan: FC = () => {
           setConfig(settings.config);
           setSpeed(settings.speed);
           setNumsCount(settings.numsCount);
+          setPlayersCount(settings.playersCount);
           setStep(ANZAN_STEPS.QUESTIONS);
         }}
       />
@@ -54,6 +55,7 @@ const Anzan: FC = () => {
     ),
     [ANZAN_STEPS.ANSWER]: (
       <AnzanAnswerForm
+        playersCount={playersCount}
         onAnswer={(answer) => {
           setAnswer(answer);
           setStep(ANZAN_STEPS.RESULTS);
@@ -61,7 +63,7 @@ const Anzan: FC = () => {
       />
     ),
     [ANZAN_STEPS.RESULTS]: answer !== null && !!manager && (
-      <AnzanResult userAnwer={answer} rightAnswer={manager.getAnswers()[0]} />
+      <AnzanResult userAnwer={answer} rightAnswer={manager.getAnswers()} />
     ),
   };
 

@@ -1,37 +1,20 @@
-import { Button, Heading } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
 
-import Card from "./gameCards/cards";
-import { FC } from "react";
-import avatar from "/avatar.png";
-import slon from "/slon.png";
+import { Countdown } from "react-daisyui";
+import MyCard from "./gameCards/cards";
+import MyNavbar from "./navbar/navbar";
 import st from "./style.module.css";
 import { useNavigate } from "react-router-dom";
 import { withAuthMiddleware } from "@app/hocs";
 
 const HomePage: FC = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <div className={st.bg}>
-        <div className={st.borders}>
-          <nav className={st.menu}>
-            <nav>
-              <img src={slon} alt="" />{" "}
-            </nav>
-            <div>
-              <ul className={st.menuList}>
-                <li>О нас</li>
-                <li>Тарифы</li>
-                <li>Новости</li>
-                <li>Рейтинг</li>
-                <li>Контакты</li>
-              </ul>
-            </div>
-            <nav>
-              <img src={avatar} alt="" />
-            </nav>
-          </nav>
-        </div>
+        <MyNavbar />
+
         <div className={st.container}>
           <div>
             <div className={st.title}>
@@ -39,50 +22,28 @@ const HomePage: FC = () => {
               <h3 className={st.description}>Давай развиваться вместе!:)</h3>
             </div>
             <div className={st.cards_container}>
-              <Card
-                color="#EB9DFF"
-                src="/arif.png"
-                title="Ментальная арифметика"
-                time={234}
-              />
-              <Card
-                color="#7583FF"
-                src="/spellingBee.png"
-                title="Spelling bee"
-                time={234}
-              />
-              <Card
-                color="#EB9DFF"
-                src="/memore.png"
-                title="Меmory"
-                time={234}
-              />
-              <Card
-                color="#7583FF"
-                src="/memore.png"
-                title="Меmory"
-                time={234}
-              />
-              <Card
-                color="#EB9DFF"
-                src="/memore.png"
-                title="Меmory"
-                time={234}
-              />
-              <Card
-                color="#7583FF"
-                src="/spellingBee.png"
-                title="Spelling bee"
-                time={234}
-              />
+              <MyCard bgColor="bg-info" title="Анзан" />
+              <MyCard bgColor="bg-accent" title="Умножайка" />
+              <MyCard bgColor="bg-primary" title="SpellingBee" />
+              <MyCard bgColor="bg-error" title="Memory" />
             </div>
           </div>
           <div className={st.profile}>
-            <h2>Личный кабинет ученика</h2>
+            <h2 className=" text-cyan-300">Личный кабинет ученика</h2>
             <div className={st.avatar_container}>
-              <img className={st.avatar} src={slon} alt="" />
+              <div className="avatar">
+                <div className=" w-14 rounded-full ring ring-error ring-offset-base-100 ring-offset-2">
+                  <img src="https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg" />
+                </div>
+              </div>
             </div>
             <div className={st.name}>Мучаилов Эмир Болотович</div>
+            <div
+              className="radial-progress mt-10 bg-primary text-primary-content border-4 border-primary"
+              style={{ "--value": 70 }}
+            >
+              70%
+            </div>
           </div>
         </div>
       </div>

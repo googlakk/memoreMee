@@ -21,6 +21,7 @@ const MyInput: FC<FuncProps> = ({ maxValue, handleChange, title }) => {
       <Container mb={4}>
         <h1>{title}</h1>
         <NumberInput
+          className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
           onChange={(_, value) => handleChange(value)}
           defaultValue={0}
           min={0}
