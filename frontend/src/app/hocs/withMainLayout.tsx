@@ -4,9 +4,9 @@ export const withMainLayout =
   (Component: React.FC): React.FC =>
   () => {
     return (
-      <div>
+      <div className="flex flex-col h-screen">
         <Header />
-        <div>
+        <div className="h-full">
           <Component />
         </div>
       </div>

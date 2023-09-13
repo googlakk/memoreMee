@@ -3,6 +3,7 @@ import { FC, useState } from "react";
 
 import { AnzanGame } from "@widgets/anzang-game/ui";
 import AnzanSettingForm from "@widgets/anzan-game-setup-form";
+import { MultiplayerGameGrid } from "@widgets/multiplayer-game-grid";
 import { range } from "ramda";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
@@ -29,11 +30,11 @@ const Anzan: FC = () => {
       />
     ),
     [ANZAN_STEPS.PLAY]: config && (
-      <div>
+      <MultiplayerGameGrid playersCount={playersCount}>
         {range(0, playersCount).map((playerIdx) => (
           <AnzanGame key={playerIdx} game={new AnzanCore(config)} />
         ))}
-      </div>
+      </MultiplayerGameGrid>
     ),
   };
 

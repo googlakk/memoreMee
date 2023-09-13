@@ -11,6 +11,7 @@ import {
 
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
+const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const AnzanSettingForm: FC<{
   onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
@@ -173,7 +174,7 @@ const AnzanSettingForm: FC<{
                     Количество игроков
                   </h1>
                   <ButtonGroup>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((cnt) => (
+                    {PLAYERS_COUNT.map((cnt) => (
                       <Button
                         key={cnt}
                         className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
