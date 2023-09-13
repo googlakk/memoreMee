@@ -1,8 +1,9 @@
-const MyNavbar = () => {
+export const Header = () => {
   const slon =
     "https://atlas.memorymee.org/static/media/logo_memoryMee.e68ef1ef.png";
+
   return (
-    <div className="navbar shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-white rounded-3xl mb-5">
+    <div className="navbar mb-5">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -100,4 +101,3 @@ const MyNavbar = () => {
     </div>
   );
 };
-export default MyNavbar;

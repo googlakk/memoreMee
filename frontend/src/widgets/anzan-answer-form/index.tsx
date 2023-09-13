@@ -1,7 +1,5 @@
-import { Button, Card, Form, Input, Link } from "react-daisyui";
+import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useState } from "react";
-
-import st from "../../pages/home/style.module.css";
 
 type AnzanAnswerFormProps = {
   playersCount: number;

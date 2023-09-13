@@ -1,18 +1,14 @@
 import { Card } from "react-daisyui";
 import { FC } from "react";
-import MyNavbar from "@pages/home/navbar/navbar";
-import st from "../../pages/home/style.module.css";
-import style from "../../pages/home/style.module.css";
+
 const AnzanResult: FC<{ rightAnswer: number[]; userAnwer: number[] }> = ({
   userAnwer,
   rightAnswer,
 }) => {
   return (
     <>
-      <div className={`${st.bg} items-center text-center`}>
-        <div className={`${style.width}`}>
-          <MyNavbar />
-
+      <div className={` items-center text-center`}>
+        <div>
           <div className="flex justify-center h-screen">
             <Card className="w-3/4 h-3/4 flex items-center mt-10 justify-center  shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] bg-indigo-200  bg-opacity-10  text-primary-content  ">
               <Card.Body>

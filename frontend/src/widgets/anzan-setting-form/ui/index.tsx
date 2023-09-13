@@ -9,10 +9,6 @@ import {
   NumberInputStepper,
 } from "@chakra-ui/react";
 
-import MyNavbar from "@pages/home/navbar/navbar";
-import st from "../../../pages/home/style.module.css";
-import style from "../../../pages/home/container.module.css";
-
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
 
@@ -68,9 +64,8 @@ const AnzanSettingForm: FC<{
 
   return (
     <>
-      <div className={`${st.bg} items-center text-center`}>
-        <div className={`${style.width}`}>
-          <MyNavbar />
+      <div className={` items-center text-center`}>
+        <div className={``}>
           <div className="flex justify-center">
             <Card className="text-center w-fit mt-10 shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] bg-indigo-500 glass bg-opacity-0  text-primary-content ">
               <Card.Body>

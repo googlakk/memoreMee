@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from "react";
 import { AnzanGameManager } from "@shared/core";
 import { Card } from "react-daisyui";
 import CounterCard from "./ui/counterCard";
-import st from "../../pages/home/style.module.css";
 
 interface FuncProps {
   onFinish: () => void;
@@ -65,7 +64,7 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
 
   return (
     <>
-      <div className={`${st.bg} items-center text-center`}>
+      <div className={`items-center text-center`}>
         <div className="flex justify-center h-screen">
           <Card className=" w-3/4 h-3/4 flex items-center mt-10 justify-center  shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] bg-indigo-200  bg-opacity-10  text-primary-content  ">
             <Card.Body className="font-bold text-white text-9xl">
