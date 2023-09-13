@@ -1,49 +1,56 @@
+import { AnzanCore, AnzanGameManager } from "@shared/core";
 import { FC, useEffect, useState } from "react";
 
-import { AnzanGameManager } from "@shared/core";
 import { Card } from "react-daisyui";
+import { on } from "ramda";
 
 interface FuncProps {
   onFinish: () => void;
-  manager: AnzanGameManager;
+  numbers: number[];
 }
-const Counter: FC<FuncProps> = ({ onFinish, manager }) => {
+const Counter: FC<FuncProps> = ({ onFinish, numbers }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [numbers, setNumbers] = useState<number[]>([]);
+  const [numberIndex, setNumberIndex] = useState<number>(0);
 
   const [numColor, setNumColor] = useState("black");
 
   useEffect(() => {
-    return manager.subscribe(() => {
-      setNumbers(manager.getNumbers());
-      setNumColor((prev) => (prev === "white" ? "#f0bd60" : "white"));
-    });
-  }, [manager]);
-
-  useEffect(() => {
-    return manager.onFinish(() => {
+    if (numberIndex >= numbers.length) {
       onFinish();
-    });
-  }, [manager]);
+    }
+  }, [numberIndex]);
 
   useEffect(() => {
     if (isGameStarted) {
-      return manager.start();
+      const timerId = window.setInterval(() => {
+        setNumberIndex((num) => num + 1);
+      }, 1000);
+      return () => window.clearInterval(timerId);
     }
   }, [isGameStarted]);
 
   if (!isGameStarted)
     return <StarterCounter onDone={() => setIsGameStarted(true)} />;
 
-  return numbers.map((num) => {
-    return (
-      <>
-        <div className={``}>
-          <CounterCard num={num} numColor={numColor} />
-        </div>
-      </>
-    );
-  });
+  return (
+    <>
+      <Card className=" flex items-center justify-center text-center p-30 bg-opacity-10 bg-indigo-200 text-9xl font-bold text-white shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] ">
+        <Card.Body>
+          <div
+            key={numberIndex}
+            className="text"
+            style={{
+              fontSize: `80px`,
+              color: `${numbers[numberIndex] % 2 ? `green` : `black`}`,
+              fontWeight: 900,
+            }}
+          >
+            {numbers[numberIndex]}
+          </div>
+        </Card.Body>
+      </Card>
+    </>
+  );
 };
 
 const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
@@ -78,7 +85,7 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
 
 interface CounterProps {
   num: number;
-  numColor: string;
+  numColor: () => void;
 }
 
 const CounterCard: FC<CounterProps> = ({ num, numColor }) => {
@@ -92,7 +99,7 @@ const CounterCard: FC<CounterProps> = ({ num, numColor }) => {
           className="text"
           style={{
             fontSize: ``,
-            color: numColor,
+
             fontWeight: 900,
           }}
         >

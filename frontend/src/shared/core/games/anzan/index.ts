@@ -23,10 +23,14 @@ export type AnzanConfig = {
 };
 
 export class AnzanCore {
-  private config: AnzanConfig;
+  public config: AnzanConfig;
   private answer = 0;
 
   constructor(config: AnzanConfig) {
+    this.config = config;
+  }
+
+  setCofign(config: AnzanConfig) {
     this.config = config;
   }
 
@@ -45,12 +49,24 @@ export class AnzanCore {
         .map(() => usedNumber[random(usedNumber.length)]);
       number = Number.parseInt(`${operation}${numbers.join("")}`);
     }
+    if (
+      this.config.operations.includes(OPERATIONS.MINUS) &&
+      this.config.operations.length === 1 &&
+      this.answer === 0
+    ) {
+      number = Math.max(...this.config.usedNumber) * this.config.numbersCount;
+    }
 
     this.answer = this.answer + number;
 
     return number;
   }
 
+  getNumbers() {
+    return new Array(this.config.numbersCount).fill(null).map((_, index) => {
+      return this.generateNumber();
+    });
+  }
   getAnswer() {
     return this.answer;
   }

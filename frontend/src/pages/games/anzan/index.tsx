@@ -1,6 +1,7 @@
+import { AnzanConfig, AnzanCore } from "@shared/core";
 import { FC, useState } from "react";
 
-import { AnzanConfig } from "@shared/core";
+import { AnzanGame } from "@widgets/anzang-game/ui";
 import AnzanSettingForm from "@widgets/anzan-game-setup-form";
 import { range } from "ramda";
 import { withMainLayout } from "@app/hocs/withMainLayout";
@@ -27,10 +28,10 @@ const Anzan: FC = () => {
         }}
       />
     ),
-    [ANZAN_STEPS.PLAY]: (
+    [ANZAN_STEPS.PLAY]: config && (
       <div>
         {range(0, playersCount).map((playerIdx) => (
-          <div>Anzan Game {playerIdx}</div>
+          <AnzanGame key={playerIdx} game={new AnzanCore(config)} />
         ))}
       </div>
     ),

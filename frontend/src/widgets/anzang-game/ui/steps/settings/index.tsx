@@ -14,15 +14,10 @@ const DEPTH = [1, 2, 3, 4, 5, 6];
 
 export const AnzanGameSettings: React.FC<{
   onSave: (config: AnzanConfig) => void;
-}> = ({ onSave }) => {
+  defaultSettings: AnzanConfig;
+}> = ({ onSave, defaultSettings }) => {
   // Устонавливаем значение по умолчанию
-  const [config, setConfig] = useState<AnzanConfig>({
-    operations: [OPERATIONS.PLUS],
-    numberDepth: 1,
-    usedNumber: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    speed: 1,
-    numbersCount: 5,
-  });
+  const [config, setConfig] = useState<AnzanConfig>(defaultSettings);
 
   // Слущаетли событий
   const handleChangeSpeed = (speed: number) => {

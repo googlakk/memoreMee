@@ -1,10 +1,17 @@
 import { Button } from "react-daisyui";
 
-export const AnzanGamePreview: React.FC = () => {
+interface FuncProps {
+  onStart: () => void;
+  onSettings: () => void;
+}
+export const AnzanGamePreview: React.FC<FuncProps> = ({
+  onStart,
+  onSettings,
+}) => {
   return (
     <div>
-      <Button>Начать</Button>
-      <Button>Настройки</Button>
+      <Button onClick={() => onStart()}>Начать</Button>
+      <Button onClick={() => onSettings()}>Настройки</Button>
     </div>
   );
 };
