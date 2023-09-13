@@ -16,8 +16,8 @@ export enum OPERATIONS {
 
 export type AnzanConfig = {
   operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
-  // speed: number, // сколько секунд будет высвечиваться одна цифра 0.1 - 9.9
-  // numbersCount: number; // сколько цифр будет появляться
+  speed: number; // сколько секунд будет высвечиваться одна цифра 0.1 - 9.9
+  numbersCount: number; // сколько цифр будет появляться
   numberDepth: number; // разрядность цифр (однозначне, двузначные и тд)
   usedNumber: number[]; // какие цифры будем использовать
 };
