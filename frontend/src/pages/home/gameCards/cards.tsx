@@ -29,23 +29,10 @@ const MyCard: FC<MyCardProps> = ({ bgColor, title }) => {
           <h2 className="card-title ">{headerTitle}</h2>
           <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
             <div className="flex flex-col p-2 bg-neutral rounded-box text-primary-content">
-              <Countdown className="font-mono text-4xl" value={10} />
-              days
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-primary-content">
-              <Countdown className="font-mono text-4xl" value={10} />
-              hours
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-primary-content">
-              <Countdown className="font-mono text-4xl" value={24} />
-              min
-            </div>
-            <div className="flex flex-col p-2 bg-neutral rounded-box text-primary-content">
               <Countdown className="font-mono text-4xl" value={value} />
-              sec
+              Points
             </div>
           </div>
-
           <div className="card-actions justify-end text-primary-content">
             <button className="btn">
               <Link to={ROUTES.ANZAN}>Начать</Link>

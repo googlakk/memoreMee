@@ -1,19 +1,21 @@
 import { Card } from "react-daisyui";
 import { FC } from "react";
-import st from "../../../pages/home/style.module.css";
 interface CounterProps {
   num: number;
   numColor: string;
 }
 
 const CounterCard: FC<CounterProps> = ({ num, numColor }) => {
+  const number = num;
+
   return (
-    <Card className=" h-[500px] w-96 flex items-center justify-center text-center mt-10 bg-opacity-10 bg-indigo-200 font-bold text-white text-9xl shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] ">
+    <Card className=" flex items-center justify-center text-center p-30 bg-opacity-10 bg-indigo-200 text-9xl font-bold text-white shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] ">
       <Card.Body>
         <div
           key={num}
+          className="text"
           style={{
-            fontSize: 300,
+            fontSize: ``,
             color: numColor,
             fontWeight: 900,
           }}

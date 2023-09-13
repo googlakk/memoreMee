@@ -8,7 +8,7 @@ interface FuncProps {
 const AnzanCounter: FC<FuncProps> = ({ onFinish, manager }) => {
   return (
     <>
-      <div className="flex justify-around w-full">
+      <div className="w-screen max-h-screen pb-5 grid grid-flow-col grid-rows-2 gap-5 ">
         <Counter onFinish={onFinish} manager={manager} />
       </div>
     </>

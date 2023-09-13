@@ -38,15 +38,10 @@ const Counter: FC<FuncProps> = ({ onFinish, manager }) => {
     return <StarterCounter onDone={() => setIsGameStarted(true)} />;
 
   return numbers.map((num) => {
-
     return (
       <>
-        <div
-          className={`${st.bg} items-center justify-around text-center gap-10 flex flex-wrap `}
-        >
-          <div className={`flex flex-wrap`}>
-            <CounterCard num={num} numColor={numColor} />
-          </div>
+        <div className={``}>
+          <CounterCard num={num} numColor={numColor} />
         </div>
       </>
     );
