@@ -1,10 +1,11 @@
+import { useMemo, useState } from "react";
+
 import AnzanAnswerForm from "./steps/answer-form";
 import { AnzanCore } from "@shared/core/games/anzan";
 import { AnzanGamePreview } from "./steps/preview";
 import { AnzanGameSettings } from "./steps/settings";
 import AnzanResult from "./steps/result";
 import Counter from "./steps/counter";
-import { useState } from "react";
 
 enum ANZAN_STEPS {
   PREVIEW,
@@ -21,6 +22,10 @@ interface AnzanGameProps {
 export const AnzanGame: React.FC<AnzanGameProps> = ({ game }) => {
   const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PREVIEW);
   const [userAnswer, setUserAnswer] = useState<number>(0);
+
+  const numbers = useMemo(() => {
+    return game.getNumbers();
+  }, [game]);
 
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
@@ -41,7 +46,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({ game }) => {
     [ANZAN_STEPS.COUNTER]: (
       <Counter
         onFinish={() => setStep(ANZAN_STEPS.ANSWER_FORM)}
-        numbers={game.getNumbers()}
+        numbers={numbers}
       />
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (

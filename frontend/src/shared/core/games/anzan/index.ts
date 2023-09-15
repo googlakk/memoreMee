@@ -42,19 +42,20 @@ export class AnzanCore {
 
     let number = -Infinity;
 
-    while (this.answer + number < 0) {
-      const operation = operations[random(operations.length)];
-      const numbers = new Array(numberDepth)
-        .fill(0)
-        .map(() => usedNumber[random(usedNumber.length)]);
-      number = Number.parseInt(`${operation}${numbers.join("")}`);
-    }
     if (
       this.config.operations.includes(OPERATIONS.MINUS) &&
       this.config.operations.length === 1 &&
       this.answer === 0
     ) {
       number = Math.max(...this.config.usedNumber) * this.config.numbersCount;
+    } else {
+      while (this.answer + number < 0) {
+        const operation = operations[random(operations.length)];
+        const numbers = new Array(numberDepth)
+          .fill(0)
+          .map(() => usedNumber[random(usedNumber.length)]);
+        number = Number.parseInt(`${operation}${numbers.join("")}`);
+      }
     }
 
     this.answer = this.answer + number;
