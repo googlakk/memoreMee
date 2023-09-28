@@ -47,7 +47,12 @@ export class AnzanCore {
       this.config.operations.length === 1 &&
       this.answer === 0
     ) {
-      number = Math.max(...this.config.usedNumber) * this.config.numbersCount;
+      number =
+        Number(
+          new Array(this.config.numberDepth)
+            .fill(Math.max(...this.config.usedNumber))
+            .join("")
+        ) * this.config.numbersCount;
     } else {
       while (this.answer + number < 0) {
         const operation = operations[random(operations.length)];

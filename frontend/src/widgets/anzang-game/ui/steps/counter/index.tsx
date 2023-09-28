@@ -5,8 +5,9 @@ import { Card } from "react-daisyui";
 interface FuncProps {
   onFinish: () => void;
   numbers: number[];
+  name: string;
 }
-const Counter: FC<FuncProps> = ({ onFinish, numbers }) => {
+const Counter: FC<FuncProps> = ({ onFinish, numbers, name }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
 
@@ -27,15 +28,25 @@ const Counter: FC<FuncProps> = ({ onFinish, numbers }) => {
 
   if (!isGameStarted)
     return <StarterCounter onDone={() => setIsGameStarted(true)} />;
-
+  const colculatingSize = () => {
+    const lenght = String(numbers[numberIndex]).replace(/-/g, "").length;
+    if (lenght === 6) return `72px`;
+    else if (lenght === 5) return `82px`;
+    else if (lenght === 4) return `92px`;
+    else if (lenght === 3) return `122px`;
+    else if (lenght === 2) return `152px`;
+    else if (lenght === 1) return `192px`;
+  };
+  colculatingSize();
   return (
-    <Card>
-      <Card.Body>
+    <Card className=" card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] w-[100%] mx-3 items-center justify-center bg-[#0284c7] glass text-base-100">
+      <Card.Body className="  card-body items-center justify-center ">
         <div
           key={numberIndex}
-          className="text"
+          className="font-bold "
           style={{
-            color: `${numberIndex % 2 ? `green` : `black`}`,
+            fontSize: colculatingSize(),
+            color: `${numberIndex % 2 ? `#071952` : `white`}`,
           }}
         >
           {numbers[numberIndex]}
@@ -61,8 +72,10 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
   }, [steps]);
 
   return (
-    <Card>
-      <Card.Body>{steps[0]}</Card.Body>
+    <Card className="card items-center justify-center font-arena text-7xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] w-[100%] mx-3  bg-[#0284c7] glass text-base-100">
+      <Card.Body className=" card-body items-center justify-center">
+        {steps[0]}
+      </Card.Body>
     </Card>
   );
 };

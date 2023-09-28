@@ -1,21 +1,14 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
-import { Button, ButtonGroup, Card } from "react-daisyui";
 import { FC, useCallback, useState } from "react";
-import {
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-} from "@chakra-ui/react";
 
-const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const DEPTH = [1, 2, 3, 4, 5, 6];
-const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+import { Button } from "react-daisyui";
+
+const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const AnzanSettingForm: FC<{
   onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
-}> = ({ onSave }) => {
+  setStartBtnVisible: (t: boolean) => void;
+}> = ({ onSave, setStartBtnVisible }) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>({
     operations: [OPERATIONS.PLUS],
@@ -56,145 +49,31 @@ const AnzanSettingForm: FC<{
   const handleSaveConfig = useCallback(() => {
     onSave({ config, playersCount });
   }, [onSave, config, playersCount]);
-
+  const clickListner = () => {
+    setStartBtnVisible(true);
+    handleSaveConfig();
+  };
   return (
-    <div className={`items-center text-center`}>
-      <div>
-        <div className="flex justify-center">
-          <Card className="text-center w-fit mt-10 shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] bg-indigo-500 glass bg-opacity-0 ">
-            <Card.Body>
-              <div className="flex flex-col gap-x-10">
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium mr-10">
-                    Выберите действие
-                  </h1>
-                  <ButtonGroup className="">
-                    <Button
-                      className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                      onClick={() => handleChangeOperation([OPERATIONS.PLUS])}
-                      active={
-                        config.operations.length === 1 &&
-                        config.operations[0] === OPERATIONS.PLUS
-                      }
-                    >
-                      +
-                    </Button>
-                    <Button
-                      className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                      active={
-                        config.operations.length === 1 &&
-                        config.operations[0] === OPERATIONS.MINUS
-                      }
-                      onClick={() => handleChangeOperation([OPERATIONS.MINUS])}
-                    >
-                      -
-                    </Button>
-                    <Button
-                      className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                      active={config.operations.length === 2}
-                      onClick={() =>
-                        handleChangeOperation([
-                          OPERATIONS.PLUS,
-                          OPERATIONS.MINUS,
-                        ])
-                      }
-                    >
-                      + | -
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium  mr-10">
-                    Используемые числа
-                  </h1>
-                  <ButtonGroup className="flex flex-wrap w-58 ">
-                    {USED_NUMBERS.map((num) => (
-                      <Button
-                        className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                        key={num}
-                        onClick={() => handleChangeUsedNumbers(num)}
-                        active={config.usedNumber.includes(num)}
-                      >
-                        {num}
-                      </Button>
-                    ))}
-                  </ButtonGroup>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium  mr-10">
-                    Разрядность чисел
-                  </h1>
-                  <ButtonGroup>
-                    {DEPTH.map((depth) => (
-                      <Button
-                        className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                        key={depth}
-                        onClick={() => handleChangeNumberDepth(depth)}
-                        active={config.numberDepth === depth}
-                      >
-                        {depth}
-                      </Button>
-                    ))}
-                  </ButtonGroup>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium  mr-10">Скорость</h1>
-                  <NumberInput
-                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                    onChange={(_, value) => handleChangeSpeed(value)}
-                    defaultValue={config.speed}
-                    clampValueOnBlur={false}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium  mr-10">
-                    Количество действий
-                  </h1>
-                  <NumberInput
-                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                    onChange={(_, value) => handleChangeNumsCount(value)}
-                    defaultValue={config.numbersCount}
-                    clampValueOnBlur={false}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </div>
-                <div className="my-3 flex justify-between items-center">
-                  <h1 className=" text-l font-medium mr-10">
-                    Количество игроков
-                  </h1>
-                  <ButtonGroup>
-                    {PLAYERS_COUNT.map((cnt) => (
-                      <Button
-                        key={cnt}
-                        className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-                        active={playersCount === cnt}
-                        onClick={() => setPlayersCount(cnt)}
-                      >
-                        {cnt}
-                      </Button>
-                    ))}
-                  </ButtonGroup>
-                </div>
-              </div>
-              <Button
-                className=" bg-accent max-w-fit"
-                onClick={handleSaveConfig}
-              >
-                Начать
-              </Button>
-            </Card.Body>
-          </Card>
+    <div>
+      <div className="flex flex-col items-center text-7xl">
+        <h1 className="mb-5 text-base-100 font-arena">Количество игроков</h1>
+        <div className=" grid grid-cols-3 grid-flow-row gap-8 w-96">
+          {PLAYERS_COUNT.map((cnt) => (
+            <Button
+              key={cnt}
+              className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] p-10 w-32 text-4xl bg-[#0284c7] glass text-base-100"
+              active={playersCount === cnt}
+              onClick={() => setPlayersCount(cnt)}
+            >
+              {cnt}
+            </Button>
+          ))}
+          <Button
+            className="card glass shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  w-32 bg-[#0fba6d] text-base-100 text-3xl py-10"
+            onClick={clickListner}
+          >
+            Start
+          </Button>
         </div>
       </div>
     </div>
