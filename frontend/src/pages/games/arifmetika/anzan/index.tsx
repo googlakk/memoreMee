@@ -20,7 +20,7 @@ const Anzan: FC = () => {
 
   const [playersCount, setPlayersCount] = useState(1);
 
-  const [autoStart, setStart] = useState(false);
+  const [autoStart, setStart] = useState(0);
   const [startBtnVisible, setBtnVisible] = useState(false);
   const steps = {
     [ANZAN_STEPS.SETUP]: (
@@ -51,7 +51,7 @@ const Anzan: FC = () => {
       <Button
         className={`${startBtnVisible ? "" : "hidden"} mb-3`}
         onClick={() => {
-          setStart(true);
+          setStart((i) => ++i);
         }}
       >
         Начать всем

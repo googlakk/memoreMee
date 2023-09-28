@@ -16,7 +16,7 @@ enum ANZAN_STEPS {
 
 interface AnzanGameProps {
   game: AnzanCore;
-  autostart?: boolean;
+  autostart?: number;
 }
 
 export const AnzanGame: React.FC<AnzanGameProps> = ({ game, autostart }) => {
@@ -50,6 +50,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({ game, autostart }) => {
         onFinish={() => setStep(ANZAN_STEPS.ANSWER_FORM)}
         numbers={numbers}
         name={name}
+        speed={useGame.config.speed}
       />
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (

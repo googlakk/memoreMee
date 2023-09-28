@@ -6,8 +6,9 @@ interface FuncProps {
   onFinish: () => void;
   numbers: number[];
   name: string;
+  speed: number;
 }
-const Counter: FC<FuncProps> = ({ onFinish, numbers, name }) => {
+const Counter: FC<FuncProps> = ({ onFinish, numbers, name, speed }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
 
@@ -21,7 +22,7 @@ const Counter: FC<FuncProps> = ({ onFinish, numbers, name }) => {
     if (isGameStarted) {
       const timerId = window.setInterval(() => {
         setNumberIndex((num) => num + 1);
-      }, 1000);
+      }, 1000 * speed);
       return () => window.clearInterval(timerId);
     }
   }, [isGameStarted]);

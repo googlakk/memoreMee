@@ -1,4 +1,7 @@
 import { Button, Card } from "react-daisyui";
+
+import { useCallback } from "react";
+
 interface FuncProps {
   onStart: () => void;
   onSettings: () => void;
@@ -12,16 +15,19 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   name,
   setName,
 }) => {
-  const handleContentChange = (event: React.FormEvent<HTMLDivElement>) => {
-    setName(event.currentTarget.innerHTML);
-  };
+  const handleContentChange = useCallback(
+    (event: React.FormEvent<HTMLDivElement>) => {
+      setName(event.currentTarget.innerHTML);
+    },
+    []
+  );
   return (
     <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[#0284c7] glass ">
       <Card.Title>
         <div
           className=" text-sm ml-2"
           contentEditable
-          onInput={handleContentChange}
+          onBlur={handleContentChange}
           dangerouslySetInnerHTML={{ __html: name }}
         ></div>
       </Card.Title>
