@@ -6,6 +6,7 @@ import HomePage from "./home";
 import LoginPage from "./login";
 import { ROUTES } from "./routes";
 import RegisterPage from "./register";
+import SpellingBee from "./games/spellingBee";
 
 const Routing: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const Routing: React.FC = () => {
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.ARIFMETIKA} element={<Arifmetika />} />
       <Route path={ROUTES.ANZAN} element={<Anzan />} />
+      <Route path={ROUTES.SPELLINGBEE} element={<SpellingBee />} />
     </Routes>
   );
 };

@@ -4,6 +4,7 @@ import { ROUTES } from "@pages/routes";
 import mental from "/mental.svg";
 import mentalTitle from "/public/анзан.svg";
 import umnozhTitle from "/Умножайка.svg";
+import { useAuthContext } from "@app/hooks";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const Arifmetika: FC = () => {
@@ -14,6 +15,7 @@ const Arifmetika: FC = () => {
         imgGame={mental}
         routes={ROUTES.ANZAN}
       />
+
       <GameCard
         titleGame={umnozhTitle}
         imgGame={mental}

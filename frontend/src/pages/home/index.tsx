@@ -1,5 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
-
 import { FC } from "react";
 import GameCard from "./ui/card";
 import { ROUTES } from "@pages/routes";

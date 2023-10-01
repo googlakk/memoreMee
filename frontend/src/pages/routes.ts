@@ -4,4 +4,5 @@ export const ROUTES = {
   HOME: "/",
   ANZAN: "/anzan",
   ARIFMETIKA: "/arifmetika",
+  SPELLINGBEE: "/spellingBee",
 };

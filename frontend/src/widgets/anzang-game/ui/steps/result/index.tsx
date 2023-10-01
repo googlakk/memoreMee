@@ -19,7 +19,7 @@ const AnzanResult: FC<FuncProps> = ({
   onStart,
   onSettings,
   numbers,
-  visible,
+
   onSetVisible,
   name,
 }) => {
@@ -70,10 +70,9 @@ const AnzanResult: FC<FuncProps> = ({
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal">
           <div className="modal-box mx-auto flex flex-wrap gap-5 ">
-            {numbers.map((num, numIndex) => (
+            {numbers.map((num) => (
               <>
                 <div className="flex gap-2">
-                  <div className="text-2xl font-arena ">[{numIndex}] - </div>
                   <div className="text-xl ">{num},</div>
                 </div>
               </>
