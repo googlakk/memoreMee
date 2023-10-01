@@ -1,0 +1,9 @@
+mutation updateUserRating($id: ID!, $rating: Long!) {
+  updateUsersPermissionsUser(id: $id, data: { rating: $rating }) {
+    data {
+      attributes {
+        rating
+      }
+    }
+  }
+}

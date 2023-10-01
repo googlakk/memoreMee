@@ -1,9 +1,5 @@
 import * as Yup from "yup";
 
-import {
-  UsersPermissionsLoginPayload,
-  UsersPermissionsRegisterInput,
-} from "@shared/api/models.gen";
 import { useEffect, useMemo } from "react";
 
 import { ROUTES } from "@pages/routes";
@@ -23,16 +19,7 @@ export const useRegisterForm = () => {
   const [register, { data, loading, error }] = useRegisterMutation();
 
   const { setUser } = useAuthContext();
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (data?.register && data.register.jwt) {
-      window.localStorage.setItem("jwt", data.register.jwt);
-      setUser(data.register.user);
-      navigate(ROUTES.HOME);
-    }
-  }, [data?.register]);
 
   const {
     control,
@@ -41,6 +28,14 @@ export const useRegisterForm = () => {
   } = useForm({
     resolver: yupResolver(REGISTER_FORM_SCHEMA),
   });
+
+  useEffect(() => {
+    if (data?.register && data.register.jwt) {
+      window.localStorage.setItem("jwt", data.register.jwt);
+      setUser(data.register.user);
+      navigate(ROUTES.HOME);
+    }
+  }, [data?.register]);
 
   const handleSubmit = useMemo(
     () =>

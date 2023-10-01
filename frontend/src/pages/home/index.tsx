@@ -1,19 +1,36 @@
-import { Button, Heading } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { gql, useQuery } from "@apollo/client";
 
 import { FC } from "react";
-import { withAuthMiddleware } from "@app/hocs";
+import GameCard from "./ui/card";
+import { ROUTES } from "@pages/routes";
+import memoryImg from "/public/memory.svg";
+import memoryTitle from "/public/MemoryTitile.svg";
+import mental from "/mental.svg";
+import mentalTitle from "/public/Ментальная арифметика.svg";
+import spellImg from "/public/bee.svg";
+import spellingTitile from "/public/Spelling Bee.svg";
+import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
-  const navigate = useNavigate();
   return (
-    <>
-      <Heading>Dashboard</Heading>
-      <Button onClick={() => navigate("/login")}>Login</Button>
-
-      <Link to="/anzan">Anzan</Link>
-    </>
+    <div className={`container mx-auto flex mt-[10%]`}>
+      <GameCard
+        titleGame={mentalTitle}
+        imgGame={mental}
+        routes={ROUTES.ARIFMETIKA}
+      />
+      <GameCard
+        titleGame={spellingTitile}
+        imgGame={spellImg}
+        routes={"https://spell-int-1b45e42d7717.herokuapp.com/"}
+      />
+      <GameCard
+        titleGame={memoryTitle}
+        imgGame={memoryImg}
+        routes={ROUTES.LOGIN}
+      />
+    </div>
   );
 };
 
-export default withAuthMiddleware(HomePage);
+export default withMainLayout(HomePage);
