@@ -1,6 +1,11 @@
 import { Button, Card } from "react-daisyui";
+import { FC, useEffect } from "react";
+import {
+  useCrateGameHistoryMutation,
+  useUpdateUserScoreMutation,
+} from "@app/api/mutations.gen";
 
-import { FC } from "react";
+import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
   onStart: () => void;
@@ -19,7 +24,6 @@ const AnzanResult: FC<FuncProps> = ({
   onStart,
   onSettings,
   numbers,
-  visible,
   onSetVisible,
   name,
 }) => {
@@ -27,6 +31,30 @@ const AnzanResult: FC<FuncProps> = ({
     onSettings();
     onSetVisible(false);
   };
+
+  const { user } = useAuthContext();
+
+  const [createGameHistory] = useCrateGameHistoryMutation();
+  const [upaateUserScore] = useUpdateUserScoreMutation();
+
+  useEffect(() => {
+    if (!user) return;
+
+    createGameHistory({
+      variables: {
+        data: {
+          game: "1",
+          isWin: userAnwer === rightAnswer,
+          user: user.id,
+          score: 1,
+          publishedAt: new Date(),
+          result: { gameSettings: {}, numbers: [1, 2, 3] },
+        },
+      },
+    });
+
+    upaateUserScore({ variables: { id: user.id, score: 1 } });
+  }, []);
 
   return (
     <>

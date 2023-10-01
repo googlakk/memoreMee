@@ -14,7 +14,6 @@ export type Scalars = {
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
   JSON: { input: any; output: any; }
-  Long: { input: any; output: any; }
   Upload: { input: any; output: any; }
 };
 
@@ -152,6 +151,7 @@ export type GameHistrory = {
   readonly isWin?: Maybe<Scalars['Boolean']['output']>;
   readonly publishedAt?: Maybe<Scalars['DateTime']['output']>;
   readonly result?: Maybe<Scalars['JSON']['output']>;
+  readonly score?: Maybe<Scalars['Int']['output']>;
   readonly updatedAt?: Maybe<Scalars['DateTime']['output']>;
   readonly user?: Maybe<UsersPermissionsUserEntityResponse>;
 };
@@ -180,6 +180,7 @@ export type GameHistroryFiltersInput = {
   readonly or?: InputMaybe<ReadonlyArray<InputMaybe<GameHistroryFiltersInput>>>;
   readonly publishedAt?: InputMaybe<DateTimeFilterInput>;
   readonly result?: InputMaybe<JsonFilterInput>;
+  readonly score?: InputMaybe<IntFilterInput>;
   readonly updatedAt?: InputMaybe<DateTimeFilterInput>;
   readonly user?: InputMaybe<UsersPermissionsUserFiltersInput>;
 };
@@ -189,6 +190,7 @@ export type GameHistroryInput = {
   readonly isWin?: InputMaybe<Scalars['Boolean']['input']>;
   readonly publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   readonly result?: InputMaybe<Scalars['JSON']['input']>;
+  readonly score?: InputMaybe<Scalars['Int']['input']>;
   readonly user?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -307,30 +309,6 @@ export type JsonFilterInput = {
   readonly null?: InputMaybe<Scalars['Boolean']['input']>;
   readonly or?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['JSON']['input']>>>;
   readonly startsWith?: InputMaybe<Scalars['JSON']['input']>;
-};
-
-export type LongFilterInput = {
-  readonly and?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['Long']['input']>>>;
-  readonly between?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['Long']['input']>>>;
-  readonly contains?: InputMaybe<Scalars['Long']['input']>;
-  readonly containsi?: InputMaybe<Scalars['Long']['input']>;
-  readonly endsWith?: InputMaybe<Scalars['Long']['input']>;
-  readonly eq?: InputMaybe<Scalars['Long']['input']>;
-  readonly eqi?: InputMaybe<Scalars['Long']['input']>;
-  readonly gt?: InputMaybe<Scalars['Long']['input']>;
-  readonly gte?: InputMaybe<Scalars['Long']['input']>;
-  readonly in?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['Long']['input']>>>;
-  readonly lt?: InputMaybe<Scalars['Long']['input']>;
-  readonly lte?: InputMaybe<Scalars['Long']['input']>;
-  readonly ne?: InputMaybe<Scalars['Long']['input']>;
-  readonly not?: InputMaybe<LongFilterInput>;
-  readonly notContains?: InputMaybe<Scalars['Long']['input']>;
-  readonly notContainsi?: InputMaybe<Scalars['Long']['input']>;
-  readonly notIn?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['Long']['input']>>>;
-  readonly notNull?: InputMaybe<Scalars['Boolean']['input']>;
-  readonly null?: InputMaybe<Scalars['Boolean']['input']>;
-  readonly or?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['Long']['input']>>>;
-  readonly startsWith?: InputMaybe<Scalars['Long']['input']>;
 };
 
 export type Mutation = {
@@ -1071,8 +1049,8 @@ export type UsersPermissionsUser = {
   readonly email: Scalars['String']['output'];
   readonly game_histrories?: Maybe<GameHistroryRelationResponseCollection>;
   readonly provider?: Maybe<Scalars['String']['output']>;
-  readonly rating?: Maybe<Scalars['Long']['output']>;
   readonly role?: Maybe<UsersPermissionsRoleEntityResponse>;
+  readonly score?: Maybe<Scalars['Int']['output']>;
   readonly updatedAt?: Maybe<Scalars['DateTime']['output']>;
   readonly username: Scalars['String']['output'];
 };
@@ -1112,9 +1090,9 @@ export type UsersPermissionsUserFiltersInput = {
   readonly or?: InputMaybe<ReadonlyArray<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   readonly password?: InputMaybe<StringFilterInput>;
   readonly provider?: InputMaybe<StringFilterInput>;
-  readonly rating?: InputMaybe<LongFilterInput>;
   readonly resetPasswordToken?: InputMaybe<StringFilterInput>;
   readonly role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  readonly score?: InputMaybe<IntFilterInput>;
   readonly updatedAt?: InputMaybe<DateTimeFilterInput>;
   readonly username?: InputMaybe<StringFilterInput>;
 };
@@ -1127,9 +1105,9 @@ export type UsersPermissionsUserInput = {
   readonly game_histrories?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['ID']['input']>>>;
   readonly password?: InputMaybe<Scalars['String']['input']>;
   readonly provider?: InputMaybe<Scalars['String']['input']>;
-  readonly rating?: InputMaybe<Scalars['Long']['input']>;
   readonly resetPasswordToken?: InputMaybe<Scalars['String']['input']>;
   readonly role?: InputMaybe<Scalars['ID']['input']>;
+  readonly score?: InputMaybe<Scalars['Int']['input']>;
   readonly username?: InputMaybe<Scalars['String']['input']>;
 };
 
