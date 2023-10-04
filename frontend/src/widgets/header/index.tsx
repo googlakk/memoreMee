@@ -18,9 +18,9 @@ export const Header: FC<HeaderProps> = () => {
         </div>
 
         <div className="navbar-end">
-          <div className="drawer-menu z-10 drawer-end">
+          <div className="drawer-menu z-10 drawer-end ">
             <input id="menu-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content mx-auto">
+            <div className="drawer-content mx-auto ">
               {/* Page content here */}
               <label htmlFor="menu-drawer" className="btn  drawer-button">
                 <img src={avatar} />

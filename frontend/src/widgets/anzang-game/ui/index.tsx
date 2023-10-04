@@ -72,10 +72,11 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({ game, autostart }) => {
         numbers={numbers}
         visible={visible}
         name={name}
+        game={useGame}
       />
     ),
   };
-
+  console.log(useGame);
   return (
     <>
       {steps[step]}

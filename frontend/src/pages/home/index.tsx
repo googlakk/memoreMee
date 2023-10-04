@@ -1,6 +1,7 @@
+import { FC, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 
-import { FC } from "react";
+import { Button } from "react-daisyui";
 import GameCard from "./ui/card";
 import { ROUTES } from "@pages/routes";
 import memoryImg from "/public/memory.svg";
@@ -9,6 +10,7 @@ import mental from "/mental.svg";
 import mentalTitle from "/public/Ментальная арифметика.svg";
 import spellImg from "/public/bee.svg";
 import spellingTitile from "/public/Spelling Bee.svg";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
@@ -33,4 +35,4 @@ const HomePage: FC = () => {
   );
 };
 
-export default withMainLayout(HomePage);
+export default withAuthMiddleware(withMainLayout(HomePage));

@@ -1,3 +1,4 @@
+import { AnzanConfig, AnzanCore } from "@shared/core";
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect } from "react";
 import {
@@ -16,6 +17,7 @@ interface FuncProps {
   visible: boolean;
   onSetVisible: (t: boolean) => void;
   name: string;
+  game: AnzanCore;
 }
 
 const AnzanResult: FC<FuncProps> = ({
@@ -26,6 +28,7 @@ const AnzanResult: FC<FuncProps> = ({
   numbers,
   onSetVisible,
   name,
+  game,
 }) => {
   const clickListner = () => {
     onSettings();
@@ -48,7 +51,12 @@ const AnzanResult: FC<FuncProps> = ({
           user: user.id,
           score: 1,
           publishedAt: new Date(),
-          result: { gameSettings: {}, numbers: [1, 2, 3] },
+          result: {
+            gameSettings: game.config,
+            numbers: numbers,
+            rightAnswer: rightAnswer,
+            userAnwer: userAnwer,
+          },
         },
       },
     });
