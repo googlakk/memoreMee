@@ -13,7 +13,12 @@ export type GetGameHistoryQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetGameHistoryQuery = { readonly gameHistrories?: { readonly data: ReadonlyArray<{ readonly id?: string | null, readonly attributes?: { readonly result?: any | null, readonly isWin?: boolean | null, readonly score?: number | null, readonly game?: { readonly data?: { readonly id?: string | null, readonly attributes?: { readonly name?: string | null, readonly createdAt?: any | null } | null } | null } | null } | null }> } | null };
+export type GetGameHistoryQuery = { readonly gameHistrories?: { readonly data: ReadonlyArray<{ readonly id?: string | null, readonly attributes?: { readonly publishedAt?: any | null, readonly result?: any | null, readonly isWin?: boolean | null, readonly score?: number | null, readonly game?: { readonly data?: { readonly id?: string | null, readonly attributes?: { readonly name?: string | null, readonly createdAt?: any | null } | null } | null } | null } | null }> } | null };
+
+export type GetAllGameStoriesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type GetAllGameStoriesQuery = { readonly gameHistrories?: { readonly data: ReadonlyArray<{ readonly id?: string | null, readonly attributes?: { readonly result?: any | null, readonly isWin?: boolean | null, readonly score?: number | null, readonly game?: { readonly data?: { readonly id?: string | null, readonly attributes?: { readonly name?: string | null, readonly createdAt?: any | null } | null } | null } | null } | null }> } | null };
 
 
 export const CurrentUserDocument = gql`
@@ -66,6 +71,7 @@ export const GetGameHistoryDocument = gql`
     data {
       id
       attributes {
+        publishedAt
         result
         game {
           data {
@@ -111,3 +117,53 @@ export function useGetGameHistoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetGameHistoryQueryHookResult = ReturnType<typeof useGetGameHistoryQuery>;
 export type GetGameHistoryLazyQueryHookResult = ReturnType<typeof useGetGameHistoryLazyQuery>;
 export type GetGameHistoryQueryResult = Apollo.QueryResult<GetGameHistoryQuery, GetGameHistoryQueryVariables>;
+export const GetAllGameStoriesDocument = gql`
+    query GetAllGameStories {
+  gameHistrories {
+    data {
+      id
+      attributes {
+        result
+        game {
+          data {
+            id
+            attributes {
+              name
+              createdAt
+            }
+          }
+        }
+        isWin
+        score
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllGameStoriesQuery__
+ *
+ * To run a query within a React component, call `useGetAllGameStoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllGameStoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllGameStoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllGameStoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllGameStoriesQuery, GetAllGameStoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllGameStoriesQuery, GetAllGameStoriesQueryVariables>(GetAllGameStoriesDocument, options);
+      }
+export function useGetAllGameStoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllGameStoriesQuery, GetAllGameStoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllGameStoriesQuery, GetAllGameStoriesQueryVariables>(GetAllGameStoriesDocument, options);
+        }
+export type GetAllGameStoriesQueryHookResult = ReturnType<typeof useGetAllGameStoriesQuery>;
+export type GetAllGameStoriesLazyQueryHookResult = ReturnType<typeof useGetAllGameStoriesLazyQuery>;
+export type GetAllGameStoriesQueryResult = Apollo.QueryResult<GetAllGameStoriesQuery, GetAllGameStoriesQueryVariables>;

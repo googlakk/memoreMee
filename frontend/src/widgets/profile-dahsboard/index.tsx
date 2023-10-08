@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 
 import Profile from "./profile";
 import Statics from "./statistics";
-import { useMeLazyQuery } from "@entities/user/api/queries.gen";
 
 const ProfileDashboard: FC = () => {
   const [active, setActive] = useState(0);

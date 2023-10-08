@@ -65,14 +65,14 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "score": {
+      "type": "integer"
+    },
     "game_histrories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::game-histrory.game-histrory",
       "mappedBy": "user"
-    },
-    "score": {
-      "type": "integer"
     }
   }
 }

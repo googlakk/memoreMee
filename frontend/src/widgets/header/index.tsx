@@ -5,15 +5,15 @@ import { ROUTES } from "@pages/routes";
 
 interface HeaderProps {}
 export const Header: FC<HeaderProps> = () => {
-  const slon = "/slon.png";
-  const avatar = "/avatar.png";
+  const logo = "/img/IntelGroup.png";
+  const avatar = "/img/avatar.png";
 
   return (
     <>
       <div className="navbar">
         <div className="navbar-start">
           <Link to={ROUTES.HOME}>
-            <img src={slon} alt="" />
+            <img className="w-[80px]" src={logo} alt="logo" />
           </Link>
         </div>
 

@@ -19,6 +19,29 @@ query GetGameHistory($userID: ID) {
     data {
       id
       attributes {
+        publishedAt
+        result
+        game {
+          data {
+            id
+            attributes {
+              name
+              createdAt
+            }
+          }
+        }
+        isWin
+        score
+      }
+    }
+  }
+}
+
+query GetAllGameStories {
+  gameHistrories {
+    data {
+      id
+      attributes {
         result
         game {
           data {

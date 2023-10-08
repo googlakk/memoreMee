@@ -1,6 +1,6 @@
 import { Header } from "@widgets/header";
-import neiro from "/neiro.svg";
-import neiro2 from "/neiro2.svg";
+import neiro from "/img/neiro.svg";
+import neiro2 from "/img/neiro2.svg";
 
 export const withMainLayout =
   (Component: React.FC): React.FC =>

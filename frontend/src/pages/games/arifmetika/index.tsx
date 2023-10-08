@@ -1,9 +1,9 @@
 import { FC } from "react";
 import GameCard from "@pages/home/ui/card";
 import { ROUTES } from "@pages/routes";
-import mental from "/mental.svg";
-import mentalTitle from "/public/анзан.svg";
-import umnozhTitle from "/Умножайка.svg";
+import mental from "/img/mental.svg";
+import mentalTitle from "/img/AnzanTitle.svg";
+import umnozhTitle from "/img/Umnozhaika.svg";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const Arifmetika: FC = () => {

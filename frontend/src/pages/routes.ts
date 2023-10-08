@@ -4,4 +4,5 @@ export const ROUTES = {
   HOME: "/",
   ANZAN: "/anzan",
   ARIFMETIKA: "/arifmetika",
+  STATICPAGE: "/staticPage",
 };

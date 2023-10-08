@@ -11,10 +11,10 @@ mutation updateUserScore($id: ID!, $score: Int!) {
 mutation CrateGameHistory($data: GameHistroryInput!) {
   createGameHistrory(data: $data) {
     data {
-      id,
+      id
       attributes {
-        result,
-        isWin,
+        result
+        isWin
         score
       }
     }

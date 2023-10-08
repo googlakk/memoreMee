@@ -1,4 +1,3 @@
-import { AnzanConfig, AnzanCore } from "@shared/core";
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect } from "react";
 import {
@@ -6,6 +5,7 @@ import {
   useUpdateUserScoreMutation,
 } from "@app/api/mutations.gen";
 
+import { AnzanCore } from "@shared/core";
 import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
@@ -55,7 +55,7 @@ const AnzanResult: FC<FuncProps> = ({
             gameSettings: game.config,
             numbers: numbers,
             rightAnswer: rightAnswer,
-            userAnwer: userAnwer,
+            userAnswer: userAnwer,
           },
         },
       },

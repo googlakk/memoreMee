@@ -1,15 +1,12 @@
-import { FC, useEffect } from "react";
-import { gql, useQuery } from "@apollo/client";
-
-import { Button } from "react-daisyui";
+import { FC } from "react";
 import GameCard from "./ui/card";
 import { ROUTES } from "@pages/routes";
-import memoryImg from "/public/memory.svg";
-import memoryTitle from "/public/MemoryTitile.svg";
-import mental from "/mental.svg";
-import mentalTitle from "/public/Ментальная арифметика.svg";
-import spellImg from "/public/bee.svg";
-import spellingTitile from "/public/Spelling Bee.svg";
+import memoryImg from "/img/memory.svg";
+import memoryTitle from "/img/MemoryTitile.svg";
+import mental from "/img/mental.svg";
+import mentalTitle from "/img/MentalArif.svg";
+import spellImg from "/img/bee.svg";
+import spellingTitile from "/img/SpellBee.svg";
 import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 

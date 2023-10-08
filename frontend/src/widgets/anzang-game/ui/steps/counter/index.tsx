@@ -1,14 +1,22 @@
 import { FC, useEffect, useState } from "react";
 
 import { Card } from "react-daisyui";
+import { Howl } from "howler";
 
 interface FuncProps {
   onFinish: () => void;
   numbers: number[];
   name: string;
   speed: number;
+  playersCount?: number;
 }
-const Counter: FC<FuncProps> = ({ onFinish, numbers, name, speed }) => {
+const Counter: FC<FuncProps> = ({
+  onFinish,
+  numbers,
+  name,
+  speed,
+  playersCount,
+}) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
 
@@ -17,13 +25,22 @@ const Counter: FC<FuncProps> = ({ onFinish, numbers, name, speed }) => {
       onFinish();
     }
   }, [numberIndex]);
-
+  const SoundPip = new Howl({
+    src: ["/sounds/pip.mp3"],
+    volume: 1,
+  });
   useEffect(() => {
     if (isGameStarted) {
       const timerId = window.setInterval(() => {
+        if (playersCount === 1) {
+          SoundPip.play();
+        } else SoundPip.stop();
         setNumberIndex((num) => num + 1);
       }, 1000 * speed);
-      return () => window.clearInterval(timerId);
+      return () => {
+        SoundPip.stop();
+        window.clearInterval(timerId);
+      };
     }
   }, [isGameStarted]);
 
@@ -60,16 +77,26 @@ const Counter: FC<FuncProps> = ({ onFinish, numbers, name, speed }) => {
 const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
   const [steps, setSteps] = useState(["На старт", "Внимание", "Марш!"]);
 
+  const SoundCount = new Howl({
+    src: ["/sounds/countdown.mp3"],
+    volume: 1,
+  });
+
   useEffect(() => {
     const timerId = window.setInterval(() => {
       setSteps((prev) => prev.slice(1));
     }, 1000);
 
-    return () => window.clearInterval(timerId);
+    return () => {
+      SoundCount.stop();
+      window.clearInterval(timerId);
+    };
   });
 
   useEffect(() => {
-    if (steps.length === 0) onDone();
+    if (steps.length === 0) {
+      onDone();
+    }
   }, [steps]);
 
   return (

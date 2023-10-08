@@ -40,6 +40,7 @@ const Anzan: FC = () => {
             key={playerIdx}
             game={new AnzanCore(config)}
             autostart={autoStart}
+            playersCount={playersCount}
           />
         ))}
       </MultiplayerGameGrid>
