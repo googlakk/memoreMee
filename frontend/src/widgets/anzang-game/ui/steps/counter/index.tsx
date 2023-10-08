@@ -83,6 +83,7 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
   });
 
   useEffect(() => {
+    SoundCount.play();
     const timerId = window.setInterval(() => {
       setSteps((prev) => prev.slice(1));
     }, 1000);
