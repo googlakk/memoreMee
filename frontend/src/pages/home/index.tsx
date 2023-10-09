@@ -32,4 +32,4 @@ const HomePage: FC = () => {
   );
 };
 
-export default withAuthMiddleware(withMainLayout(HomePage));
+export default withMainLayout(HomePage);

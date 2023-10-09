@@ -52,7 +52,9 @@ const AnzanSettingForm: FC<{
   const clickListner = () => {
     setStartBtnVisible(true);
     handleSaveConfig();
+    window.localStorage.setItem("myGame", "");
   };
+
   return (
     <div>
       <div className="flex flex-col items-center text-7xl">
@@ -69,10 +71,10 @@ const AnzanSettingForm: FC<{
             </Button>
           ))}
           <Button
-            className="card glass shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  w-32 bg-[#0fba6d] text-base-100 text-3xl py-10"
+            className="card glass shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  w-32 bg-[#0fba6d] text-base-100 text-xl py-10"
             onClick={clickListner}
           >
-            Start
+            Начать
           </Button>
         </div>
       </div>

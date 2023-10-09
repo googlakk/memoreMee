@@ -25,7 +25,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
     <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[#0284c7] glass ">
       <Card.Title>
         <div
-          className=" text-sm ml-2"
+          className=" text-xl ml-2"
           contentEditable
           onBlur={handleContentChange}
           dangerouslySetInnerHTML={{ __html: name }}

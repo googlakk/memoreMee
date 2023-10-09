@@ -30,7 +30,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   const [useGame, setUseGame] = useState<AnzanCore>(game);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
-  const [name, setName] = useState<string>("Имя участника ");
+  const [name, setName] = useState<string>("Участник ");
   useEffect(() => {
     if (autostart) {
       setStep(ANZAN_STEPS.COUNTER);
@@ -82,6 +82,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       />
     ),
   };
+
   console.log(useGame);
   return (
     <>

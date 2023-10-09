@@ -31,10 +31,9 @@ const Counter: FC<FuncProps> = ({
   });
   useEffect(() => {
     if (isGameStarted) {
+      if (playersCount === 1) SoundPip.play();
       const timerId = window.setInterval(() => {
-        if (playersCount === 1) {
-          SoundPip.play();
-        } else SoundPip.stop();
+        if (playersCount === 1) SoundPip.play();
         setNumberIndex((num) => num + 1);
       }, 1000 * speed);
       return () => {

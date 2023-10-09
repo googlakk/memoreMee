@@ -26,25 +26,9 @@ const ProfileDashboard: FC = () => {
         >
           Статистика
         </div>
-        <div
-          onClick={() => setActive(3)}
-          className={`tab tab-lifted text-xs ${
-            active === 3 ? "tab-active" : " "
-          } `}
-        >
-          Помощь
-        </div>
       </div>
       <div className="tabs-content">
-        {active === 1 ? (
-          <Profile />
-        ) : active === 2 ? (
-          <Statics />
-        ) : active === 3 ? (
-          <Profile />
-        ) : (
-          ""
-        )}
+        {active === 1 ? <Profile /> : active === 2 ? <Statics /> : ""}
       </div>
     </>
   );
