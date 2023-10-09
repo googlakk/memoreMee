@@ -1,4 +1,5 @@
 import { Header } from "@widgets/header";
+import MyFooter from "@widgets/footer";
 import neiro from "/img/neiro.svg";
 import neiro2 from "/img/neiro2.svg";
 
@@ -15,7 +16,9 @@ export const withMainLayout =
           <div className="h-full ">
             <Component />
           </div>
+          <MyFooter />
         </div>
+
         <img src={neiro2} className=" absolute right-0 bottom-0 z-0" alt="" />
       </div>
     );
