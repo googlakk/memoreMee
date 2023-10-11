@@ -25,6 +25,7 @@ export type AnzanConfig = {
 export class AnzanCore {
   public config: AnzanConfig;
   private answer = 0;
+  private numbers: number[] = [];
 
   constructor(config: AnzanConfig) {
     this.config = config;
@@ -68,11 +69,16 @@ export class AnzanCore {
     return number;
   }
 
-  getNumbers() {
-    return new Array(this.config.numbersCount).fill(null).map((_, index) => {
+  generateNumbers() {
+    this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
       return this.generateNumber();
     });
   }
+
+  getNumbers() {
+    return this.numbers;
+  }
+
   getAnswer() {
     return this.answer;
   }

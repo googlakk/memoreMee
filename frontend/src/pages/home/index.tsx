@@ -7,7 +7,6 @@ import mental from "/img/mental.svg";
 import mentalTitle from "/img/MentalArif.svg";
 import spellImg from "/img/bee.svg";
 import spellingTitile from "/img/SpellBee.svg";
-import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {

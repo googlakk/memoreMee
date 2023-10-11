@@ -5,4 +5,5 @@ export const ROUTES = {
   ANZAN: "/anzan",
   ARIFMETIKA: "/arifmetika",
   STATICPAGE: "/staticPage",
+  SPELLINGBEE: "/spellingbee",
 };

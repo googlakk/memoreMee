@@ -1,0 +1,15 @@
+{
+  "data": {
+    "game": "1",
+    "isWin": true,
+    "user": "user.id",
+    "score": "10",
+    "publishedAt": "2022-01-02",
+    "result": {
+      "gameSettings": "",
+      "numbers": "213",
+      "rightAnswer": "12",
+      "userAnswer": "12"
+    }
+  }
+}

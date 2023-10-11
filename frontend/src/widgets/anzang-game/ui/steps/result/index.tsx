@@ -1,20 +1,17 @@
 import { Button, Card } from "react-daisyui";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import {
   useCrateGameHistoryMutation,
   useUpdateUserScoreMutation,
 } from "@app/api/mutations.gen";
 
 import { AnzanCore } from "@shared/core";
-import PieChart from "@widgets/statics-dashboard/charts/pie-chart";
 import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
   onStart: () => void;
   onSettings: () => void;
-  rightAnswer: number;
   userAnwer: number;
-  numbers: number[];
   visible: boolean;
   onSetVisible: (t: boolean) => void;
   name: string;
@@ -23,13 +20,11 @@ interface FuncProps {
 
 const AnzanResult: FC<FuncProps> = ({
   userAnwer,
-  rightAnswer,
   onStart,
   onSettings,
-  numbers,
   onSetVisible,
   name,
-  game,
+  game: _game,
 }) => {
   const clickListner = () => {
     onSettings();
@@ -41,6 +36,7 @@ const AnzanResult: FC<FuncProps> = ({
   const [createGameHistory] = useCrateGameHistoryMutation();
   const [upaateUserScore] = useUpdateUserScoreMutation();
 
+  const game = useMemo(() => _game, []);
   useEffect(() => {
     if (!user) return;
 
@@ -48,14 +44,14 @@ const AnzanResult: FC<FuncProps> = ({
       variables: {
         data: {
           game: "1",
-          isWin: userAnwer === rightAnswer,
+          isWin: userAnwer === game.getAnswer(),
           user: user.id,
           score: 1,
           publishedAt: new Date(),
           result: {
             gameSettings: game.config,
-            numbers: numbers,
-            rightAnswer: rightAnswer,
+            numbers: game.getNumbers(),
+            rightAnswer: game.getAnswer(),
             userAnswer: userAnwer,
           },
         },
@@ -66,7 +62,7 @@ const AnzanResult: FC<FuncProps> = ({
   }, []);
   const totalAnswers = 100;
   const correctAnswers = 70;
-  const incorrectAnswers = totalAnswers - correctAnswers;
+  // const incorrectAnswers = totalAnswers - correctAnswers;
   return (
     <>
       <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[#0284c7] glass text-base-100">
@@ -82,13 +78,13 @@ const AnzanResult: FC<FuncProps> = ({
             <div>
               <h1 className=" font-bold text-3xl ">
                 Правильный ответ:{" "}
-                <span className="text-arena">{rightAnswer}</span>
+                <span className="text-arena">{game.getAnswer()}</span>
               </h1>
 
               <h1
                 className="font-bold text-3xl "
                 style={{
-                  color: `${rightAnswer == userAnwer ? `green` : `red`}`,
+                  color: `${game.getAnswer() == userAnwer ? `green` : `red`}`,
                 }}
               >
                 <span>
@@ -98,10 +94,10 @@ const AnzanResult: FC<FuncProps> = ({
               <div
                 className=" text-sm mt-2"
                 style={{
-                  color: `${rightAnswer == userAnwer ? `green` : `black`}`,
+                  color: `${game.getAnswer() == userAnwer ? `green` : `black`}`,
                 }}
               >
-                {userAnwer == rightAnswer
+                {userAnwer == game.getAnswer()
                   ? `${name}, молодец!`
                   : `${name}, попробуй еще раз`}
               </div>
@@ -121,7 +117,7 @@ const AnzanResult: FC<FuncProps> = ({
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal">
           <div className="modal-box mx-auto flex flex-wrap gap-5 ">
-            {numbers.map((num, numIndex) => (
+            {game.getNumbers().map((num, numIndex) => (
               <>
                 <div className="flex gap-2">
                   <div className="text-2xl font-arena ">[{numIndex}] - </div>
@@ -129,7 +125,7 @@ const AnzanResult: FC<FuncProps> = ({
                 </div>
               </>
             ))}
-            <h1>Результат</h1> {rightAnswer}
+            <h1>Результат</h1> {game.getAnswer()}
           </div>
           <label className="modal-backdrop" htmlFor="my_modal_7">
             Close

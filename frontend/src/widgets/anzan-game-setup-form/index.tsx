@@ -20,35 +20,36 @@ const AnzanSettingForm: FC<{
   const [playersCount, setPlayersCount] = useState(1);
 
   // Слущаетли событий
-  const handleChangeSpeed = (speed: number) => {
-    setConfig((prevConfig) => ({ ...prevConfig, speed }));
-  };
-  const handleChangeNumsCount = (numbersCount: number) => {
-    setConfig((prevConfig) => ({ ...prevConfig, numbersCount }));
-  };
-  const handleChangeUsedNumbers = (number: number) => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      usedNumber: prevConfig.usedNumber.includes(number)
-        ? prevConfig.usedNumber.filter((num) => num !== number)
-        : [...prevConfig.usedNumber, number],
-    }));
-  };
-  const handleChangeNumberDepth = (number: number) => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      numberDepth: number,
-    }));
-  };
-  const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      operations: operations,
-    }));
-  };
+  // const handleChangeSpeed = (speed: number) => {
+  //   setConfig((prevConfig) => ({ ...prevConfig, speed }));
+  // };
+  // const handleChangeNumsCount = (numbersCount: number) => {
+  //   setConfig((prevConfig) => ({ ...prevConfig, numbersCount }));
+  // };
+  // const handleChangeUsedNumbers = (number: number) => {
+  //   setConfig((prevConfig) => ({
+  //     ...prevConfig,
+  //     usedNumber: prevConfig.usedNumber.includes(number)
+  //       ? prevConfig.usedNumber.filter((num) => num !== number)
+  //       : [...prevConfig.usedNumber, number],
+  //   }));
+  // };
+  // const handleChangeNumberDepth = (number: number) => {
+  //   setConfig((prevConfig) => ({
+  //     ...prevConfig,
+  //     numberDepth: number,
+  //   }));
+  // };
+  // const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
+  //   setConfig((prevConfig) => ({
+  //     ...prevConfig,
+  //     operations: operations,
+  //   }));
+  // };
   const handleSaveConfig = useCallback(() => {
     onSave({ config, playersCount });
   }, [onSave, config, playersCount]);
+
   const clickListner = () => {
     setStartBtnVisible(true);
     handleSaveConfig();

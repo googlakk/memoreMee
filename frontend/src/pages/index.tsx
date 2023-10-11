@@ -6,6 +6,7 @@ import HomePage from "./home";
 import LoginPage from "./login";
 import { ROUTES } from "./routes";
 import RegisterPage from "./register";
+import SpeechComponent from "./spelling-bee";
 import StaticsPage from "./statics";
 
 const Routing: React.FC = () => {
@@ -17,6 +18,7 @@ const Routing: React.FC = () => {
       <Route path={ROUTES.ARIFMETIKA} element={<Arifmetika />} />
       <Route path={ROUTES.ANZAN} element={<Anzan />} />
       <Route path={ROUTES.STATICPAGE} element={<StaticsPage />} />
+      <Route path={ROUTES.SPELLINGBEE} element={<SpeechComponent />} />
     </Routes>
   );
 };

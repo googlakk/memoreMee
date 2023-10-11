@@ -1,8 +1,9 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import React, { FC } from "react";
 
+import { FC } from "react";
 import { Pie } from "react-chartjs-2";
-import { useAuthContext } from "@app/hooks";
+
+// import { useAuthContext } from "@app/hooks";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -11,12 +12,9 @@ type PieChartProps = {
   correctAnswers: number;
   incorrectAnswers: number;
 };
-const PieChart: FC<PieChartProps> = ({
-  totalAnswers,
-  correctAnswers,
-  incorrectAnswers,
-}) => {
-  const { user } = useAuthContext();
+
+const PieChart: FC<PieChartProps> = ({ correctAnswers, incorrectAnswers }) => {
+  // const { user } = useAuthContext();
 
   const data = {
     labels: ["Правильные ответы", "Неправильные ответы"],

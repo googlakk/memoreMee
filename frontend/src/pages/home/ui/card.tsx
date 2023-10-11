@@ -9,12 +9,7 @@ interface gameCardProps {
   routes: string;
   disabled?: boolean;
 }
-const GameCard: FC<gameCardProps> = ({
-  titleGame,
-  imgGame,
-  routes,
-  disabled,
-}) => {
+const GameCard: FC<gameCardProps> = ({ titleGame, imgGame, routes }) => {
   return (
     <>
       <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] disabled w-80 h-2/3 bg-[#0284c7] glass mx-auto">

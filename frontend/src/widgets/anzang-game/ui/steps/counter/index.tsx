@@ -1,24 +1,31 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
+import { AnzanCore } from "@shared/core";
 import { Card } from "react-daisyui";
 import { Howl } from "howler";
 
 interface FuncProps {
   onFinish: () => void;
-  numbers: number[];
+  game: AnzanCore;
   name: string;
   speed: number;
   playersCount?: number;
+  muted: boolean;
 }
 const Counter: FC<FuncProps> = ({
   onFinish,
-  numbers,
-  name,
+  game,
   speed,
   playersCount,
+  muted,
 }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
+
+  const numbers = useMemo(() => {
+    game.generateNumbers();
+    return game.getNumbers();
+  }, [game]);
 
   useEffect(() => {
     if (numberIndex >= numbers.length) {
@@ -29,11 +36,13 @@ const Counter: FC<FuncProps> = ({
     src: ["/sounds/pip.mp3"],
     volume: 1,
   });
+  console.log(muted);
   useEffect(() => {
     if (isGameStarted) {
-      if (playersCount === 1) SoundPip.play();
+      if (!muted) SoundPip.play();
       const timerId = window.setInterval(() => {
-        if (playersCount === 1) SoundPip.play();
+        if (!muted) SoundPip.play();
+
         setNumberIndex((num) => num + 1);
       }, 1000 * speed);
       return () => {
@@ -41,7 +50,7 @@ const Counter: FC<FuncProps> = ({
         window.clearInterval(timerId);
       };
     }
-  }, [isGameStarted]);
+  }, [isGameStarted, muted]);
 
   if (!isGameStarted)
     return <StarterCounter onDone={() => setIsGameStarted(true)} />;
