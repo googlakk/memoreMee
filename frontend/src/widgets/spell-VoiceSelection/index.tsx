@@ -205,12 +205,19 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
         </div>
 
         <div className="items-center space-x-4 mb-4 mx-auto flex flex-col">
-          <input
-            type="text"
-            className="input input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
-            value={inputValue}
-            onChange={handleInputChange}
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCheckSpelling();
+            }}
+          >
+            <input
+              type="text"
+              className="input input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+          </form>
 
           {!isCorrect && (
             <div className="text-[#dc2626] text-xl mt-2">
