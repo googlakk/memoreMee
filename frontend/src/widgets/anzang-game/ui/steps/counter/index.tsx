@@ -1,24 +1,25 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
+import { AnzanCore } from "@shared/core";
 import { Card } from "react-daisyui";
 import { Howl } from "howler";
 
 interface FuncProps {
   onFinish: () => void;
-  numbers: number[];
+  game: AnzanCore;
   name: string;
   speed: number;
   playersCount?: number;
+  muted: boolean;
 }
-const Counter: FC<FuncProps> = ({
-  onFinish,
-  numbers,
-  name,
-  speed,
-  playersCount,
-}) => {
+const Counter: FC<FuncProps> = ({ onFinish, game, speed, muted }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
+
+  const numbers = useMemo(() => {
+    game.generateNumbers();
+    return game.getNumbers();
+  }, [game]);
 
   useEffect(() => {
     if (numberIndex >= numbers.length) {
@@ -29,11 +30,13 @@ const Counter: FC<FuncProps> = ({
     src: ["/sounds/pip.mp3"],
     volume: 1,
   });
+  console.log(muted);
   useEffect(() => {
     if (isGameStarted) {
-      if (playersCount === 1) SoundPip.play();
+      if (!muted) SoundPip.play();
       const timerId = window.setInterval(() => {
-        if (playersCount === 1) SoundPip.play();
+        if (!muted) SoundPip.play();
+
         setNumberIndex((num) => num + 1);
       }, 1000 * speed);
       return () => {
@@ -41,7 +44,7 @@ const Counter: FC<FuncProps> = ({
         window.clearInterval(timerId);
       };
     }
-  }, [isGameStarted]);
+  }, [isGameStarted, muted]);
 
   if (!isGameStarted)
     return <StarterCounter onDone={() => setIsGameStarted(true)} />;
@@ -52,7 +55,7 @@ const Counter: FC<FuncProps> = ({
     else if (lenght === 4) return `92px`;
     else if (lenght === 3) return `122px`;
     else if (lenght === 2) return `152px`;
-    else if (lenght === 1) return `192px`;
+    else if (lenght === 1) return `152px`;
   };
   colculatingSize();
   return (
@@ -100,8 +103,8 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
   }, [steps]);
 
   return (
-    <Card className="card items-center justify-center font-arena text-7xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] w-[100%] mx-3  bg-[#0284c7] glass text-base-100">
-      <Card.Body className=" card-body items-center justify-center">
+    <Card className="card w-full lg:w-full xl:w-full items-center justify-center font-arena text-4xl lg:text-xl xl:text-7xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  mx-3  bg-[#0284c7] glass text-base-100">
+      <Card.Body className=" card-body items-center justify-center ">
         {steps[0]}
       </Card.Body>
     </Card>

@@ -3,13 +3,9 @@ import { FC, useCallback, useState } from "react";
 
 type AnzanAnswerFormProps = {
   onAnswer: (answer: number) => void;
-  onSetVisible: (t: boolean) => void;
 };
 
-const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
-  onAnswer,
-  onSetVisible,
-}) => {
+const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer }) => {
   const [answer, setAnswer] = useState<string>("");
 
   const handleAnswer = useCallback(
@@ -19,9 +15,6 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
     },
     [onAnswer, answer]
   );
-  const toggleVisible = () => {
-    onSetVisible(true);
-  };
   return (
     <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] w-[100%] mx-3 bg-[#0284c7] glass text-black">
       <Card.Body className="flex items-center justify-center">
@@ -37,7 +30,7 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
             onChange={(e) => setAnswer(e.target.value)}
           />
 
-          <Button className="mt-5" type="submit" onClick={toggleVisible}>
+          <Button className="mt-5" type="submit">
             Готово
           </Button>
         </Form>

@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { AnzanConfig, AnzanCore } from "@shared/core/games/anzan";
+import { useEffect, useState } from "react";
 
 import AnzanAnswerForm from "./steps/answer-form";
-import { AnzanCore } from "@shared/core/games/anzan";
 import { AnzanGamePreview } from "./steps/preview";
 import { AnzanGameSettings } from "./steps/settings";
 import AnzanResult from "./steps/result";
@@ -18,16 +18,21 @@ interface AnzanGameProps {
   game: AnzanCore;
   autostart?: number;
   playersCount?: number;
+  onChangeConfig: (config: AnzanConfig) => void;
+  isSpeedEquals: boolean;
+  autoAnswer?: number;
 }
 
 export const AnzanGame: React.FC<AnzanGameProps> = ({
   game,
   autostart,
   playersCount,
+  onChangeConfig,
+  isSpeedEquals,
+  autoAnswer,
 }) => {
   const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PREVIEW);
   const [userAnswer, setUserAnswer] = useState<number>(0);
-  const [useGame, setUseGame] = useState<AnzanCore>(game);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
   const [name, setName] = useState<string>("Участник ");
@@ -36,11 +41,11 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       setStep(ANZAN_STEPS.COUNTER);
     }
   }, [autostart]);
-
-  const numbers = useMemo(() => {
-    return useGame.getNumbers();
-  }, [useGame]);
-
+  useEffect(() => {
+    if (autoAnswer) {
+      setStep(ANZAN_STEPS.RESULT);
+    }
+  }, [autoAnswer]);
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
       <AnzanGamePreview
@@ -53,15 +58,15 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     [ANZAN_STEPS.COUNTER]: (
       <Counter
         onFinish={() => setStep(ANZAN_STEPS.ANSWER_FORM)}
-        numbers={numbers}
+        game={game}
         name={name}
-        speed={useGame.config.speed}
+        speed={game.config.speed}
         playersCount={playersCount}
+        muted={!isSpeedEquals}
       />
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (
       <AnzanAnswerForm
-        onSetVisible={setVisible}
         onAnswer={(answer) => {
           setUserAnswer(answer);
           setStep(ANZAN_STEPS.RESULT);
@@ -73,17 +78,14 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         onSetVisible={setVisible}
         onStart={() => setStep(ANZAN_STEPS.COUNTER)}
         onSettings={() => setIsOpenSettings(true)}
-        rightAnswer={useGame.getAnswer()}
         userAnwer={userAnswer}
-        numbers={numbers}
         visible={visible}
         name={name}
-        game={useGame}
+        game={game}
       />
     ),
   };
 
-  console.log(useGame);
   return (
     <>
       {steps[step]}
@@ -91,13 +93,13 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       <AnzanGameSettings
         open={isOpenSettings}
         onSave={(config) => {
-          setUseGame(new AnzanCore(config));
+          onChangeConfig(config);
           setIsOpenSettings(false);
         }}
         onCancel={() => {
           setIsOpenSettings(false);
         }}
-        defaultSettings={useGame.config}
+        defaultSettings={game.config}
       />
     </>
   );

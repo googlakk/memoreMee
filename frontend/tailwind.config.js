@@ -11,7 +11,9 @@ export default {
       arena: ['CATArena', "sans-serif"]
     },
     extend: {
-    
+      screens: {
+        'l': '999px', // Название точки останова и значение ширины
+      },
     },
   },
   plugins: [require("daisyui")],

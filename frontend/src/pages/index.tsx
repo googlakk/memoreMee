@@ -2,10 +2,13 @@ import { Route, Routes } from "react-router-dom";
 
 import Anzan from "./games/arifmetika/anzan";
 import Arifmetika from "./games/arifmetika";
+import AudioPage from "./games/spellingBeeGame/game/audioPage";
 import HomePage from "./home";
 import LoginPage from "./login";
 import { ROUTES } from "./routes";
 import RegisterPage from "./register";
+import SpellingBeeGame from "./games/spellingBeeGame";
+import SpellingGame from "./games/spellingBeeGame/game";
 import StaticsPage from "./statics";
 
 const Routing: React.FC = () => {
@@ -17,6 +20,9 @@ const Routing: React.FC = () => {
       <Route path={ROUTES.ARIFMETIKA} element={<Arifmetika />} />
       <Route path={ROUTES.ANZAN} element={<Anzan />} />
       <Route path={ROUTES.STATICPAGE} element={<StaticsPage />} />
+      <Route path={ROUTES.SPELLINGBEE} element={<SpellingBeeGame />} />
+      <Route path={ROUTES.SPELLING} element={<SpellingGame />} />
+      <Route path={ROUTES.SPELLINGLEVEL} element={<AudioPage />} />
     </Routes>
   );
 };
