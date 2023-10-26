@@ -45,7 +45,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     if (autoAnswer) {
       setStep(ANZAN_STEPS.RESULT);
     }
-  });
+  }, [autoAnswer]);
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
       <AnzanGamePreview
