@@ -16,9 +16,11 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
   );
 
   const populateVoiceList = () => {
-    const voices = speechSynthesis.getVoices();
+    const voices = speechSynthesis
+      .getVoices()
+      .filter((v) => v.lang === "en-US");
     setVoices(voices);
-    setVoice(voices.find((v) => v.name === "Alex"));
+    setVoice(voices.find((v) => v.name === "Alex") || voices[0]);
   };
 
   useEffect(() => {
