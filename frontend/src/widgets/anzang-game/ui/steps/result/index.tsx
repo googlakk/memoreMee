@@ -118,7 +118,6 @@ const AnzanResult: FC<FuncProps> = ({
             {game.getNumbers().map((num, numIndex) => (
               <>
                 <div className="flex gap-2">
-                  <div className="text-2xl font-arena ">[{numIndex}] - </div>
                   <div className="text-xl ">{num},</div>
                 </div>
               </>
