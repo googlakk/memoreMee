@@ -1,11 +1,11 @@
-import SpellSteps from "@widgets/spellingBee-game";
+import SpellSubLevel from "@widgets/spell-SubLevel";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
-const SpellingGame = () => {
+const SpellingSubLevelPages = () => {
   return (
     <>
-      <SpellSteps />
+      <SpellSubLevel />
     </>
   );
 };
-export default withMainLayout(SpellingGame);
+export default withMainLayout(SpellingSubLevelPages);

@@ -19,7 +19,7 @@ const HomePage: FC = () => {
       <GameCard
         titleGame="spelling bee"
         imgGame={spellImg}
-        routes={"https://spell-int-1b45e42d7717.herokuapp.com/"}
+        routes={ROUTES.SPELLINGBEE}
       />
       <GameCard titleGame="memory" imgGame={memoryImg} routes={ROUTES.LOGIN} />
     </div>

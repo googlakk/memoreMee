@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Anzan from "./games/arifmetika/anzan";
 import Arifmetika from "./games/arifmetika";
-import AudioPage from "./games/spellingBeeGame/game/audioPage";
+import AudioPage from "./games/spellingBeeGame/audioPage";
 import HomePage from "./home";
 import LoginPage from "./login";
 import { ROUTES } from "./routes";

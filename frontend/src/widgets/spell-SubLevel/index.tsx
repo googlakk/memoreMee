@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { LEVELS } from "./words";
 import SpellCard from "@pages/games/spellingBeeGame/ui/card";
-import final from "/img/senior.png";
-import grand from "/img/senior.png";
-import semi from "/img/senior.png";
+import final from "/img/final.png";
+import grand from "/img/grandFinal.png";
+import semi from "/img/stage.png";
 import { useParams } from "react-router-dom";
 
-const SpellSteps: FC = () => {
+const SpellSubLevel: FC = () => {
   const { stage } = useParams();
 
   const objects = [
@@ -23,7 +23,7 @@ const SpellSteps: FC = () => {
     },
   ];
   return (
-    <div className="container mx-auto p-4 bg-gray-100 rounded-md shadow-md">
+    <div className="container mx-auto p-4 bg-gray-100 rounded-md shadow-md mt-[10%]">
       <div className="flex justify-around">
         {objects.map((obj) => (
           <SpellCard title={obj.title} url={obj.url} img={obj.img} />
@@ -33,4 +33,4 @@ const SpellSteps: FC = () => {
   );
 };
 
-export default SpellSteps;
+export default SpellSubLevel;
