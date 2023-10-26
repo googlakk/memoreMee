@@ -8,7 +8,6 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type PieChartProps = {
-  totalAnswers: number;
   correctAnswers: number;
   incorrectAnswers: number;
 };
@@ -21,7 +20,7 @@ const PieChart: FC<PieChartProps> = ({ correctAnswers, incorrectAnswers }) => {
     datasets: [
       {
         data: [correctAnswers, incorrectAnswers],
-        backgroundColor: ["#36A2EB", "#FFCE56"],
+        backgroundColor: ["#008170", "#FF6969"],
         borderWidth: 1,
       },
     ],

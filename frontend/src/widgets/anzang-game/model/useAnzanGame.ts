@@ -1,8 +1,6 @@
 import { AnzanConfig, AnzanCore } from "@shared/core";
 import { useEffect, useState } from "react";
 
-import { reduce } from "ramda";
-
 export const useAnzanGame = (config: AnzanConfig, playersCount: number) => {
   const [games, setGames] = useState<AnzanCore[]>([]);
 

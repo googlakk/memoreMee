@@ -1,52 +1,36 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import { LEVELS } from "./words";
+import SpellCard from "@pages/games/spellingBeeGame/ui/card";
+import final from "/img/senior.png";
+import grand from "/img/senior.png";
+import semi from "/img/senior.png";
+import { useParams } from "react-router-dom";
 
-interface Words {
-  semiFinal: string[];
-  Final: string[];
-  grandFinal: string[];
-}
-const SpellingBee: FC = () => {
-  const [active, setActive] = useState(0);
-  // const words: Words = {
-  //   semiFinal: ["semi"],
-  //   Final: ["final"],
-  //   grandFinal: ["grand"],
-  // };
-  const [selectedLevel, setSelectedLevel] = useState<
-    "semiFinal" | "Final" | "grandFinal"
-  >("semiFinal");
-  const handleClick = () => {
-    setActive(1);
-    setSelectedLevel("semiFinal");
-  };
+const SpellSteps: FC = () => {
+  const { stage } = useParams();
+
+  const objects = [
+    {
+      title: "semi final",
+      img: `${semi}`,
+      url: `${stage}/${LEVELS.semiFinal}`,
+    },
+    { title: "final", img: `${final}`, url: `${stage}/${LEVELS.Final}` },
+    {
+      title: "grand final",
+      img: `${grand}`,
+      url: `${stage}/${LEVELS.grandFinal}`,
+    },
+  ];
   return (
     <div className="container mx-auto p-4 bg-gray-100 rounded-md shadow-md">
-      <h2 className="text-2xl mb-4 text-center">Speech Component</h2>
-
-      <div className="flex justify-center space-x-4">
-        <div className="tabs ">
-          <div
-            onClick={() => handleClick()}
-            className={`${
-              selectedLevel === "semiFinal" ? "bg-blue-500" : "bg-gray-300"
-            } text-white px-4 py-2 rounded`}
-          >
-            semi Final
-          </div>
-        </div>
-        <div className="tabd-content">
-          {/* {active === 1 ? (
-            <VoiceSelection
-              words={words[selectedLevel]}
-              // selectedLevel={selectedLevel}
-            />
-          ) : (
-            ""
-          )} */}
-        </div>
+      <div className="flex justify-around">
+        {objects.map((obj) => (
+          <SpellCard title={obj.title} url={obj.url} img={obj.img} />
+        ))}
       </div>
     </div>
   );
 };
 
-export default SpellingBee;
+export default SpellSteps;

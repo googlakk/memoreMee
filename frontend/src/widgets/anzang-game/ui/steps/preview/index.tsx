@@ -22,10 +22,10 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
     []
   );
   return (
-    <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[#0284c7] glass ">
+    <Card className="card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[#0284c7] glass ">
       <Card.Title>
         <div
-          className=" text-xl ml-2"
+          className=" text-l lg:text-[14px] xl:text-[14px] l:text-[10px] ml-2"
           contentEditable
           onBlur={handleContentChange}
           dangerouslySetInnerHTML={{ __html: name }}
@@ -35,7 +35,10 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
         <Button className="btn btn-primary" onClick={() => onStart()}>
           Начать
         </Button>
-        <Button className="btn btn-ghost" onClick={() => onSettings()}>
+        <Button
+          className="btn btn-ghost xl:text-[12px]"
+          onClick={() => onSettings()}
+        >
           Настройки
         </Button>
       </Card.Body>

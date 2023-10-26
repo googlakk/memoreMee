@@ -61,10 +61,12 @@ export const AnzanGameSettings: React.FC<{
         checked={open}
       />
       <div className="modal">
-        <div className="modal-box">
-          <div className="flex flex-col gap-x-10">
-            <div className="my-3 flex justify-between items-center">
-              <h1 className=" text-l font-medium mr-10">Выберите действие</h1>
+        <div className="modal-box p-2 m-0 ">
+          <div className="flex   flex-col items-center lg:gap-x-10 xl:gap-x-10 gap-x-2 ">
+            <div className="w-full my-3 flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Выберите действие
+              </h1>
               <ButtonGroup className="flex justify-center">
                 <Button
                   type="button"
@@ -100,13 +102,19 @@ export const AnzanGameSettings: React.FC<{
                 </Button>
               </ButtonGroup>
             </div>
-            <div className="my-3 flex justify-between items-center">
-              <h1 className=" text-l font-medium mr-20">Используемые числа</h1>
-              <ButtonGroup className="flex flex-wrap justify-center gap-y-2">
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Используемые числа
+              </h1>
+              <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
                 {USED_NUMBERS.map((num) => (
                   <Button
                     type="button"
-                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                    className={`${
+                      config.usedNumber.includes(num)
+                        ? "bg-primary text-base-100"
+                        : " text-neutral-900"
+                    } `}
                     key={num}
                     onClick={() => handleChangeUsedNumbers(num)}
                     active={config.usedNumber.includes(num)}
@@ -114,10 +122,12 @@ export const AnzanGameSettings: React.FC<{
                     {num}
                   </Button>
                 ))}
-              </ButtonGroup>
+              </div>
             </div>
-            <div className="my-3 flex justify-between items-center">
-              <h1 className=" text-l font-medium  mr-10">Разрядность чисел</h1>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
+                Разрядность чисел
+              </h1>
               <ButtonGroup>
                 {DEPTH.map((depth) => (
                   <Button
@@ -132,12 +142,15 @@ export const AnzanGameSettings: React.FC<{
                 ))}
               </ButtonGroup>
             </div>
-            <div className="my-3 flex justify-between items-center">
-              <h1 className=" text-l font-medium  mr-10">Скорость</h1>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Скорость
+              </h1>
               <NumberInput
                 className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                 onChange={(_, value) => handleChangeSpeed(value)}
                 defaultValue={config.speed}
+                step={0.1}
                 clampValueOnBlur={false}
               >
                 <NumberInputField />
@@ -147,8 +160,8 @@ export const AnzanGameSettings: React.FC<{
                 </NumberInputStepper>
               </NumberInput>
             </div>
-            <div className="my-3 flex justify-between items-center">
-              <h1 className=" text-l font-medium  mr-10">
+            <div className="my-3  w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0  ">
                 Количество действий
               </h1>
               <NumberInput
@@ -164,14 +177,14 @@ export const AnzanGameSettings: React.FC<{
                 </NumberInputStepper>
               </NumberInput>
             </div>
+            <Button
+              type="button"
+              className="bg-accent mx-auto"
+              onClick={handleSaveConfig}
+            >
+              Сохранить
+            </Button>
           </div>
-          <Button
-            type="button"
-            className="bg-accent mx-auto"
-            onClick={handleSaveConfig}
-          >
-            Сохранить
-          </Button>
         </div>
         <label
           className="modal-backdrop"

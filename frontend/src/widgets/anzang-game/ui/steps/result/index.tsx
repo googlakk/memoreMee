@@ -60,9 +60,7 @@ const AnzanResult: FC<FuncProps> = ({
 
     upaateUserScore({ variables: { id: user.id, score: 1 } });
   }, []);
-  const totalAnswers = 100;
-  const correctAnswers = 70;
-  // const incorrectAnswers = totalAnswers - correctAnswers;
+
   return (
     <>
       <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[#0284c7] glass text-base-100">

@@ -57,9 +57,14 @@ export class AnzanCore {
     } else {
       while (this.answer + number < 0) {
         const operation = operations[random(operations.length)];
-        const numbers = new Array(numberDepth)
-          .fill(0)
-          .map(() => usedNumber[random(usedNumber.length)]);
+
+        const numbers = new Array(numberDepth).fill(0).map((_, numIndex) => {
+          const newUsedNumbers = [...usedNumber];
+          if (numberDepth != 1 && numIndex != 0) {
+            newUsedNumbers.push(0);
+          }
+          return newUsedNumbers[random(newUsedNumbers.length)];
+        });
         number = Number.parseInt(`${operation}${numbers.join("")}`);
       }
     }
@@ -70,6 +75,7 @@ export class AnzanCore {
   }
 
   generateNumbers() {
+    this.resetAnswer();
     this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
       return this.generateNumber();
     });
@@ -81,6 +87,10 @@ export class AnzanCore {
 
   getAnswer() {
     return this.answer;
+  }
+  resetAnswer() {
+    // Добавил обнуление ответа
+    this.answer = 0;
   }
 }
 
@@ -116,7 +126,7 @@ export class AnzanGameManager {
         window.clearInterval(timerId);
         return this.finish();
       }
-
+      this.games.forEach((game) => game.resetAnswer()); // Вызываю метод обнулния ответа, перед каждой игрой. Но не работает
       this.notifySubscribers();
 
       this.count++;

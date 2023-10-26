@@ -6,4 +6,6 @@ export const ROUTES = {
   ARIFMETIKA: "/arifmetika",
   STATICPAGE: "/staticPage",
   SPELLINGBEE: "/spellingbee",
+  SPELLING: "/spelling/:stage",
+  SPELLINGLEVEL: "/spelling/:stage/:level",
 };

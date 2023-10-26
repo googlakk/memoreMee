@@ -1,5 +1,5 @@
 import { AnzanConfig, AnzanCore } from "@shared/core/games/anzan";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import AnzanAnswerForm from "./steps/answer-form";
 import { AnzanGamePreview } from "./steps/preview";

@@ -12,13 +12,7 @@ interface FuncProps {
   playersCount?: number;
   muted: boolean;
 }
-const Counter: FC<FuncProps> = ({
-  onFinish,
-  game,
-  speed,
-  playersCount,
-  muted,
-}) => {
+const Counter: FC<FuncProps> = ({ onFinish, game, speed, muted }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
 
@@ -61,7 +55,7 @@ const Counter: FC<FuncProps> = ({
     else if (lenght === 4) return `92px`;
     else if (lenght === 3) return `122px`;
     else if (lenght === 2) return `152px`;
-    else if (lenght === 1) return `192px`;
+    else if (lenght === 1) return `152px`;
   };
   colculatingSize();
   return (
@@ -109,8 +103,8 @@ const StarterCounter: FC<{ onDone: () => void }> = ({ onDone }) => {
   }, [steps]);
 
   return (
-    <Card className="card items-center justify-center font-arena text-7xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] w-[100%] mx-3  bg-[#0284c7] glass text-base-100">
-      <Card.Body className=" card-body items-center justify-center">
+    <Card className="card w-full lg:w-full xl:w-full items-center justify-center font-arena text-4xl lg:text-xl xl:text-7xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  mx-3  bg-[#0284c7] glass text-base-100">
+      <Card.Body className=" card-body items-center justify-center ">
         {steps[0]}
       </Card.Body>
     </Card>

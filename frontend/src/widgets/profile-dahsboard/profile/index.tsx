@@ -4,6 +4,7 @@ import { useAuthContext } from "@app/hooks";
 import { useGetGameHistoryLazyQuery } from "@app/api/queries.gen";
 
 const Profile: FC = () => {
+  const logo = "/img/IntelGroup.png";
   const { user } = useAuthContext();
   const [getGameHistory, { data }] = useGetGameHistoryLazyQuery();
   useEffect(() => {
@@ -19,11 +20,7 @@ const Profile: FC = () => {
       <div className="flex flex-col items-center">
         <h3 className=" font-arena text-2  xl text-center mt-2">профиль</h3>
         <div className="avatar w-40 h-40 ">
-          <img
-            className="rounded-full"
-            src="https://media.radaronline.com/brand-img/dvOfEmbPz/0x0/2019/04/celebrities-with-the-highest-SAT-scores-Will-Smith-featured-photo.jpg"
-            alt="avatar.png"
-          />
+          <img className="rounded-full" src={logo} alt="avatar.png" />
         </div>
         <div className="flex gap-3">
           <p className=" opacity-40">email:</p> {user?.email}
