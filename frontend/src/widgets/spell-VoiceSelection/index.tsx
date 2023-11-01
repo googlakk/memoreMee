@@ -183,6 +183,7 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
         </label>
       </div>
 
+<<<<<<< HEAD
       <div className="l:flex l:justify-around l:py-5 flex justify-center mt-5">
         <Button
           className=" hidden l:block bg-blue-500 text-white px-4 py-2 rounded bg-transparent"
@@ -213,6 +214,22 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
             onChange={handleInputChange}
           />
         </form>
+=======
+        <div className="items-center space-x-4 mb-4 mx-auto flex flex-col">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCheckSpelling();
+            }}
+          >
+            <input
+              type="text"
+              className="input input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+          </form>
+>>>>>>> 7319228d72009701ecc8c6e5c4542f99763a08b9
 
         {!isCorrect && (
           <div className="text-[#dc2626] text-xl mt-2">
