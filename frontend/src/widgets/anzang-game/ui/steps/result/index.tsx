@@ -115,7 +115,7 @@ const AnzanResult: FC<FuncProps> = ({
         <input type="checkbox" id="my_modal_7" className="modal-toggle" />
         <div className="modal">
           <div className="modal-box mx-auto flex flex-wrap gap-5 ">
-            {game.getNumbers().map((num, numIndex) => (
+            {game.getNumbers().map((num) => (
               <>
                 <div className="flex gap-2">
                   <div className="text-xl ">{num},</div>

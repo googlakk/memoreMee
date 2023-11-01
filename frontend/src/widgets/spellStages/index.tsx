@@ -12,7 +12,7 @@ const SpellStages = () => {
 
   return (
     <>
-      <div className="flex justify-around items-center mt-[10%]">
+      <div className="container mx-auto flex mt-[2%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap">
         {stages.map(({ url, title, img }, index) => (
           <SpellCard key={index} url={url} title={title} img={img} />
         ))}

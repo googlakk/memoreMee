@@ -1,52 +1,46 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
 
 import { Button } from "react-daisyui";
+import { Link } from "react-router-dom";
 import PieChart from "@widgets/statics-dashboard/charts/pie-chart";
+import { ROUTES } from "@pages/routes";
 
 interface SpellingAudioPlayerProps {
   words: string[];
 }
 
 const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [rate, setRate] = useState(1);
+  const [inputValue, setInputValue] = useState("");
+  const [isCorrect, setIsCorrect] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   const randomWords = useMemo(
     () => words.sort(() => (Math.random() > 0.5 ? 1 : -1)),
     [words]
   );
 
-  const populateVoiceList = () => {
-    const voices = speechSynthesis
-      .getVoices()
-      .filter((v) => v.lang === "en-US");
-    setVoices(voices);
-    setVoice(voices.find((v) => v.name === "Alex") || voices[0]);
-  };
-
-  useEffect(() => {
-    populateVoiceList();
-
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-  }, []);
-
-  const [voice, setVoice] = useState<SpeechSynthesisVoice | undefined>(
-    undefined
-  );
-
-  const [rate, setRate] = useState(1);
-  const [inputValue, setInputValue] = useState("");
-  const [isCorrect, setIsCorrect] = useState(true);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [incorrectCount, setIncorrectCount] = useState(0);
-
   useEffect(() => {
     handleSpeak();
-  }, [voices]);
+  }, [currentIndex]);
 
+  const currentWord = randomWords[currentIndex].toLowerCase().trim();
+  const SoundWord = new Howl({
+    src: [`/sounds/${currentWord}.mp3`],
+    volume: 1,
+    rate: rate,
+  });
+  const SoundWrong = new Howl({
+    src: ["/sounds/wrongPip.mp3"],
+    volume: 0.4,
+  });
+  const SoundRight = new Howl({
+    src: ["/sounds/win.mp3"],
+    volume: 0.3,
+    rate: 1.5,
+  });
   const handleNextWord = () => {
     setIsCorrect(true);
     setInputValue("");
@@ -60,25 +54,23 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
   };
 
   const handleSpeak = () => {
-    speechSynthesis.cancel();
-    if (!voice) return;
-
-    const utterance = new SpeechSynthesisUtterance(randomWords[currentIndex]);
-    utterance.voice = voice;
-    utterance.rate = rate;
-
     setTimeout(() => {
-      speechSynthesis.speak(utterance);
+      SoundWord.play();
     }, 700);
   };
 
   const handleCheckSpelling = () => {
-    if (inputValue.toLowerCase() === randomWords[currentIndex].toLowerCase()) {
+    if (
+      inputValue.toLowerCase().trim() ===
+      randomWords[currentIndex].toLowerCase().trim()
+    ) {
+      SoundRight.play();
       setCorrectCount((count) => count + 1);
       handleNextWord();
     } else {
       setIncorrectCount((count) => count + 1);
       setIsCorrect(false);
+      SoundWrong.play();
     }
   };
 
@@ -93,8 +85,8 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
 
   return (
     <div className="rounded-xl bg-[#3876BF] relative">
-      <div className=" flex flex-col items-end absolute  right-0 p-2 bg-base-100 rounded-xl tabs">
-        <button className="text-primary active pb-4">
+      <div className=" flex justify-around pt-2 shadow-xl l:flex-col l:p-2  lg:flex-col lg:items-end l:absolute lg:absolute lg:p-3 lg:gap-2  right-0 bg-base-100 rounded-xl tabs md:flex-row l:gap-0 ">
+        <Link to={ROUTES.SPELLINGBEE} className="text-primary active pb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8"
@@ -109,7 +101,7 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
               d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
             />
           </svg>
-        </button>
+        </Link>
         <label
           htmlFor="staticsModal"
           className="cursor-pointer text-primary pb-4"
@@ -149,7 +141,7 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
             <path />
           </svg>
         </label>
-        <button className="text-primary pb-4" onClick={() => handleSpeak}>
+        <button className="text-primary pb-4" onClick={handleSpeak}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 text-primary"
@@ -171,7 +163,10 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
             />
           </svg>
         </button>
-        <label htmlFor="wordsModal" className="text-primary pb-4">
+        <label
+          htmlFor="wordsModal"
+          className=" cursor-pointer text-primary pb-4"
+        >
           <svg
             className="h-8 w-8 text-primary"
             fill="none"
@@ -187,46 +182,53 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
           </svg>
         </label>
       </div>
-      <div className="tabs-content">
-        <div className="flex justify-between space-x-10 mb-4 pt-8 w-[50%] mx-auto">
-          <Button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleSpeak}
-            disabled={!voice}
-          >
-            Speak Word
-          </Button>
-          <Button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={handleCheckSpelling}
-          >
-            Check Spelling
-          </Button>
-        </div>
 
-        <div className="items-center space-x-4 mb-4 mx-auto flex flex-col">
+      <div className="l:flex l:justify-around l:py-5 flex justify-center mt-5">
+        <Button
+          className=" hidden l:block bg-blue-500 text-white px-4 py-2 rounded bg-transparent"
+          onClick={handleSpeak}
+        >
+          Speak Word
+        </Button>
+        <Button
+          className="  bg-blue-500 text-white rounded bg-transparent"
+          onClick={handleCheckSpelling}
+        >
+          Check word
+        </Button>
+      </div>
+
+      <div className="items-center space-x-4 mb-4 mx-auto pt-8 flex flex-col">
+        <form
+          className="w-full flex justify-center"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCheckSpelling();
+          }}
+        >
           <input
             type="text"
-            className="input input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
+            className="input shadow-2xl input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
             value={inputValue}
             onChange={handleInputChange}
           />
+        </form>
 
-          {!isCorrect && (
-            <div className="text-[#dc2626] text-xl mt-2">
-              Incorrect spelling, please try again.
-            </div>
-          )}
-        </div>
-        <div className="flex justify-around">
-          <div className="w-[400px]">
-            <PieChart
-              correctAnswers={correctCount}
-              incorrectAnswers={incorrectCount}
-            />
+        {!isCorrect && (
+          <div className="text-[#dc2626] text-xl mt-2">
+            Incorrect spelling, please try again.
           </div>
+        )}
+      </div>
+      <div className="flex justify-around">
+        <div className="l:w-[300px] md:p-10 p-10">
+          <PieChart
+            correctAnswers={correctCount}
+            incorrectAnswers={incorrectCount}
+          />
         </div>
       </div>
+
       <div>
         <input type="checkbox" id="voiceModal" className="modal-toggle" />
         <div className="modal">

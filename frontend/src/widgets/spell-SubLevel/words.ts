@@ -1,7 +1,6 @@
 export enum LEVELS {
   semiFinal = "semiFinal",
   Final = "final",
-  grandFinal = "grandFinal",
 }
 export enum STAGES {
   kids = "kids",
@@ -11,7 +10,6 @@ export enum STAGES {
 interface WordData {
   [LEVELS.semiFinal]: string[];
   [LEVELS.Final]: string[];
-  [LEVELS.grandFinal]: string[];
 }
 
 type Words = Record<string, WordData>;
@@ -421,8 +419,6 @@ export const words: Words = {
       "pyramid",
       "hieroglyphs",
       "whisper",
-    ],
-    [LEVELS.grandFinal]: [
       "exhibition",
       "fossil bones",
       "sculpture",
@@ -1169,8 +1165,6 @@ export const words: Words = {
       "reliable",
       "souvenir",
       "suspicious",
-    ],
-    [LEVELS.grandFinal]: [
       "terrified",
       "accusing",
       "notification",
@@ -1977,8 +1971,6 @@ export const words: Words = {
       "alligator",
       "tongue",
       "freckles",
-    ],
-    [LEVELS.grandFinal]: [
       "icicle",
       "slippery",
       "delivery",

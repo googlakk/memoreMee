@@ -9,7 +9,7 @@ const AudioPage: FC = () => {
   const selectedStage = stage as keyof typeof words;
   const selectedLevel = level as keyof typeof stage;
   const selectedWords = words[selectedStage][selectedLevel];
-  console.log({ selectedWords });
+
   return <SpellingAudioPlayer words={selectedWords} />;
 };
 export default withMainLayout(AudioPage);

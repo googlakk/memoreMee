@@ -13,8 +13,6 @@ type PieChartProps = {
 };
 
 const PieChart: FC<PieChartProps> = ({ correctAnswers, incorrectAnswers }) => {
-  // const { user } = useAuthContext();
-
   const data = {
     labels: ["Правильные ответы", "Неправильные ответы"],
     datasets: [

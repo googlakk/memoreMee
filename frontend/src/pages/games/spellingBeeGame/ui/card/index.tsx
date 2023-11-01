@@ -13,7 +13,7 @@ interface gameCardProps {
 const SpellCard: FC<gameCardProps> = ({ url, title, img }) => {
   return (
     <>
-      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] disabled w-80 h-2/3 bg-[#0284c7] glass mx-auto">
+      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mb-5 disabled w-80 h-2/3 bg-[#0284c7] glass mx-auto">
         <Card.Body className="items-center text-center">
           <Card.Image className=" w-44" src={img} alt="mental" />
 

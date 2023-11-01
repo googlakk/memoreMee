@@ -8,51 +8,46 @@ export function random(min: number, max?: number): number {
     : Math.random() * min;
   return Math.floor(randomNumber);
 }
-
-enum OPERATIONS {
-  MULTI = "*",
-  DIVISION = "/",
+export enum OPERATIONS {
+  MULTIPLY = "*",
+  DIVIDE = "/",
 }
 
-export type MultiplicationConfig = {
-  operations: [OPERATIONS, ...OPERATIONS[]];
-  usedNumber: number[];
-  numberDepth: number;
+export type MathConfig = {
+  operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
+  maxNumber: number; // Максимальное значение числа
+  minNumber: number; // Минимальное значение числа
+  numbersCount: number; // Сколько чисел будет участвовать в операции
 };
 
-export class MultiCore {
-  public multiConfig: MultiplicationConfig;
-  private answer = 0;
-  private firstDigits = 0;
-  private secondDigits = 0;
-  constructor(multiConfig: MultiplicationConfig) {
-    this.multiConfig = multiConfig;
-  }
+export class MathCore {
+  public config: MathConfig;
 
-  setConfig(multiConfig: MultiplicationConfig) {
-    this.multiConfig = multiConfig;
-  }
-
-  setAnswer(newAnswer: number) {
-    this.answer = newAnswer;
+  constructor(config: MathConfig) {
+    this.config = config;
   }
 
   generateNumber(): number {
-    const { numberDepth, usedNumber } = this.multiConfig;
-    let number = 0;
-    const numbers = new Array(numberDepth)
-      .fill(0)
-      .map(() => usedNumber[random(usedNumber.length)]);
-    number = Number.parseInt(`${numbers.join("")}`);
-    return number;
+    const { maxNumber, minNumber } = this.config;
+    return random(minNumber, maxNumber);
   }
 
-  multiply(): number {
-    this.firstDigits = this.generateNumber();
-    this.secondDigits = this.generateNumber();
-    return (this.answer = this.firstDigits * this.secondDigits);
+  multiply(numbers: number[]): number {
+    return numbers.reduce((acc, num) => acc * num, 1);
   }
-  getAnswer() {
-    return this.answer;
+
+  divide(numbers: number[]): number {
+    if (numbers.some((num) => num === 0)) {
+      throw new Error("Division by zero is not allowed.");
+    }
+    return numbers.reduce((acc, num) => acc / num);
+  }
+
+  generateNumbers() {
+    const { numbersCount } = this.config;
+    const numbers = new Array(numbersCount).fill(null).map(() => {
+      return this.generateNumber();
+    });
+    return numbers;
   }
 }
