@@ -4,13 +4,15 @@ import { ROUTES } from "@pages/routes";
 import memoryImg from "/img/memory.svg";
 import mental from "/img/mental.svg";
 import spellImg from "/img/bee.svg";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
   return (
     <div
-      className={`container mx-auto flex mt-[2%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap `}
+      className={`container mx-auto flex mt-[2%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap`}
     >
+      <h1>{}</h1>
       <GameCard
         titleGame="Ментальная арифметика"
         imgGame={mental}
@@ -26,4 +28,4 @@ const HomePage: FC = () => {
   );
 };
 
-export default withMainLayout(HomePage);
+export default withAuthMiddleware(withMainLayout(HomePage));

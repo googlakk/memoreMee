@@ -6,6 +6,8 @@ export const ROUTES = {
   ARIFMETIKA: "/arifmetika",
   STATICPAGE: "/staticPage",
   SPELLINGBEE: "/spellingbee",
-  SPELLING: "/spelling/:stage",
-  SPELLINGLEVEL: "/spelling/:stage/:level",
+  SPELLING: "/spellingbee/:stage",
+  OLIMPING: "olimpspell/:stage",
+  SPELLINGLEVEL: "/spellingbee/:stage/:level",
+  OLIMPINGLEVEL: "/olimpspell/:stage/:level",
 };

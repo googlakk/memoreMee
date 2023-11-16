@@ -1,10 +1,12 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
-import { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 import { AnzanGame } from "@widgets/anzang-game/ui";
 import AnzanSettingForm from "@widgets/anzan-game-setup-form";
 import { Button } from "react-daisyui";
+import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
 import { MultiplayerGameGrid } from "@widgets/multiplayer-game-grid";
+import { useActiveComponent } from "@app/hooks";
 import { useAnzanGame } from "@widgets/anzang-game/model/useAnzanGame";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
@@ -34,7 +36,14 @@ const Anzan: FC = () => {
   const [autoStart, setStart] = useState(0);
   const [autoVisibleAnswer, setAutoAnswer] = useState(0);
   const [startBtnVisible, setBtnVisible] = useState(false);
-
+  const { activeComponent, setActiveComponent } = useActiveComponent();
+  useEffect(() => {
+    const handleEnterClick = (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setActiveComponent(ENTER_STATE.START);
+      }
+    };
+  }, []);
   const elementRef2: RefType = useRef<HTMLDivElement>(null);
 
   const steps = {

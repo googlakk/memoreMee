@@ -9,6 +9,9 @@ import {
   NumberInputStepper,
 } from "@chakra-ui/react";
 
+import { FiSettings } from "react-icons/fi";
+import { IconContext } from "react-icons";
+
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
@@ -62,11 +65,19 @@ const AnzanSettingForm: FC<{
   };
 
   return (
-    <div className="">
-      <label className="btn" htmlFor="settingsModal">
-        Настройки
+    <div className=" relative">
+      <label
+        className="hidden lg:block xl:block absolute right-0"
+        htmlFor="settingsModal"
+      >
+        <IconContext.Provider
+          value={{ color: "black", className: "w-10 h-10" }}
+        >
+          <div className="btn">
+            <FiSettings />
+          </div>
+        </IconContext.Provider>
       </label>
-
       <div className="flex flex-col items-center ">
         <h1 className="mb-5 text-base-100 font-arena text-7xl hidden lg:block xl:block">
           Количество игроков

@@ -4,6 +4,7 @@ import { Button } from "react-daisyui";
 import { Link } from "react-router-dom";
 import PieChart from "@widgets/statics-dashboard/charts/pie-chart";
 import { ROUTES } from "@pages/routes";
+import colorBg from "/img/bgTrainingSpelling.jpg";
 
 interface SpellingAudioPlayerProps {
   words: string[];
@@ -56,7 +57,7 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
   const handleSpeak = () => {
     setTimeout(() => {
       SoundWord.play();
-    }, 700);
+    }, 1000);
   };
 
   const handleCheckSpelling = () => {
@@ -84,7 +85,12 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
   const wordsRemaining = totalWords - wordsShown;
 
   return (
-    <div className="rounded-xl bg-[#3876BF] relative">
+    <div className=" shadow-xl rounded-3xl  overflow-hidden h-[70vh]  relative">
+      <img
+        src={colorBg}
+        className="absolute h-full w-full right-0 left-0 top-0 bottom-0 -z-10 brightness-90"
+        alt=""
+      />
       <div className=" flex justify-around pt-2 shadow-xl l:flex-col l:p-2  lg:flex-col lg:items-end l:absolute lg:absolute lg:p-3 lg:gap-2  right-0 bg-base-100 rounded-xl tabs md:flex-row l:gap-0 ">
         <Link to={ROUTES.SPELLINGBEE} className="text-primary active pb-4">
           <svg
@@ -183,16 +189,15 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
         </label>
       </div>
 
-<<<<<<< HEAD
       <div className="l:flex l:justify-around l:py-5 flex justify-center mt-5">
         <Button
-          className=" hidden l:block bg-blue-500 text-white px-4 py-2 rounded bg-transparent"
+          className=" hidden l:block bg-blue-500 text-white px-4 py-2 rounded bg-transparent text-base-100 hover:text-primary font-bold"
           onClick={handleSpeak}
         >
           Speak Word
         </Button>
         <Button
-          className="  bg-blue-500 text-white rounded bg-transparent"
+          className="  bg-blue-500 text-white rounded bg-transparent text-base-100 hover:text-primary font-bold"
           onClick={handleCheckSpelling}
         >
           Check word
@@ -214,22 +219,6 @@ const SpellingAudioPlayer: FC<SpellingAudioPlayerProps> = ({ words }) => {
             onChange={handleInputChange}
           />
         </form>
-=======
-        <div className="items-center space-x-4 mb-4 mx-auto flex flex-col">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleCheckSpelling();
-            }}
-          >
-            <input
-              type="text"
-              className="input input-bordered input-lg border border-gray-300 p-2 text-2xl text-primary font-bold text-center rounded-xl w-[80%] block"
-              value={inputValue}
-              onChange={handleInputChange}
-            />
-          </form>
->>>>>>> 7319228d72009701ecc8c6e5c4542f99763a08b9
 
         {!isCorrect && (
           <div className="text-[#dc2626] text-xl mt-2">

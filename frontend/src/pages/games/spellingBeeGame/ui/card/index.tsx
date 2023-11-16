@@ -1,6 +1,6 @@
 import { Button, Card } from "react-daisyui";
+import { FC, useEffect, useState } from "react";
 
-import { FC } from "react";
 import { Link } from "react-router-dom";
 
 interface gameCardProps {
@@ -9,13 +9,26 @@ interface gameCardProps {
   img?: string;
   stage?: string;
   level?: string;
+  onClick?: () => void;
 }
 const SpellCard: FC<gameCardProps> = ({ url, title, img }) => {
+  const [saveMode, setSaveMode] = useState<string | null>(null);
+  useEffect(() => {
+    const mode = localStorage.getItem("selectedMode");
+    setSaveMode(mode);
+  }, []);
+
   return (
     <>
-      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mb-5 disabled w-80 h-2/3 bg-[#0284c7] glass mx-auto">
+      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mb-5 disabled w-80  bg-[#0284c7] glass mx-auto ">
         <Card.Body className="items-center text-center">
-          <Card.Image className=" w-44" src={img} alt="mental" />
+          <div className="h-2/3">
+            <Card.Image
+              className=" h-[190px] object-contain"
+              src={img}
+              alt="mental"
+            />
+          </div>
 
           <h1 className="font-arena lowercase text-4xl leading-6 text-base-100">
             {title}
@@ -24,10 +37,10 @@ const SpellCard: FC<gameCardProps> = ({ url, title, img }) => {
           <Card.Actions className="justify-end">
             <Button className=" btn-ghost">
               <Link
-                className=" p-0 m-0 font-arena text-2xl text-neutral-50 "
-                to={`/spelling/${url}`}
+                className=" p-0 m-0 font-arena text-2xl text-neutral-50 tracking-wider"
+                to={`/${saveMode}/${url}`}
               >
-                Начать
+                Start
               </Link>
             </Button>
           </Card.Actions>

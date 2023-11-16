@@ -1,12 +1,18 @@
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect, useMemo } from "react";
+import { FaEquals, FaNotEqual } from "react-icons/fa";
+import { useActiveComponent, useAuthContext } from "@app/hooks";
 import {
   useCrateGameHistoryMutation,
   useUpdateUserScoreMutation,
 } from "@app/api/mutations.gen";
 
 import { AnzanCore } from "@shared/core";
-import { useAuthContext } from "@app/hooks";
+import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdRestartAlt } from "react-icons/md";
+import cn from "clsx";
 
 interface FuncProps {
   onStart: () => void;
@@ -16,6 +22,7 @@ interface FuncProps {
   onSetVisible: (t: boolean) => void;
   name: string;
   game: AnzanCore;
+  playersCount?: number;
 }
 
 const AnzanResult: FC<FuncProps> = ({
@@ -25,6 +32,7 @@ const AnzanResult: FC<FuncProps> = ({
   onSetVisible,
   name,
   game: _game,
+  playersCount,
 }) => {
   const clickListner = () => {
     onSettings();
@@ -37,7 +45,11 @@ const AnzanResult: FC<FuncProps> = ({
   const [upaateUserScore] = useUpdateUserScoreMutation();
 
   const game = useMemo(() => _game, []);
+
+  const { setActiveComponent } = useActiveComponent();
+
   useEffect(() => {
+    setActiveComponent(ENTER_STATE.START);
     if (!user) return;
 
     createGameHistory({
@@ -60,12 +72,48 @@ const AnzanResult: FC<FuncProps> = ({
 
     upaateUserScore({ variables: { id: user.id, score: 1 } });
   }, []);
+  const classFontSizeText = cn(
+    "font-jura font-bold text-center",
+    playersCount === 1 && "lg:text-3xl md::text-3xl text-xl",
+    playersCount === 2 && "text-3xl",
+    playersCount === 3 && "text-[26px]",
+    playersCount === 4 && "text-2xl",
+    playersCount === 5 && "text-xl",
+    playersCount === 6 && "text-xl",
+    playersCount === 7 && "text-xl",
+    playersCount === 8 && "text-[16px]",
+    playersCount === 9 && "text-[14px]"
+  );
+  const classFontSizeNumber = cn(
+    "font-jura font-bold text-center",
+    playersCount === 1 && "lg:text-7xl md::text-7xl text-4xl",
+    playersCount === 2 && "text-6xl",
+    playersCount === 3 && "text-6xl",
+    playersCount === 4 && "text-5xl",
+    playersCount === 5 && "text-5xl",
+    playersCount === 6 && "text-5xl",
+    playersCount === 7 && "text-5xl",
+    playersCount === 8 && "text-[36px]",
+    playersCount === 9 && "text-[32px]"
+  );
+  const classPosition = cn(
+    "flex flex-col items-center  ",
+    playersCount === 1 && "justifu-center",
+    playersCount === 2 && "justifu-center",
+    playersCount === 3 && "justifu-center",
+    playersCount === 4 && "absolute top-2",
+    playersCount === 5 && "absolute top-2",
+    playersCount === 6 && "absolute top-2",
+    playersCount === 7 && "absolute top-2",
+    playersCount === 8 && "absolute top-2",
+    playersCount === 9 && "absolute top-2"
+  );
 
   return (
     <>
-      <Card className="card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[#0284c7] glass text-base-100">
-        <Card.Body className=" card-body justify-center items-center">
-          <div className="flex justify-around w-full">
+      <Card className="rounded-3xl  p-0 card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90 text-base-100">
+        <Card.Body className="p-0 card-body justify-center items-center">
+          <div className="flex justify-center w-full ">
             {/* <div>
               <PieChart
                 totalAnswers={totalAnswers}
@@ -73,40 +121,54 @@ const AnzanResult: FC<FuncProps> = ({
                 incorrectAnswers={incorrectAnswers}
               />
             </div> */}
-            <div>
-              <h1 className=" font-bold text-3xl ">
-                Правильный ответ:{" "}
-                <span className="text-arena">{game.getAnswer()}</span>
-              </h1>
-
-              <h1
-                className="font-bold text-3xl "
-                style={{
-                  color: `${game.getAnswer() == userAnwer ? `green` : `red`}`,
-                }}
-              >
-                <span>
-                  Ваш ответ: <span className="text-3xl">{userAnwer}</span>
-                </span>
-              </h1>
+            <div className={classPosition}>
+              <div className="flex flex-col items-center justify-center mb-5 text-primary">
+                <h1 className={classFontSizeNumber}>{game.getAnswer()}</h1>
+                <div className="text-3xl ">
+                  {game.getAnswer() === userAnwer ? (
+                    <FaEquals />
+                  ) : (
+                    <FaNotEqual />
+                  )}
+                </div>
+                <h1 className={classFontSizeNumber}>{userAnwer}</h1>
+              </div>
               <div
-                className=" text-sm mt-2"
+                className={classFontSizeText}
                 style={{
-                  color: `${game.getAnswer() == userAnwer ? `green` : `black`}`,
+                  color: `${
+                    game.getAnswer() === userAnwer ? `green` : `black`
+                  }`,
                 }}
               >
-                {userAnwer == game.getAnswer()
-                  ? `${name}, молодец!`
-                  : `${name}, попробуй еще раз`}
+                {userAnwer === game.getAnswer() ? (
+                  `${name}, молодец!`
+                ) : (
+                  <>
+                    {`Ой-ой, ${name}!`}
+                    <br />
+                    {"Ошибочка - бывает. Попробуй еще"}
+                  </>
+                )}
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-around mt-2">
-            <Button onClick={() => onStart()}>Start</Button>
-            <Button onClick={() => clickListner()}>Настройки</Button>
-            <label htmlFor="my_modal_7" className="btn">
-              Задание
-            </label>
+          <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col flex justify-around ">
+            <Button className="  btn-ghost text-3xl" onClick={() => onStart()}>
+              <MdRestartAlt />
+            </Button>
+            <Button
+              className="   btn-ghost text-3xl"
+              onClick={() => clickListner()}
+            >
+              <GiSettingsKnobs />
+            </Button>
+
+            <Button className="btn-ghost text-3xl">
+              <label htmlFor="my_modal_7">
+                <IoMdCheckmarkCircleOutline />
+              </label>
+            </Button>
           </div>
         </Card.Body>
         <Card.Title className="mx-auto pb-5"></Card.Title>

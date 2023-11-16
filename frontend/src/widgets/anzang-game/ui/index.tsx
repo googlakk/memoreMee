@@ -6,6 +6,8 @@ import { AnzanGamePreview } from "./steps/preview";
 import { AnzanGameSettings } from "./steps/settings";
 import AnzanResult from "./steps/result";
 import Counter from "./steps/counter";
+import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
+import { useActiveComponent } from "@app/hooks";
 
 enum ANZAN_STEPS {
   PREVIEW,
@@ -17,7 +19,7 @@ enum ANZAN_STEPS {
 interface AnzanGameProps {
   game: AnzanCore;
   autostart?: number;
-  playersCount?: number;
+  playersCount: number;
   onChangeConfig: (config: AnzanConfig) => void;
   isSpeedEquals: boolean;
   autoAnswer?: number;
@@ -35,7 +37,9 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   const [userAnswer, setUserAnswer] = useState<number>(0);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
-  const [name, setName] = useState<string>("Участник ");
+
+  const [name, setName] = useState<string>(`Игрок`);
+  const { activeComponent, setActiveComponent } = useActiveComponent();
   useEffect(() => {
     if (autostart) {
       setStep(ANZAN_STEPS.COUNTER);
@@ -46,6 +50,32 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       setStep(ANZAN_STEPS.RESULT);
     }
   }, [autoAnswer]);
+  useEffect(() => {
+    const handleClickEnter = (event: React.KeyboardEvent) => {
+      if (event.key === "Enter" && activeComponent === ENTER_STATE.STOP) {
+        console.log(activeComponent, "pressed enter");
+        setStep(ANZAN_STEPS.PREVIEW);
+      } else if (
+        event.key === "Enter" &&
+        activeComponent === ENTER_STATE.OPEN
+      ) {
+        console.log(activeComponent, "pressed enter");
+        setStep(ANZAN_STEPS.RESULT);
+      } else if (
+        event.key === "Enter" &&
+        activeComponent === ENTER_STATE.START
+      ) {
+        setStep(ANZAN_STEPS.COUNTER);
+      }
+    };
+    document.addEventListener("keydown", handleClickEnter);
+
+    // Возвращаем функцию для уда ления слушателя
+    return () => {
+      document.removeEventListener("keydown", handleClickEnter);
+    };
+  }, [activeComponent]);
+
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
       <AnzanGamePreview
@@ -82,6 +112,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         visible={visible}
         name={name}
         game={game}
+        playersCount={playersCount}
       />
     ),
   };

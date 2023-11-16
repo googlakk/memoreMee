@@ -1,21 +1,25 @@
 export enum LEVELS {
   semiFinal = "semiFinal",
   Final = "final",
+  grandFinal = "grandFinal",
 }
 export enum STAGES {
   kids = "kids",
   junior = "junior",
   senior = "senior",
+  absolute = "absolute",
 }
 interface WordData {
-  [LEVELS.semiFinal]: string[];
-  [LEVELS.Final]: string[];
+  [LEVELS.semiFinal]?: string[];
+  [LEVELS.Final]?: string[];
+  [LEVELS.grandFinal]?: string[];
 }
 
 type Words = Record<string, WordData>;
 
 export const words: Words = {
   kids: {
+    
     [LEVELS.semiFinal]: [
       "clarinet",
       "instrument",
@@ -2131,6 +2135,60 @@ export const words: Words = {
       "full fledged",
       "bulletproof",
       "desire",
+    ],
+  },
+  absolute: {
+    [LEVELS.grandFinal]: [
+      "onomatopoeia",
+      "obnoxious",
+      "personification",
+      "nauseous",
+      "threatening",
+      "ecstatic",
+      "enthusiastic",
+      "embarrassed",
+      "disappointing",
+      "pressure",
+      "calligraphy",
+      "amphibious",
+      "ambassador",
+      "microorganism",
+      "arithmetician",
+      "catastrophe",
+      "maneuver",
+      "radiant",
+      "linguistically",
+      "spontaneous",
+      "cliché",
+      "respirator",
+      "acquisition",
+      "pseudonym",
+      "algorithm",
+      "lexicologist",
+      "ancestor",
+      "oasis",
+      "bankrupt",
+      "athlete",
+      "unnecessary",
+      "unfortunately",
+      "analysis",
+      "cinematographer",
+      "unconscious",
+      "chauffeur",
+      "cappuccino",
+      "synonymous",
+      "asthma",
+      "chameleon",
+      "envious",
+      "luxurious",
+      "nostalgia",
+      "technically",
+      "voucher",
+      "vitamin",
+      "protein",
+      "obesity",
+      "council",
+      "apology",
     ],
   },
 };

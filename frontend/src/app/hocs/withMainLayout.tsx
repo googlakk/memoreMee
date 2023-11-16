@@ -10,7 +10,7 @@ export const withMainLayout =
       <div
         className={`flex flex-col min-h-screen max-h-full bg-gradient-to-r from-[#1f0071] via-[#3f12c5]  to-[#021e8b]`}
       >
-        <img src={neiro} className=" absolute z-0" alt="" />
+        <img src={neiro} className="absolute z-0" alt="" />
         <div className=" z-20 w-[85%] mx-auto">
           <Header />
           <div className="h-full ">
