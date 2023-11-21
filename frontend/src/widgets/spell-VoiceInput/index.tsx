@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { Button } from "react-daisyui";
 import { FaMicrophone } from "react-icons/fa";

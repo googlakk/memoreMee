@@ -11,11 +11,12 @@ export const withMainLayout =
         className={`flex flex-col min-h-screen max-h-full bg-gradient-to-r from-[#1f0071] via-[#3f12c5]  to-[#021e8b]`}
       >
         <img src={neiro} className="absolute z-0" alt="" />
-        <div className=" z-20 w-[85%] mx-auto">
+        <div className=" z-20 w-[95%] flex flex-col justify-between min-h-screen max-h-full mx-auto">
           <Header />
-          <div className="h-full ">
+          <div className="h-full mb-auto">
             <Component />
           </div>
+
           <MyFooter />
         </div>
 

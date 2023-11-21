@@ -1,10 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
 
+import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
 import { Card } from "react-daisyui";
-import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
 import { Howl } from "howler";
-import { useActiveComponent } from "@app/hooks";
 
 interface FuncProps {
   onFinish: () => void;
@@ -13,6 +12,7 @@ interface FuncProps {
   speed: number;
   playersCount?: number;
   muted: boolean;
+  setStep: (s: ANZAN_STEPS) => void;
 }
 const Counter: FC<FuncProps> = ({
   onFinish,
@@ -20,12 +20,22 @@ const Counter: FC<FuncProps> = ({
   speed,
   muted,
   playersCount,
+  setStep,
 }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
-  const { setActiveComponent } = useActiveComponent();
+
   useEffect(() => {
-    setActiveComponent(ENTER_STATE.STOP);
+    const handleClickEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        console.log("counter");
+        setStep(ANZAN_STEPS.PREVIEW);
+      }
+    };
+    document.addEventListener("keydown", handleClickEnter);
+    return () => {
+      document.removeEventListener("keydown", handleClickEnter);
+    };
   }, []);
 
   const numbers = useMemo(() => {
@@ -78,14 +88,14 @@ const Counter: FC<FuncProps> = ({
   colculatingSize();
 
   return (
-    <Card className="rounded-3xl overflow-hidden relative card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90 ">
+    <Card className="rounded-3xl overflow-hidden relative card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
       <Card.Body className="  card-body items-center justify-center p-0 m-0">
         <div
           key={numberIndex}
           className="font-bold "
           style={{
             fontSize: colculatingSize(),
-            color: `${numberIndex % 2 ? `#3D30A2` : `white`}`,
+            color: `${numberIndex % 2 ? `#3a51ff` : `#08125a`}`,
           }}
         >
           {numbers[numberIndex]}
@@ -99,10 +109,7 @@ const StarterCounter: FC<{ onDone: () => void; playerCount?: number }> = ({
   onDone,
 }) => {
   const [steps, setSteps] = useState(["На старт", "Внимание", "Марш!"]);
-  const { activeComponent, setActiveComponent } = useActiveComponent();
-  useEffect(() => {
-    setActiveComponent(ENTER_STATE.STOP);
-  }, []);
+
   const SoundCount = new Howl({
     src: ["/sounds/countdown.mp3"],
     volume: 1,
@@ -128,7 +135,7 @@ const StarterCounter: FC<{ onDone: () => void; playerCount?: number }> = ({
 
   return (
     <Card
-      className={`text-[48px] md:text-6xl lg:text-[5rem]  rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mx-3 text-base-100 bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90`}
+      className={`text-[48px] md:text-6xl lg:text-[5rem]  rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mx-3 text-base-100 bg-[#E0F4FF] brightness-90`}
     >
       <Card.Body className=" card-body items-center justify-center text-primary">
         {steps[0]}

@@ -6,10 +6,8 @@ import { AnzanGamePreview } from "./steps/preview";
 import { AnzanGameSettings } from "./steps/settings";
 import AnzanResult from "./steps/result";
 import Counter from "./steps/counter";
-import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
-import { useActiveComponent } from "@app/hooks";
 
-enum ANZAN_STEPS {
+export enum ANZAN_STEPS {
   PREVIEW,
   COUNTER,
   ANSWER_FORM,
@@ -23,6 +21,7 @@ interface AnzanGameProps {
   onChangeConfig: (config: AnzanConfig) => void;
   isSpeedEquals: boolean;
   autoAnswer?: number;
+  setAutoAnser?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const AnzanGame: React.FC<AnzanGameProps> = ({
@@ -39,7 +38,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const [name, setName] = useState<string>(`Игрок`);
-  const { activeComponent, setActiveComponent } = useActiveComponent();
+
   useEffect(() => {
     if (autostart) {
       setStep(ANZAN_STEPS.COUNTER);
@@ -50,31 +49,6 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       setStep(ANZAN_STEPS.RESULT);
     }
   }, [autoAnswer]);
-  useEffect(() => {
-    const handleClickEnter = (event: React.KeyboardEvent) => {
-      if (event.key === "Enter" && activeComponent === ENTER_STATE.STOP) {
-        console.log(activeComponent, "pressed enter");
-        setStep(ANZAN_STEPS.PREVIEW);
-      } else if (
-        event.key === "Enter" &&
-        activeComponent === ENTER_STATE.OPEN
-      ) {
-        console.log(activeComponent, "pressed enter");
-        setStep(ANZAN_STEPS.RESULT);
-      } else if (
-        event.key === "Enter" &&
-        activeComponent === ENTER_STATE.START
-      ) {
-        setStep(ANZAN_STEPS.COUNTER);
-      }
-    };
-    document.addEventListener("keydown", handleClickEnter);
-
-    // Возвращаем функцию для уда ления слушателя
-    return () => {
-      document.removeEventListener("keydown", handleClickEnter);
-    };
-  }, [activeComponent]);
 
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
@@ -82,7 +56,8 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         onStart={() => setStep(ANZAN_STEPS.COUNTER)}
         onSettings={() => setIsOpenSettings(true)}
         name={name}
-        setName={setName}
+        setName={() => setName}
+        setStep={setStep}
       />
     ),
     [ANZAN_STEPS.COUNTER]: (
@@ -93,10 +68,12 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         speed={game.config.speed}
         playersCount={playersCount}
         muted={!isSpeedEquals}
+        setStep={setStep}
       />
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (
       <AnzanAnswerForm
+        setStep={setStep}
         onAnswer={(answer) => {
           setUserAnswer(answer);
           setStep(ANZAN_STEPS.RESULT);
@@ -113,6 +90,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         name={name}
         game={game}
         playersCount={playersCount}
+        setStep={setStep}
       />
     ),
   };
@@ -120,7 +98,6 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   return (
     <>
       {steps[step]}
-
       <AnzanGameSettings
         open={isOpenSettings}
         onSave={(config) => {

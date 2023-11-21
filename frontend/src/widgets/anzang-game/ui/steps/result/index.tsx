@@ -1,18 +1,18 @@
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect, useMemo } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
-import { useActiveComponent, useAuthContext } from "@app/hooks";
 import {
   useCrateGameHistoryMutation,
   useUpdateUserScoreMutation,
 } from "@app/api/mutations.gen";
 
+import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
-import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
 import cn from "clsx";
+import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
   onStart: () => void;
@@ -23,6 +23,7 @@ interface FuncProps {
   name: string;
   game: AnzanCore;
   playersCount?: number;
+  setStep: (s: ANZAN_STEPS) => void;
 }
 
 const AnzanResult: FC<FuncProps> = ({
@@ -33,6 +34,7 @@ const AnzanResult: FC<FuncProps> = ({
   name,
   game: _game,
   playersCount,
+  setStep,
 }) => {
   const clickListner = () => {
     onSettings();
@@ -46,10 +48,19 @@ const AnzanResult: FC<FuncProps> = ({
 
   const game = useMemo(() => _game, []);
 
-  const { setActiveComponent } = useActiveComponent();
+  useEffect(() => {
+    const handleClickEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        setStep(ANZAN_STEPS.COUNTER);
+      }
+    };
+    document.addEventListener("keydown", handleClickEnter);
+    return () => {
+      document.removeEventListener("keydown", handleClickEnter);
+    };
+  }, []);
 
   useEffect(() => {
-    setActiveComponent(ENTER_STATE.START);
     if (!user) return;
 
     createGameHistory({
@@ -125,7 +136,7 @@ const AnzanResult: FC<FuncProps> = ({
               <div className="flex flex-col items-center justify-center mb-5 text-primary">
                 <h1 className={classFontSizeNumber}>{game.getAnswer()}</h1>
                 <div className="text-3xl ">
-                  {game.getAnswer() === userAnwer ? (
+                  {game.getAnswer() == userAnwer ? (
                     <FaEquals />
                   ) : (
                     <FaNotEqual />
@@ -136,12 +147,10 @@ const AnzanResult: FC<FuncProps> = ({
               <div
                 className={classFontSizeText}
                 style={{
-                  color: `${
-                    game.getAnswer() === userAnwer ? `green` : `black`
-                  }`,
+                  color: `${game.getAnswer() == userAnwer ? `green` : `black`}`,
                 }}
               >
-                {userAnwer === game.getAnswer() ? (
+                {userAnwer == game.getAnswer() ? (
                   `${name}, молодец!`
                 ) : (
                   <>
@@ -180,7 +189,7 @@ const AnzanResult: FC<FuncProps> = ({
             {game.getNumbers().map((num) => (
               <>
                 <div className="flex gap-2">
-                  <div className="text-xl ">{num},</div>
+                  <div className="text-xl ">{num}</div>
                 </div>
               </>
             ))}

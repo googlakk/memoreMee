@@ -1,20 +1,29 @@
 import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 
-import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
-import { useActiveComponent } from "@app/hooks";
+import { ANZAN_STEPS } from "../..";
 
 type AnzanAnswerFormProps = {
   onAnswer: (answer: number) => void;
+  setStep: (s: ANZAN_STEPS) => void;
 };
 
 const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer }) => {
   const [answer, setAnswer] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setActiveComponent } = useActiveComponent();
+
   useEffect(() => {
-    setActiveComponent(ENTER_STATE.OPEN);
-  }, []);
+    const handleClickEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        console.log("answer-form");
+        onAnswer(Number(answer));
+      }
+    };
+    document.addEventListener("keydown", handleClickEnter);
+    return () => {
+      document.removeEventListener("keydown", handleClickEnter);
+    };
+  }, [onAnswer, answer]);
 
   useEffect(() => {
     inputRef.current?.focus();

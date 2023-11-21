@@ -1,16 +1,16 @@
 import { Button, Card } from "react-daisyui";
 import { useCallback, useEffect, useState } from "react";
 
-import { ENTER_STATE } from "@app/providers/withActiveComponentProvider";
+import { ANZAN_STEPS } from "../..";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdSettingsSuggest } from "react-icons/md";
-import { useActiveComponent } from "@app/hooks";
 
 interface FuncProps {
   onStart: () => void;
   onSettings: () => void;
   name: string;
   setName: (s: string) => void;
+  setStep: (s: ANZAN_STEPS) => void;
 }
 
 export const AnzanGamePreview: React.FC<FuncProps> = ({
@@ -18,11 +18,21 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   onSettings,
   name,
   setName,
+  setStep,
 }) => {
-  const { setActiveComponent } = useActiveComponent();
   useEffect(() => {
-    setActiveComponent(ENTER_STATE.START);
+    const handleClickEnter = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        console.log("preview");
+        setStep(ANZAN_STEPS.COUNTER);
+      }
+    };
+    document.addEventListener("keydown", handleClickEnter);
+    return () => {
+      document.removeEventListener("keydown", handleClickEnter);
+    };
   }, []);
+
   const [displayText, setDisplayText] = useState<string | null>(null);
   const handleContentChange = useCallback(
     (event: React.FormEvent<HTMLDivElement>) => {
@@ -52,11 +62,17 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
       <Card.Title className=" absolute left-2 text-left mt-5">
         <div className="indicator">
           <span
-            className={`indicator-item badge badge-primary  opacity-100  transition-opacity duration-700 ${
-              displayText ? "opacity-100" : "opacity-0"
+            className={`indicator-item badge badge-primary opacity-100  transition-opacity duration-[5000] ${
+              displayText ? "opacity-100" : "opacity-10"
             }`}
           >
-            {displayText && <p>{displayText}</p>}
+            <div
+              className={`opacity-100  transition-opacity duration-[5000] ${
+                displayText ? "opacity-100" : "opacity-10"
+              }`}
+            >
+              {displayText}
+            </div>
           </span>
           <div className="grid w-32 mt-2 rounded-xl bg-base-300 place-items-center">
             <div

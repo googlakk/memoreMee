@@ -4,7 +4,6 @@ import { ROUTES } from "@pages/routes";
 import memoryImg from "/img/memory.svg";
 import mental from "/img/mental.svg";
 import spellImg from "/img/bee.svg";
-import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
@@ -28,4 +27,4 @@ const HomePage: FC = () => {
   );
 };
 
-export default withAuthMiddleware(withMainLayout(HomePage));
+export default withMainLayout(HomePage);
