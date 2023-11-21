@@ -87,7 +87,7 @@ const AnzanResult: FC<FuncProps> = ({
     "font-jura font-bold text-center",
     playersCount === 1 && "lg:text-3xl md::text-3xl text-xl",
     playersCount === 2 && "text-3xl",
-    playersCount === 3 && "text-[26px]",
+    playersCount === 3 && "text-[22px]",
     playersCount === 4 && "text-2xl",
     playersCount === 5 && "text-xl",
     playersCount === 6 && "text-xl",
@@ -97,32 +97,32 @@ const AnzanResult: FC<FuncProps> = ({
   );
   const classFontSizeNumber = cn(
     "font-jura font-bold text-center",
-    playersCount === 1 && "lg:text-7xl md::text-7xl text-4xl",
-    playersCount === 2 && "text-6xl",
-    playersCount === 3 && "text-6xl",
-    playersCount === 4 && "text-5xl",
-    playersCount === 5 && "text-5xl",
-    playersCount === 6 && "text-5xl",
-    playersCount === 7 && "text-5xl",
-    playersCount === 8 && "text-[36px]",
+    playersCount === 1 && "lg:text-7xl md::text-7xl text-4xl ",
+    playersCount === 2 && "text-5xl",
+    playersCount === 3 && "text-5xl",
+    playersCount === 4 && "text-4xl",
+    playersCount === 5 && "text-4xl",
+    playersCount === 6 && "text-4xl",
+    playersCount === 7 && "text-4xl",
+    playersCount === 8 && "text-[32px]",
     playersCount === 9 && "text-[32px]"
   );
   const classPosition = cn(
     "flex flex-col items-center  ",
-    playersCount === 1 && "justifu-center",
-    playersCount === 2 && "justifu-center",
-    playersCount === 3 && "justifu-center",
-    playersCount === 4 && "absolute top-2",
-    playersCount === 5 && "absolute top-2",
-    playersCount === 6 && "absolute top-2",
-    playersCount === 7 && "absolute top-2",
-    playersCount === 8 && "absolute top-2",
-    playersCount === 9 && "absolute top-2"
+    playersCount === 1 && "justify-center",
+    playersCount === 2 && "justify-center",
+    playersCount === 3 && "justify-center",
+    playersCount === 4 && "justify-center",
+    playersCount === 5 && "absolute top-0",
+    playersCount === 6 && "absolute top-0",
+    playersCount === 7 && "absolute top-0",
+    playersCount === 8 && "absolute top-0",
+    playersCount === 9 && "absolute top-0"
   );
 
   return (
     <>
-      <Card className="rounded-3xl  p-0 card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90 text-base-100">
+      <Card className="rounded-3xl   p-0 card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90 text-base-100">
         <Card.Body className="p-0 card-body justify-center items-center">
           <div className="flex justify-center w-full ">
             {/* <div>

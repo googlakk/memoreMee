@@ -23,7 +23,7 @@ const GameCard: FC<gameCardProps> = ({ titleGame, imgGame, routes }) => {
           <Card.Actions className="justify-end">
             <Button className=" btn-ghost">
               <Link
-                className=" p-0 m-0 font-arena text-2xl text-neutral-50 "
+                className=" p-0 m-0 font-bold tracking-wider text-xl text-neutral-50 "
                 to={routes}
               >
                 Начать

@@ -80,19 +80,19 @@ const Counter: FC<FuncProps> = ({
 
     if (lenght === 6) return `72px`;
     else if (lenght === 5) return `82px`;
-    else if (lenght === 4) return `112px`;
-    else if (lenght === 3) return `132px`;
-    else if (lenght === 2) return `152px`;
-    else if (lenght === 1) return `162px`;
+    else if (lenght === 4) return `102px`;
+    else if (lenght === 3) return `112px`;
+    else if (lenght === 2) return `122px`;
+    else if (lenght === 1) return `132px `;
   };
   colculatingSize();
 
   return (
-    <Card className="rounded-3xl overflow-hidden relative card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
+    <Card className="rounded-3xl overflow-hidden relative card w-[100%] m-0 p-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
       <Card.Body className="  card-body items-center justify-center p-0 m-0">
         <div
           key={numberIndex}
-          className="font-bold "
+          className="font-bold p-0 m-0"
           style={{
             fontSize: colculatingSize(),
             color: `${numberIndex % 2 ? `#3a51ff` : `#08125a`}`,
