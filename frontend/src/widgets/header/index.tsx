@@ -10,7 +10,7 @@ export const Header: FC<HeaderProps> = () => {
 
   return (
     <>
-      <div className="navbar">
+      <div className="navbar w-[90%] mx-auto">
         <div className="navbar-start">
           <Link to={ROUTES.HOME}>
             <img className="w-[80px]" src={logo} alt="logo" />

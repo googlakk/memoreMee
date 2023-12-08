@@ -10,4 +10,6 @@ export const ROUTES = {
   OLIMPING: "olimpspell/:stage",
   SPELLINGLEVEL: "/spellingbee/:stage/:level",
   OLIMPINGLEVEL: "/olimpspell/:stage/:level",
+  MULTIPLY: "/multiply",
+  GENERATOR: "/generator-tusk",
 };

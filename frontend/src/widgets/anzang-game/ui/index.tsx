@@ -22,6 +22,7 @@ interface AnzanGameProps {
   isSpeedEquals: boolean;
   autoAnswer?: number;
   setAutoAnser?: React.Dispatch<React.SetStateAction<number>>;
+  index: number;
 }
 
 export const AnzanGame: React.FC<AnzanGameProps> = ({
@@ -31,12 +32,13 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   onChangeConfig,
   isSpeedEquals,
   autoAnswer,
+  index,
 }) => {
   const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PREVIEW);
   const [userAnswer, setUserAnswer] = useState<number>(0);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
-
+  const [textToSpeachMuted, setTextToSpeachMuted] = useState(false);
   const [name, setName] = useState<string>(`Игрок`);
 
   useEffect(() => {
@@ -49,6 +51,9 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
       setStep(ANZAN_STEPS.RESULT);
     }
   }, [autoAnswer]);
+  const onChangeTextToSpeach = () => {
+    setTextToSpeachMuted(!textToSpeachMuted);
+  };
 
   const steps = {
     [ANZAN_STEPS.PREVIEW]: (
@@ -56,12 +61,15 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         onStart={() => setStep(ANZAN_STEPS.COUNTER)}
         onSettings={() => setIsOpenSettings(true)}
         name={name}
-        setName={() => setName}
+        setName={setName}
         setStep={setStep}
+        playersCount={index}
+        game={game}
       />
     ),
     [ANZAN_STEPS.COUNTER]: (
       <Counter
+        isTextToSpeach={textToSpeachMuted}
         onFinish={() => setStep(ANZAN_STEPS.ANSWER_FORM)}
         game={game}
         name={name}
@@ -73,6 +81,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (
       <AnzanAnswerForm
+        name={name}
         setStep={setStep}
         onAnswer={(answer) => {
           setUserAnswer(answer);
@@ -98,12 +107,16 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   return (
     <>
       {steps[step]}
+
       <AnzanGameSettings
+        playersCount={playersCount}
         open={isOpenSettings}
         onSave={(config) => {
           onChangeConfig(config);
           setIsOpenSettings(false);
         }}
+        onChangeChacked={onChangeTextToSpeach}
+        textToSpeachChecked={textToSpeachMuted}
         onCancel={() => {
           setIsOpenSettings(false);
         }}

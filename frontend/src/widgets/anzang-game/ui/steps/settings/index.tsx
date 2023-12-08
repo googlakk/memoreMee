@@ -14,11 +14,21 @@ const DEPTH = [1, 2, 3, 4, 5, 6];
 
 export const AnzanGameSettings: React.FC<{
   onSave: (config: AnzanConfig) => void;
-
   defaultSettings: AnzanConfig;
   open: boolean;
   onCancel: () => void;
-}> = ({ onSave, defaultSettings, open, onCancel }) => {
+  textToSpeachChecked: boolean;
+  onChangeChacked: () => void;
+  playersCount: number;
+}> = ({
+  onSave,
+  defaultSettings,
+  open,
+  onCancel,
+  textToSpeachChecked,
+  onChangeChacked,
+  playersCount,
+}) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>(defaultSettings);
   // Слущаетли событий
@@ -176,6 +186,22 @@ export const AnzanGameSettings: React.FC<{
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
+            </div>
+            <div className="my-3  w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0  ">
+                Голосовое сопровождение
+              </h1>
+              <div className="form-control">
+                <label className="cursor-pointer label">
+                  <input
+                    type="checkbox"
+                    checked={textToSpeachChecked}
+                    onChange={onChangeChacked}
+                    className="checkbox checkbox-primary"
+                    disabled={playersCount >= 2 ? true : false}
+                  />
+                </label>
+              </div>
             </div>
             <Button
               type="button"

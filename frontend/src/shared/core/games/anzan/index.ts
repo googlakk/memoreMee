@@ -26,11 +26,16 @@ export class AnzanCore {
   public config: AnzanConfig;
   private answer = 0;
   private numbers: number[] = [];
-
+  private score = 0;
   constructor(config: AnzanConfig) {
     this.config = config;
   }
-
+  setScore(newScore: number) {
+    this.score = newScore;
+  }
+  incrementScore() {
+    this.score += 10;
+  }
   setCofign(config: AnzanConfig) {
     this.config = config;
   }
@@ -68,23 +73,21 @@ export class AnzanCore {
         number = Number.parseInt(`${operation}${numbers.join("")}`);
       }
     }
-
     this.answer = this.answer + number;
-
     return number;
   }
-
   generateNumbers() {
     this.resetAnswer();
     this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
       return this.generateNumber();
     });
   }
-
   getNumbers() {
     return this.numbers;
   }
-
+  getScore() {
+    return this.score;
+  }
   getAnswer() {
     return this.answer;
   }
@@ -154,7 +157,9 @@ export class AnzanGameManager {
   getAnswers() {
     return this.games.map((game) => game.getAnswer());
   }
-
+  getScore() {
+    return this.games.map((game) => game.getScore);
+  }
   subscribe(cb: () => void) {
     this.subscribers.push(cb);
   }

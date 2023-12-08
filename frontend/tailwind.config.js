@@ -4,7 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
-      mainColor: {},
+      mainColor: [
+        "bg-gradient-to-r from-[#1f0071] via-[#3f12c5]  to-[#021e8b]",
+      ],
     },
 
     fontFamily: {

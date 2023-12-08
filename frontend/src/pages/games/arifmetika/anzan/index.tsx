@@ -2,6 +2,7 @@ import { AnzanConfig, OPERATIONS } from "@shared/core";
 import React, { FC, useRef, useState } from "react";
 
 import { AnzanGame } from "@widgets/anzang-game/ui";
+import AnzanHeadSettingForm from "@widgets/anzan-game-setup-form/header-setting";
 import AnzanSettingForm from "@widgets/anzan-game-setup-form";
 import { Button } from "react-daisyui";
 import { MultiplayerGameGrid } from "@widgets/multiplayer-game-grid";
@@ -53,6 +54,7 @@ const Anzan: FC = () => {
         {games.map((game, idx) => (
           <AnzanGame
             key={idx}
+            index={idx}
             isSpeedEquals={isGamesSpeedsEquals}
             game={game}
             autostart={autoStart}
@@ -84,7 +86,20 @@ const Anzan: FC = () => {
         >
           Начать всем
         </Button>
-
+        <div
+          className={`${
+            startBtnVisible ? "" : "hidden"
+          } w-5  bg-transparent text-base-100 hover:text-neutral-900 text-xs `}
+        >
+          <AnzanHeadSettingForm
+            onSave={(settings) => {
+              setConfig(settings.config);
+              setPlayersCount(settings.playersCount);
+              setStep(ANZAN_STEPS.PLAY);
+            }}
+            setStartBtnVisible={setBtnVisible}
+          />
+        </div>
         <Button
           className={`${
             startBtnVisible ? "" : "hidden"

@@ -1,4 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
+import {
+  getClassFontSizeNumber,
+  getClassFontSizeStarter,
+} from "./stylesUttils";
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
@@ -13,6 +17,7 @@ interface FuncProps {
   playersCount?: number;
   muted: boolean;
   setStep: (s: ANZAN_STEPS) => void;
+  isTextToSpeach: boolean;
 }
 const Counter: FC<FuncProps> = ({
   onFinish,
@@ -21,6 +26,8 @@ const Counter: FC<FuncProps> = ({
   muted,
   playersCount,
   setStep,
+  name,
+  isTextToSpeach,
 }) => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [numberIndex, setNumberIndex] = useState<number>(0);
@@ -28,7 +35,6 @@ const Counter: FC<FuncProps> = ({
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        console.log("counter");
         setStep(ANZAN_STEPS.PREVIEW);
       }
     };
@@ -43,21 +49,46 @@ const Counter: FC<FuncProps> = ({
     return game.getNumbers();
   }, [game]);
 
+  const Numlenght = String(numbers[numberIndex]).replace(/-/g, "").length;
   useEffect(() => {
     if (numberIndex >= numbers.length) {
       onFinish();
     }
   }, [numberIndex]);
+
+  const textToSpeach = () => {
+    if ("speechSynthesis" in window) {
+      const synthesis = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance();
+      let number = numbers[numberIndex];
+      utterance.text = String(number);
+      synthesis.speak(utterance);
+    } else {
+      console.error("Браузер не поддерживает Web Speech API");
+    }
+  };
   const SoundPip = new Howl({
     src: ["/sounds/pip.mp3"],
     volume: 1,
   });
-
   useEffect(() => {
     if (isGameStarted) {
-      if (!muted) SoundPip.play();
+      if (!muted) {
+        if (
+          isTextToSpeach &&
+          Numlenght <= 3 &&
+          speed >= 1.1 &&
+          playersCount === 1
+        ) {
+          textToSpeach();
+        } else {
+          SoundPip.play();
+        }
+      }
       const timerId = window.setInterval(() => {
-        if (!muted) SoundPip.play();
+        if (!muted && Numlenght >= 4) {
+          SoundPip.play();
+        }
 
         setNumberIndex((num) => num + 1);
       }, 1000 * speed);
@@ -66,35 +97,26 @@ const Counter: FC<FuncProps> = ({
         window.clearInterval(timerId);
       };
     }
-  }, [isGameStarted, muted]);
+  }, [isGameStarted, muted, numberIndex]);
 
+  const classFontSizeNumber = getClassFontSizeNumber(Numlenght, playersCount);
   if (!isGameStarted)
     return (
       <StarterCounter
-        playerCount={playersCount}
+        numLenght={Numlenght}
+        playersCount={playersCount}
         onDone={() => setIsGameStarted(true)}
       />
     );
-  const colculatingSize = () => {
-    const lenght = String(numbers[numberIndex]).replace(/-/g, "").length;
-
-    if (lenght === 6) return `72px`;
-    else if (lenght === 5) return `82px`;
-    else if (lenght === 4) return `102px`;
-    else if (lenght === 3) return `112px`;
-    else if (lenght === 2) return `122px`;
-    else if (lenght === 1) return `132px `;
-  };
-  colculatingSize();
 
   return (
-    <Card className="rounded-3xl overflow-hidden relative card w-[100%] m-0 p-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
-      <Card.Body className="  card-body items-center justify-center p-0 m-0">
+    <Card className="rounded-3xl overflow-hidden relative card w-[100%] m-0 p-0  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
+      <div className="absolute left-5 top-0 font-jura text-xl ">{name}</div>
+      <Card.Body className=" w-full  card-body items-center justify-center p-0 m-0">
         <div
           key={numberIndex}
-          className="font-bold p-0 m-0"
+          className={classFontSizeNumber}
           style={{
-            fontSize: colculatingSize(),
             color: `${numberIndex % 2 ? `#3a51ff` : `#08125a`}`,
           }}
         >
@@ -105,22 +127,23 @@ const Counter: FC<FuncProps> = ({
   );
 };
 
-const StarterCounter: FC<{ onDone: () => void; playerCount?: number }> = ({
-  onDone,
-}) => {
+const StarterCounter: FC<{
+  onDone: () => void;
+  playersCount?: number;
+  numLenght: number;
+}> = ({ onDone, playersCount }) => {
   const [steps, setSteps] = useState(["На старт", "Внимание", "Марш!"]);
 
   const SoundCount = new Howl({
     src: ["/sounds/countdown.mp3"],
-    volume: 1,
+    volume: 0.8,
   });
 
   useEffect(() => {
-    SoundCount.play();
     const timerId = window.setInterval(() => {
       setSteps((prev) => prev.slice(1));
-    }, 1000);
-
+    }, 1100);
+    SoundCount.play();
     return () => {
       SoundCount.stop();
       window.clearInterval(timerId);
@@ -132,13 +155,13 @@ const StarterCounter: FC<{ onDone: () => void; playerCount?: number }> = ({
       onDone();
     }
   }, [steps]);
-
+  const classFontSizeStarter = getClassFontSizeStarter(playersCount);
   return (
     <Card
-      className={`text-[48px] md:text-6xl lg:text-[5rem]  rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mx-3 text-base-100 bg-[#E0F4FF] brightness-90`}
+      className={`   rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-base-100 bg-[#E0F4FF] brightness-90`}
     >
       <Card.Body className=" card-body items-center justify-center text-primary">
-        {steps[0]}
+        <div className={classFontSizeStarter}>{steps[0]}</div>
       </Card.Body>
     </Card>
   );

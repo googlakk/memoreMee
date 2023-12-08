@@ -1,5 +1,5 @@
 import { Button, Card } from "react-daisyui";
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
 import {
   useCrateGameHistoryMutation,
@@ -8,6 +8,7 @@ import {
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
+import { FaArrowDown } from "react-icons/fa6";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
@@ -45,9 +46,13 @@ const AnzanResult: FC<FuncProps> = ({
 
   const [createGameHistory] = useCrateGameHistoryMutation();
   const [upaateUserScore] = useUpdateUserScoreMutation();
-
+  const [points, setPoints] = useState<number>(0);
+  const [isOpenResult, setIsOpenResult] = useState(false);
   const game = useMemo(() => _game, []);
 
+  const handleOpenResult = () => {
+    setIsOpenResult(!isOpenResult);
+  };
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
@@ -58,6 +63,15 @@ const AnzanResult: FC<FuncProps> = ({
     return () => {
       document.removeEventListener("keydown", handleClickEnter);
     };
+  }, []);
+  useEffect(() => {
+    if (game.getAnswer() === userAnwer) {
+      SoundRight.play();
+      game.incrementScore();
+      setPoints(game.getScore());
+    } else {
+      SoundWrong.play();
+    }
   }, []);
 
   useEffect(() => {
@@ -83,8 +97,18 @@ const AnzanResult: FC<FuncProps> = ({
 
     upaateUserScore({ variables: { id: user.id, score: 1 } });
   }, []);
+  const SoundWrong = new Howl({
+    src: ["/sounds/wrongPip.mp3"],
+    volume: 0.4,
+  });
+  const SoundRight = new Howl({
+    src: ["/sounds/win.mp3"],
+    volume: 0.3,
+    rate: 1.5,
+  });
+
   const classFontSizeText = cn(
-    "font-jura font-bold text-center",
+    "font-jura font-light text-center",
     playersCount === 1 && "lg:text-3xl md::text-3xl text-xl",
     playersCount === 2 && "text-3xl",
     playersCount === 3 && "text-[22px]",
@@ -92,8 +116,8 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 5 && "text-xl",
     playersCount === 6 && "text-xl",
     playersCount === 7 && "text-xl",
-    playersCount === 8 && "text-[16px]",
-    playersCount === 9 && "text-[14px]"
+    playersCount === 8 && "text-[14px]",
+    playersCount === 9 && "text-[12px]"
   );
   const classFontSizeNumber = cn(
     "font-jura font-bold text-center",
@@ -122,19 +146,29 @@ const AnzanResult: FC<FuncProps> = ({
 
   return (
     <>
-      <Card className="rounded-3xl   p-0 card w-[100%] mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90 text-base-100">
+      <Card className="rounded-3xl   p-0 card w-[100%] shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover brightness-90 text-base-100">
         <Card.Body className="p-0 card-body justify-center items-center">
           <div className="flex justify-center w-full ">
-            {/* <div>
-              <PieChart
-                totalAnswers={totalAnswers}
-                correctAnswers={correctAnswers}
-                incorrectAnswers={incorrectAnswers}
-              />
-            </div> */}
             <div className={classPosition}>
               <div className="flex flex-col items-center justify-center mb-5 text-primary">
+                <div
+                  className={`${
+                    isOpenResult
+                      ? `flex flex-col items-center justify-center`
+                      : `hidden`
+                  } `}
+                >
+                  <div className={`${classFontSizeText} flex`}>
+                    {game.getNumbers().map((num, idx) => (
+                      <h2 key={idx} className="ml-4">
+                        {num},
+                      </h2>
+                    ))}
+                  </div>
+                  <FaArrowDown />
+                </div>
                 <h1 className={classFontSizeNumber}>{game.getAnswer()}</h1>
+
                 <div className="text-3xl ">
                   {game.getAnswer() == userAnwer ? (
                     <FaEquals />
@@ -162,44 +196,32 @@ const AnzanResult: FC<FuncProps> = ({
               </div>
             </div>
           </div>
+
           <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col flex justify-around ">
-            <Button className="  btn-ghost text-3xl" onClick={() => onStart()}>
+            <Button className="  btn-ghost text-2xl" onClick={() => onStart()}>
               <MdRestartAlt />
             </Button>
             <Button
-              className="   btn-ghost text-3xl"
+              className="   btn-ghost text-2xl"
               onClick={() => clickListner()}
             >
               <GiSettingsKnobs />
             </Button>
 
-            <Button className="btn-ghost text-3xl">
-              <label htmlFor="my_modal_7">
+            <Button onClick={handleOpenResult} className="btn-ghost text-2xl">
+              <label>
                 <IoMdCheckmarkCircleOutline />
               </label>
             </Button>
           </div>
+          <div className=" absolute left-0 top-0 bg-primary mask mask-squircle p-5 flex justify-center items-center">
+            <div className={classFontSizeNumber}>
+              {game.getAnswer() === userAnwer ? points : game.getScore()}
+            </div>
+          </div>
         </Card.Body>
         <Card.Title className="mx-auto pb-5"></Card.Title>
       </Card>
-      <div>
-        <input type="checkbox" id="my_modal_7" className="modal-toggle" />
-        <div className="modal">
-          <div className="modal-box mx-auto flex flex-wrap gap-5 ">
-            {game.getNumbers().map((num) => (
-              <>
-                <div className="flex gap-2">
-                  <div className="text-xl ">{num}</div>
-                </div>
-              </>
-            ))}
-            <h1>Результат</h1> {game.getAnswer()}
-          </div>
-          <label className="modal-backdrop" htmlFor="my_modal_7">
-            Close
-          </label>
-        </div>
-      </div>
     </>
   );
 };

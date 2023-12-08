@@ -4,7 +4,7 @@ import { Button } from "react-daisyui";
 import { Link } from "react-router-dom";
 import PieChart from "@widgets/statics-dashboard/charts/pie-chart";
 import { ROUTES } from "@pages/routes";
-import colorBg from "/img/bgTrainingSpelling.jpg";
+import colorBg from "/img/bgTrainingSpelling.jpeg";
 
 interface SpellingAudioPlayerProps {
   words: string[];

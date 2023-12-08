@@ -1,7 +1,8 @@
 import { Button, Card } from "react-daisyui";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ANZAN_STEPS } from "../..";
+import { AnzanCore } from "@shared/core";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdSettingsSuggest } from "react-icons/md";
 
@@ -11,6 +12,8 @@ interface FuncProps {
   name: string;
   setName: (s: string) => void;
   setStep: (s: ANZAN_STEPS) => void;
+  playersCount: number;
+  game: AnzanCore;
 }
 
 export const AnzanGamePreview: React.FC<FuncProps> = ({
@@ -19,11 +22,16 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   name,
   setName,
   setStep,
+  playersCount,
+  game: _game,
 }) => {
+  const game = useMemo(() => _game, []);
+  const namePlayer = `${name}  ${playersCount}`;
+  const [displayText, setDisplayText] = useState<string | null>(null);
+  const [points, setPoints] = useState<number | null>(null);
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        console.log("preview");
         setStep(ANZAN_STEPS.COUNTER);
       }
     };
@@ -31,34 +39,33 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
     return () => {
       document.removeEventListener("keydown", handleClickEnter);
     };
-  }, []);
-
-  const [displayText, setDisplayText] = useState<string | null>(null);
-  const handleContentChange = useCallback(
+  }, [setStep]);
+  const handleNameChange = useCallback(
     (event: React.FormEvent<HTMLDivElement>) => {
-      setName(event.currentTarget.innerHTML);
+      setName(event.currentTarget.textContent || "");
     },
     []
   );
-  useEffect(() => {
-    // После монтирования компонента, устанавливаем текст
 
+  useEffect(() => {
     const showTimeoutId = setTimeout(() => {
       setDisplayText("Введите имя");
+      setPoints(null);
     }, 1000);
-    // Через три секунды сбрасываем текст
+
     const hiddenTimeoutId = setTimeout(() => {
       setDisplayText(null);
+      setPoints(game.getScore());
     }, 5000);
 
-    // Очистка таймера при размонтировании компонента
     return () => {
       clearTimeout(hiddenTimeoutId);
       clearTimeout(showTimeoutId);
     };
   }, []);
+
   return (
-    <Card className="rounded-3xl overflow-hidden relative card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover brightness-90">
+    <Card className=" rounded-3xl overflow-hidden relative card w-[100%] h-full mx-0  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover brightness-90">
       <Card.Title className=" absolute left-2 text-left mt-5">
         <div className="indicator">
           <span
@@ -72,27 +79,30 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
               }`}
             >
               {displayText}
+              {points}
             </div>
           </span>
           <div className="grid w-32 mt-2 rounded-xl bg-base-300 place-items-center">
             <div
-              className=" text-primary font-bold text-left text-l lg:text-[24px] xl:text-[18px] l:text-[16px] ml-2"
+              className=" text-primary font-jura font-light text-left text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"
               contentEditable
-              onBlur={handleContentChange}
-              dangerouslySetInnerHTML={{ __html: name }}
-            ></div>
+              onBlur={handleNameChange}
+              suppressContentEditableWarning={true}
+            >
+              {namePlayer}
+            </div>
           </div>
         </div>
       </Card.Title>
       <Card.Body className="card-body items-center justify-center   text-center">
         <Button
-          className="btn btn-primary text-4xl px-5 rounded-xl"
+          className="btn bg-transparent text-xl px-2 rounded-xl"
           onClick={() => onStart()}
         >
           <FaRegCirclePlay />
         </Button>
         <Button
-          className="btn btn-ghost xl:text-[40px] text-[30px]"
+          className="btn btn-ghost xl:text-[30px] text-[16px]"
           onClick={() => onSettings()}
         >
           <MdSettingsSuggest />

@@ -52,7 +52,7 @@ const SpellStages = () => {
           training mode
         </span>
       </div>
-      <div className="container mx-auto flex mt-[2%] gap-2 flex-col sm:flex-row sm:mt-[3%] flex-wrap">
+      <div className="container w-full mx-auto flex mt-[2%] gap-2 flex-col sm:flex-row sm:mt-[3%] flex-wrap">
         {stages.map(({ url, title, img }, index) => (
           <SpellCard key={index} url={url} title={title} img={img} />
         ))}

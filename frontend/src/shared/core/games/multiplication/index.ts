@@ -10,53 +10,79 @@ export function random(min: number, max?: number): number {
 }
 
 export enum OPERATIONS {
-  MULTYPLY = "*",
+  MULTIPLY = "*",
   DIVIDE = "/",
+  SQUAERE = "^^",
+  CUBE = "^^^",
+  QUAEREROOT = "#",
+  CUBEROOT = "##",
 }
 
-export type AnzanConfig = {
+export type MultiConfig = {
   operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
-  numberDepth: number; // разрядность цифр (однозначне, двузначные и тд)
-  usedNumber: number[]; // какие цифры будем использовать
+  numberDepth: number; // разрядность цифр (однозначные, двузначные и т.д.)
+  usedNumber1: number[]; // числа для первого множителя
+  usedNumber2: number[]; // числа для второго множителя
 };
 
-export class AnzanCore {
-  public config: AnzanConfig;
+export class MultiCore {
+  public config: MultiConfig;
   private answer = 0;
-  private numbers: number[] = [];
 
-  constructor(config: AnzanConfig) {
+  constructor(config: MultiConfig) {
     this.config = config;
   }
 
-  setCofign(config: AnzanConfig) {
+  setConfig(config: MultiConfig) {
     this.config = config;
   }
 
   setAnswer(newAnswer: number) {
     this.answer = newAnswer;
   }
-  generateNumber(): number {
-    const { operations, numberDepth, usedNumber } = this.config;
 
-    let number = 0;
+  generateNumber(): { num1: number; num2: number } {
+    const { operations, numberDepth, usedNumber1, usedNumber2 } = this.config;
 
-    while (this.answer + number < 0) {
-      const operation = operations[random(operations.length)];
+    const operation = operations[random(operations.length)];
 
-      const numbers = new Array(numberDepth).fill(0).map((_, numIndex) => {
-        const newUsedNumbers = [...usedNumber];
-        if (numberDepth != 1 && numIndex != 0) {
-          newUsedNumbers.push(0);
-        }
-        return newUsedNumbers[random(newUsedNumbers.length)];
-      });
-      number = Number.parseInt(`${operation}${numbers.join("")}`);
+    let num1: number;
+    let num2: number = 0;
+    if (operation === OPERATIONS.DIVIDE) {
+      num1 = new Array(numberDepth)
+        .fill(0)
+        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
+
+      do {
+        num2 = new Array(numberDepth - 1)
+          .fill(0)
+          .reduce(
+            (acc) => acc * 10 + usedNumber2[random(usedNumber2.length)],
+            0
+          );
+      } while (num1 % num2 !== 0 || num2 === 0);
+    } else {
+      num1 = new Array(numberDepth)
+        .fill(0)
+        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
+      num2 = new Array(numberDepth - 1)
+        .fill(0)
+        .reduce((acc) => acc * 10 + usedNumber2[random(usedNumber2.length)], 0);
     }
 
-    this.answer = this.answer + number;
+    if (operation === OPERATIONS.MULTIPLY) {
+      this.answer = num1 * num2;
+    } else if (operation === OPERATIONS.DIVIDE) {
+      this.answer = num1 / num2;
+    } else if (operation === OPERATIONS.SQUAERE) {
+      this.answer = Math.pow(num1, 2);
+    } else if (operation === OPERATIONS.CUBE) {
+      this.answer = Math.pow(num1, 3);
+    } else if (operation == OPERATIONS.QUAEREROOT) {
+      this.answer = Math.floor(usedNumber1[random(usedNumber1.length)]);
+    }
 
-    return number;
+    return { num1, num2 };
   }
 
   generateNumbers() {
@@ -64,93 +90,90 @@ export class AnzanCore {
     return this.generateNumber();
   }
 
-  getNumbers() {
-    return this.numbers;
-  }
-
   getAnswer() {
     return this.answer;
   }
+
   resetAnswer() {
-    // Добавил обнуление ответа
     this.answer = 0;
   }
+  getResult(): number {
+    return this.answer;
+  }
 }
 
-export type AnzanGameManagerSettings = {
-  speed: number;
+export type MultiGameManagerSettings = {
   players: number;
-  numsCount: number;
 };
 
-export class AnzanGameManager {
-  private settings: AnzanGameManagerSettings;
+// export class MultiGameManager {
+//   private settings: MultiGameManagerSettings;
 
-  private games: AnzanCore[];
+//   private games: MultiCore[];
 
-  private config: AnzanConfig;
-  private subscribers: Array<() => void> = [];
-  private onFinishSubscribers: Array<() => void> = [];
-  private count = 1;
-  constructor(settings: AnzanGameManagerSettings, config: AnzanConfig) {
-    this.settings = settings;
-    this.config = config;
-    this.games = new Array(settings.players)
-      .fill(null)
-      .map(() => new AnzanCore(config));
-  }
+//   private config: MultiConfig;
+//   private subscribers: Array<() => void> = [];
+//   private onFinishSubscribers: Array<() => void> = [];
+//   private count = 1;
+//   constructor(settings: MultiGameManagerSettings, config: MultiConfig) {
+//     this.settings = settings;
+//     this.config = config;
+//     this.games = new Array(settings.players)
+//       .fill(null)
+//       .map(() => new MultiCore(config));
+//   }
 
-  start() {
-    this.notifySubscribers();
-    this.count++;
+//   start() {
+//     this.notifySubscribers();
+//     this.count++;
+//     this.getNumbers();
+//     return "";
+//   }
 
-    const timerId = window.setInterval(() => {
-      if (this.count > this.settings.numsCount) {
-        window.clearInterval(timerId);
-        return this.finish();
-      }
-      this.games.forEach((game) => game.resetAnswer()); // Вызываю метод обнулния ответа, перед каждой игрой. Но не работает
-      this.notifySubscribers();
+//   getNumbers() {
+//     return this.games.map((game) => {
+//       game.resetAnswer();
+//       return game.generateNumber();
+//     });
+//   }
 
-      this.count++;
-    }, this.settings.speed);
+//   getAnswers() {
+//     return this.games.map((game) => game.getAnswer());
+//   }
 
-    return () => window.clearInterval(timerId);
-  }
+//   subscribe(cb: () => void) {
+//     this.subscribers.push(cb);
+//   }
 
-  getNumbers() {
-    if (
-      this.config.operations.includes(OPERATIONS.MINUS) &&
-      this.config.operations.length === 1 &&
-      this.count === 1
-    ) {
-      return this.games.map((game) => {
-        const newAnswer =
-          Math.max(...this.config.usedNumber) * this.settings.numsCount;
-        game.setAnswer(newAnswer);
-        return newAnswer;
-      });
-    }
-    return this.games.map((game) => game.generateNumber());
-  }
+//   notifySubscribers() {
+//     this.subscribers.forEach((cb) => cb());
+//   }
 
-  getAnswers() {
-    return this.games.map((game) => game.getAnswer());
-  }
+//   onFinish(cb: () => void) {
+//     this.onFinishSubscribers.push(cb);
+//   }
 
-  subscribe(cb: () => void) {
-    this.subscribers.push(cb);
-  }
+//   finish() {
+//     this.onFinishSubscribers.forEach((cb) => cb());
+//   }
+// }
+// const config: MultiConfig = {
+//   operations: [OPERATIONS.DIVIDE],
+//   numberDepth: 3,
+//   usedNumber1: [2, 3, 4, 5, 6],
+//   usedNumber2: [1, 2, 4, 8, 9],
+// };
 
-  notifySubscribers() {
-    this.subscribers.forEach((cb) => cb());
-  }
+// const playersCount = 2; // Задаем количество игроков
 
-  onFinish(cb: () => void) {
-    this.onFinishSubscribers.push(cb);
-  }
+// const gameManager = new MultiGameManager({ players: playersCount }, config);
 
-  finish() {
-    this.onFinishSubscribers.forEach((cb) => cb());
-  }
-}
+// // Запускаем игру
+// gameManager.start();
+
+// // Получаем числа и ответы для каждого игрока
+// const numbers = gameManager.getNumbers();
+// const answers = gameManager.getAnswers();
+
+// console.log("Числа:", numbers);
+// console.log("Ответы:", answers);

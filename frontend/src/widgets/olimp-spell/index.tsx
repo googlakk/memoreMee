@@ -4,7 +4,7 @@ import { Button } from "react-daisyui";
 import { Link } from "react-router-dom";
 import { ROUTES } from "@pages/routes";
 import VoiceInput from "@widgets/spell-VoiceInput";
-import colorBg from "/img/colorGradientBg.jpg";
+import colorBg from "/img/colorGradientBg.jpeg";
 
 interface SpellingAudioPlayerProps {
   words: string[];

@@ -20,7 +20,7 @@ const SpellCard: FC<gameCardProps> = ({ url, title, img }) => {
 
   return (
     <>
-      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mb-2 disabled w-1/4  bg-[#0284c7] glass mx-auto ">
+      <Card className="card shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mb-2 disabled w-[80%] md:w-1/4 l:w-1/5 lg:w-1/5  bg-[#0284c7] glass mx-auto ">
         <Card.Body className="items-center text-center">
           <div className="h-2/3">
             <Card.Image

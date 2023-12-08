@@ -4,18 +4,18 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { ANZAN_STEPS } from "../..";
 
 type AnzanAnswerFormProps = {
+  name: string;
   onAnswer: (answer: number) => void;
   setStep: (s: ANZAN_STEPS) => void;
 };
 
-const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer }) => {
+const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer, name }) => {
   const [answer, setAnswer] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        console.log("answer-form");
         onAnswer(Number(answer));
       }
     };
@@ -37,22 +37,26 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer }) => {
   );
 
   return (
-    <Card className="bg-[url('/img/colorGradientBg.jpg')] bg-center bg-cover rounded-3xl overflow-hidden relative card w-[100%] mx-0 lg:mx-3 xl:mx-3 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] brightness-90 ">
-      <Card.Body className="flex items-center justify-center">
+    <Card className="bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover rounded-3xl overflow-hidden relative card w-[100%] shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] brightness-90 ">
+      <Card.Body className="flex m-0 p-0 items-center justify-center">
+        <div className=" font-jura text-xl font-bold">{name}</div>
         <Form
           className="flex items-center justify-center flex-col"
           onSubmit={handleAnswer}
         >
           <Input
             type="number"
-            placeholder="Введите ответ"
-            className="input-bordered w-auto text-2xl h-auto p-2 "
+            placeholder="введите ответ"
+            className="input-bordered w-auto placeholder:text-[12px] font-bold text-center tracking-wider font-jura input-primary input-ghost text-[15px] h-auto p-2 "
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             ref={inputRef}
           />
 
-          <Button className="mt-5" type="submit">
+          <Button
+            className="mt-5 btn-outline hover:bg-primary p-3 text-[10px]"
+            type="submit"
+          >
             Готово
           </Button>
         </Form>
