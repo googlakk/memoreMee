@@ -1,25 +1,25 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
 import { Button, ButtonGroup } from "react-daisyui";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  useEditable,
 } from "@chakra-ui/react";
 
 import { FaCheck } from "react-icons/fa6";
 
-const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
+
 const ModalSetting: FC<{
   open: boolean;
-  onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
-  setStartBtnVisible: (t: boolean) => void;
-  clickListner: () => void;
-}> = ({ open, onSave, setStartBtnVisible, clickListner }) => {
+  onSave: (settings: { config?: AnzanConfig; playersCount?: number }) => void;
+  defaultSettings: { config: AnzanConfig; playersCount: number };
+}> = ({ open, onSave, defaultSettings }) => {
   const [config, setConfig] = useState<AnzanConfig>({
     operations: [OPERATIONS.PLUS],
     numberDepth: 1,
@@ -27,7 +27,10 @@ const ModalSetting: FC<{
     speed: 1,
     numbersCount: 5,
   });
-  const [playersCount, setPlayersCount] = useState(1);
+
+  useEffect(() => {
+    setConfig(defaultSettings.config);
+  }, [defaultSettings]);
 
   const handleChangeSpeed = (speed: number) => {
     setConfig((prevConfig) => ({ ...prevConfig, speed }));
@@ -62,13 +65,9 @@ const ModalSetting: FC<{
     }));
   };
   const handleSaveConfig = useCallback(() => {
-    onSave({ config, playersCount });
-  }, [onSave, config, playersCount]);
+    onSave({ config });
+  }, [onSave, config]);
 
-  clickListner = () => {
-    setStartBtnVisible(true);
-    handleSaveConfig();
-  };
   return (
     <>
       <div className="">
@@ -146,28 +145,6 @@ const ModalSetting: FC<{
                 </div>
               </div>
               <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
-                <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
-                  Кол-во игроков
-                </h1>
-                <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
-                  {PLAYERS_COUNT.map((cnt) => (
-                    <Button
-                      type="button"
-                      key={cnt}
-                      active={playersCount === cnt}
-                      onClick={() => setPlayersCount(cnt)}
-                      className={`${
-                        playersCount === cnt
-                          ? "bg-primary text-base-100"
-                          : " text-neutral-900"
-                      }`}
-                    >
-                      {cnt}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
                 <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
                   Разрядность чисел
                 </h1>
@@ -225,7 +202,7 @@ const ModalSetting: FC<{
                 <label
                   htmlFor="settingsModal"
                   className="btn"
-                  onClick={clickListner}
+                  onClick={handleSaveConfig}
                 >
                   Применить
                 </label>

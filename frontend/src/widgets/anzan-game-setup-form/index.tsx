@@ -1,6 +1,6 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
 import { Button, ButtonGroup } from "react-daisyui";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -15,38 +15,24 @@ import { IconContext } from "react-icons";
 import ModalSetting from "./ui-settings-modal";
 
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const DEPTH = [1, 2, 3, 4, 5, 6];
+
 const AnzanSettingForm: FC<{
-  onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
-  setStartBtnVisible: (t: boolean) => void;
-}> = ({ onSave, setStartBtnVisible }) => {
+  onSave: (settings: { config?: AnzanConfig; playersCount?: number }) => void;
+  defaultSettings: { config: AnzanConfig; playersCount: number };
+}> = ({ onSave, defaultSettings }) => {
   const [open, setOpen] = useState(false);
   const [playersCount, setPlayersCount] = useState(1);
-  const clickListner = () => {
-    setStartBtnVisible(true);
-  };
+
+  useEffect(() => {
+    setPlayersCount(defaultSettings.playersCount);
+  }, [defaultSettings]);
+
+  const handleSavePlayersCount = useCallback(() => {
+    onSave({ playersCount });
+  }, [playersCount, onSave]);
+
   return (
     <div className="">
-      <label
-        className=""
-        htmlFor="settingModal"
-        onClick={() => setOpen(!false)}
-      >
-        <IconContext.Provider
-          value={{ color: "black", className: "w-10 h-10" }}
-        >
-          <div className="btn">
-            <FiSettings />
-          </div>
-        </IconContext.Provider>
-      </label>
-      <ModalSetting
-        onSave={onSave}
-        setStartBtnVisible={setStartBtnVisible}
-        open={open}
-        clickListner={clickListner}
-      />
       <div className="flex flex-col items-center ">
         <h1 className="mb-5 text-base-100 font-arena text-7xl hidden lg:block xl:block">
           Количество игроков
@@ -68,8 +54,8 @@ const AnzanSettingForm: FC<{
           ))}
         </div>
         <Button
+          onClick={handleSavePlayersCount}
           className="card glass shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] mt-5 ml-5  w-32 bg-[#0fba6d] text-base-100 text-xl py-10 "
-          onClick={clickListner}
         >
           Начать
         </Button>

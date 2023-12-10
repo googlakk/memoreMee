@@ -1,6 +1,6 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
 import { Button, ButtonGroup } from "react-daisyui";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -16,10 +16,11 @@ import { IconContext } from "react-icons";
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
+
 const AnzanHeadSettingForm: FC<{
   onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
-  setStartBtnVisible: (t: boolean) => void;
-}> = ({ onSave, setStartBtnVisible }) => {
+  defaultSettings: { config: AnzanConfig; playersCount: number };
+}> = ({ onSave, defaultSettings }) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>({
     operations: [OPERATIONS.PLUS],
@@ -29,6 +30,11 @@ const AnzanHeadSettingForm: FC<{
     numbersCount: 5,
   });
   const [playersCount, setPlayersCount] = useState(1);
+
+  useEffect(() => {
+    setConfig(defaultSettings.config);
+    setPlayersCount(defaultSettings.playersCount);
+  }, [defaultSettings]);
 
   const handleChangeSpeed = (speed: number) => {
     setConfig((prevConfig) => ({ ...prevConfig, speed }));
@@ -65,11 +71,6 @@ const AnzanHeadSettingForm: FC<{
   const handleSaveConfig = useCallback(() => {
     onSave({ config, playersCount });
   }, [onSave, config, playersCount]);
-
-  const clickListner = () => {
-    setStartBtnVisible(true);
-    handleSaveConfig();
-  };
 
   return (
     <div className="">
@@ -231,7 +232,7 @@ const AnzanHeadSettingForm: FC<{
                 <label
                   htmlFor="settingsModal"
                   className="btn"
-                  onClick={clickListner}
+                  onClick={handleSaveConfig}
                 >
                   Применить
                 </label>

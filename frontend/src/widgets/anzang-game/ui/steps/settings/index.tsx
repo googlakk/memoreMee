@@ -7,7 +7,7 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
@@ -31,6 +31,10 @@ export const AnzanGameSettings: React.FC<{
 }) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>(defaultSettings);
+
+  useEffect(() => {
+    setConfig(defaultSettings);
+  }, [defaultSettings]);
 
   // Слущаетли событий
   const handleChangeSpeed = (speed: number) => {

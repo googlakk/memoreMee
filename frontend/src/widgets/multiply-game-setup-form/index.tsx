@@ -15,7 +15,7 @@ const MultiplySettingForm: FC<{
 }> = ({ onSave, setStartBtnVisible }) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<MultiConfig>({
-    operations: [OPERATIONS.MULTIPLY],
+    operation: [OPERATIONS.MULTIPLY],
     numberDepth: 1,
     usedNumber1: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     usedNumber2: [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -45,10 +45,10 @@ const MultiplySettingForm: FC<{
       numberDepth: number,
     }));
   };
-  const handleChangeOperation = (operations: MultiConfig["operations"]) => {
+  const handleChangeOperation = (operations: MultiConfig["operation"]) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      operations: operations,
+      operation: operations,
     }));
   };
   const handleSaveConfig = useCallback(() => {
@@ -116,8 +116,8 @@ const MultiplySettingForm: FC<{
                     className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                     onClick={() => handleChangeOperation([OPERATIONS.MULTIPLY])}
                     active={
-                      config.operations.length === 1 &&
-                      config.operations[0] === OPERATIONS.MULTIPLY
+                      config.operation.length === 1 &&
+                      config.operation[0] === OPERATIONS.MULTIPLY
                     }
                   >
                     *
@@ -126,8 +126,8 @@ const MultiplySettingForm: FC<{
                     type="button"
                     className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                     active={
-                      config.operations.length === 1 &&
-                      config.operations[0] === OPERATIONS.DIVIDE
+                      config.operation.length === 1 &&
+                      config.operation[0] === OPERATIONS.DIVIDE
                     }
                     onClick={() => handleChangeOperation([OPERATIONS.DIVIDE])}
                   >

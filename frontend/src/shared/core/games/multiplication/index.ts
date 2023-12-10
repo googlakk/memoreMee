@@ -6,6 +6,7 @@ export function random(min: number, max?: number): number {
   const randomNumber = max
     ? Math.random() * (max - min) + min
     : Math.random() * min;
+
   return Math.floor(randomNumber);
 }
 
@@ -14,12 +15,12 @@ export enum OPERATIONS {
   DIVIDE = "/",
   SQUAERE = "^^",
   CUBE = "^^^",
-  QUAEREROOT = "#",
-  CUBEROOT = "##",
+  QUAEREROOT = "##",
+  CUBEROOT = "###",
 }
 
 export type MultiConfig = {
-  operations: OPERATIONS[]; // Математические операции
+  operation: OPERATIONS; // Математические операции
   numberDepth: number; // разрядность цифр (однозначные, двузначные и т.д.)
   usedNumber1: number[]; // числа для первого множителя
   usedNumber2: number[]; // числа для второго множителя
@@ -42,12 +43,11 @@ export class MultiCore {
   }
 
   generateNumber(): { num1: number; num2: number } {
-    const { operations, numberDepth, usedNumber1, usedNumber2 } = this.config;
-
-    const operation = operations[random(operations.length)];
+    const { operation, numberDepth, usedNumber1, usedNumber2 } = this.config;
 
     let num1: number;
     let num2: number = 0;
+
     if (operation === OPERATIONS.DIVIDE) {
       num1 = new Array(numberDepth)
         .fill(0)
@@ -79,7 +79,7 @@ export class MultiCore {
     } else if (operation === OPERATIONS.CUBE) {
       this.answer = Math.pow(num1, 3);
     } else if (operation == OPERATIONS.QUAEREROOT) {
-      this.answer = Math.floor(usedNumber1[random(usedNumber1.length)]);
+      this.answer = Math.floor(usedNumber1[random(usedNumber1.length)]) ** 2;
     }
 
     return { num1, num2 };
@@ -101,79 +101,3 @@ export class MultiCore {
     return this.answer;
   }
 }
-
-export type MultiGameManagerSettings = {
-  players: number;
-};
-
-export class MultiGameManager {
-  private settings: MultiGameManagerSettings;
-
-  private games: MultiCore[];
-
-  private config: MultiConfig;
-  private subscribers: Array<() => void> = [];
-  private onFinishSubscribers: Array<() => void> = [];
-  private count = 1;
-  constructor(settings: MultiGameManagerSettings, config: MultiConfig) {
-    this.settings = settings;
-    this.config = config;
-    this.games = new Array(settings.players)
-      .fill(null)
-      .map(() => new MultiCore(config));
-  }
-
-  start() {
-    this.notifySubscribers();
-    this.count++;
-    this.getNumbers();
-    return "";
-  }
-
-  getNumbers() {
-    return this.games.map((game) => {
-      game.resetAnswer();
-      return game.generateNumber();
-    });
-  }
-
-  getAnswers() {
-    return this.games.map((game) => game.getAnswer());
-  }
-
-  subscribe(cb: () => void) {
-    this.subscribers.push(cb);
-  }
-
-  notifySubscribers() {
-    this.subscribers.forEach((cb) => cb());
-  }
-
-  onFinish(cb: () => void) {
-    this.onFinishSubscribers.push(cb);
-  }
-
-  finish() {
-    this.onFinishSubscribers.forEach((cb) => cb());
-  }
-}
-const config: MultiConfig = {
-  operations: [OPERATIONS.DIVIDE],
-  numberDepth: 3,
-  usedNumber1: [2, 3, 4, 5, 6],
-  usedNumber2: [1, 2, 4, 8, 9],
-};
-
-const playersCount = 2; // Задаем количество игроков
-
-const gameManager = new MultiGameManager({ players: playersCount }, config);
-
-// Запускаем игру
-gameManager.start();
-
-// Получаем числа и ответы для каждого игрока
-const numbers = gameManager.getNumbers();
-const answers = gameManager.getAnswers();
-
-console.log("Числа:", numbers);
-console.log("Ответы:", answers);
