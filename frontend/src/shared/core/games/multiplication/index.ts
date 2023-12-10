@@ -19,7 +19,7 @@ export enum OPERATIONS {
 }
 
 export type MultiConfig = {
-  operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
+  operations: OPERATIONS[]; // Математические операции
   numberDepth: number; // разрядность цифр (однозначные, двузначные и т.д.)
   usedNumber1: number[]; // числа для первого множителя
   usedNumber2: number[]; // числа для второго множителя
@@ -106,74 +106,74 @@ export type MultiGameManagerSettings = {
   players: number;
 };
 
-// export class MultiGameManager {
-//   private settings: MultiGameManagerSettings;
+export class MultiGameManager {
+  private settings: MultiGameManagerSettings;
 
-//   private games: MultiCore[];
+  private games: MultiCore[];
 
-//   private config: MultiConfig;
-//   private subscribers: Array<() => void> = [];
-//   private onFinishSubscribers: Array<() => void> = [];
-//   private count = 1;
-//   constructor(settings: MultiGameManagerSettings, config: MultiConfig) {
-//     this.settings = settings;
-//     this.config = config;
-//     this.games = new Array(settings.players)
-//       .fill(null)
-//       .map(() => new MultiCore(config));
-//   }
+  private config: MultiConfig;
+  private subscribers: Array<() => void> = [];
+  private onFinishSubscribers: Array<() => void> = [];
+  private count = 1;
+  constructor(settings: MultiGameManagerSettings, config: MultiConfig) {
+    this.settings = settings;
+    this.config = config;
+    this.games = new Array(settings.players)
+      .fill(null)
+      .map(() => new MultiCore(config));
+  }
 
-//   start() {
-//     this.notifySubscribers();
-//     this.count++;
-//     this.getNumbers();
-//     return "";
-//   }
+  start() {
+    this.notifySubscribers();
+    this.count++;
+    this.getNumbers();
+    return "";
+  }
 
-//   getNumbers() {
-//     return this.games.map((game) => {
-//       game.resetAnswer();
-//       return game.generateNumber();
-//     });
-//   }
+  getNumbers() {
+    return this.games.map((game) => {
+      game.resetAnswer();
+      return game.generateNumber();
+    });
+  }
 
-//   getAnswers() {
-//     return this.games.map((game) => game.getAnswer());
-//   }
+  getAnswers() {
+    return this.games.map((game) => game.getAnswer());
+  }
 
-//   subscribe(cb: () => void) {
-//     this.subscribers.push(cb);
-//   }
+  subscribe(cb: () => void) {
+    this.subscribers.push(cb);
+  }
 
-//   notifySubscribers() {
-//     this.subscribers.forEach((cb) => cb());
-//   }
+  notifySubscribers() {
+    this.subscribers.forEach((cb) => cb());
+  }
 
-//   onFinish(cb: () => void) {
-//     this.onFinishSubscribers.push(cb);
-//   }
+  onFinish(cb: () => void) {
+    this.onFinishSubscribers.push(cb);
+  }
 
-//   finish() {
-//     this.onFinishSubscribers.forEach((cb) => cb());
-//   }
-// }
-// const config: MultiConfig = {
-//   operations: [OPERATIONS.DIVIDE],
-//   numberDepth: 3,
-//   usedNumber1: [2, 3, 4, 5, 6],
-//   usedNumber2: [1, 2, 4, 8, 9],
-// };
+  finish() {
+    this.onFinishSubscribers.forEach((cb) => cb());
+  }
+}
+const config: MultiConfig = {
+  operations: [OPERATIONS.DIVIDE],
+  numberDepth: 3,
+  usedNumber1: [2, 3, 4, 5, 6],
+  usedNumber2: [1, 2, 4, 8, 9],
+};
 
-// const playersCount = 2; // Задаем количество игроков
+const playersCount = 2; // Задаем количество игроков
 
-// const gameManager = new MultiGameManager({ players: playersCount }, config);
+const gameManager = new MultiGameManager({ players: playersCount }, config);
 
-// // Запускаем игру
-// gameManager.start();
+// Запускаем игру
+gameManager.start();
 
-// // Получаем числа и ответы для каждого игрока
-// const numbers = gameManager.getNumbers();
-// const answers = gameManager.getAnswers();
+// Получаем числа и ответы для каждого игрока
+const numbers = gameManager.getNumbers();
+const answers = gameManager.getAnswers();
 
-// console.log("Числа:", numbers);
-// console.log("Ответы:", answers);
+console.log("Числа:", numbers);
+console.log("Ответы:", answers);

@@ -5,7 +5,7 @@ import { AnzanGame } from "@widgets/anzang-game/ui";
 import AnzanHeadSettingForm from "@widgets/anzan-game-setup-form/header-setting";
 import AnzanSettingForm from "@widgets/anzan-game-setup-form";
 import { Button } from "react-daisyui";
-import { MultiplayerGameGrid } from "@widgets/multiplayer-game-grid";
+import { MultiplayerGameGrid } from "@widgets/anzan-multiplayer-game-grid";
 import { useAnzanGame } from "@widgets/anzang-game/model/useAnzanGame";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
@@ -15,7 +15,7 @@ enum ANZAN_STEPS {
 }
 
 const defaultAnzanConfig: AnzanConfig = {
-  numberDepth: 1,
+  numberDepth: 3,
   numbersCount: 5,
   operations: [OPERATIONS.MINUS, OPERATIONS.PLUS],
   speed: 1,

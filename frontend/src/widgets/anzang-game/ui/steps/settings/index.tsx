@@ -31,6 +31,7 @@ export const AnzanGameSettings: React.FC<{
 }) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>(defaultSettings);
+
   // Слущаетли событий
   const handleChangeSpeed = (speed: number) => {
     setConfig((prevConfig) => ({ ...prevConfig, speed }));
