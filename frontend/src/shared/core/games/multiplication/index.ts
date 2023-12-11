@@ -65,7 +65,7 @@ export class MultiCore {
       num1 = new Array(numberDepth)
         .fill(0)
         .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
-      num2 = new Array(numberDepth - 1)
+      num2 = new Array(numberDepth)
         .fill(0)
         .reduce((acc) => acc * 10 + usedNumber2[random(usedNumber2.length)], 0);
     }
@@ -101,3 +101,14 @@ export class MultiCore {
     return this.answer;
   }
 }
+const multiConfig: MultiConfig = {
+  operation: OPERATIONS.MULTIPLY,
+  numberDepth: 2,
+  usedNumber1: [1, 2, 3, 4],
+  usedNumber2: [2, 3, 4],
+};
+
+const core = new MultiCore(multiConfig);
+
+console.log(core.generateNumber());
+console.log(core.getResult());
