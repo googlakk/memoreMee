@@ -1,5 +1,5 @@
 import { Button, Card } from "react-daisyui";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
 import {
   useCrateGameHistoryMutation,
@@ -25,6 +25,7 @@ interface FuncProps {
   game: AnzanCore;
   playersCount?: number;
   setStep: (s: ANZAN_STEPS) => void;
+  setName: (s: string) => void;
 }
 
 const AnzanResult: FC<FuncProps> = ({
@@ -36,6 +37,7 @@ const AnzanResult: FC<FuncProps> = ({
   game: _game,
   playersCount,
   setStep,
+  setName,
 }) => {
   const clickListner = () => {
     onSettings();
@@ -64,6 +66,13 @@ const AnzanResult: FC<FuncProps> = ({
       document.removeEventListener("keydown", handleClickEnter);
     };
   }, []);
+  const handleNameChange = useCallback(
+    (event: React.FormEvent<HTMLDivElement>) => {
+      setName(event.currentTarget.textContent || "");
+    },
+    []
+  );
+
   useEffect(() => {
     if (game.getAnswer() === userAnwer) {
       SoundRight.play();
@@ -158,11 +167,13 @@ const AnzanResult: FC<FuncProps> = ({
                       : `hidden`
                   } `}
                 >
-                  <div className={`${classFontSizeText} flex`}>
+                  <div
+                    className={`${classFontSizeText} flex flex-wrap px-2 text-center justify-center `}
+                  >
                     {game.getNumbers().map((num, idx) => (
-                      <h2 key={idx} className="ml-4">
+                      <h3 key={idx} className="ml-4">
                         {num},
-                      </h2>
+                      </h3>
                     ))}
                   </div>
                   <FaArrowDown />
@@ -188,33 +199,42 @@ const AnzanResult: FC<FuncProps> = ({
                   `${name}, молодец!`
                 ) : (
                   <>
-                    {`Ой-ой, ${name}!`}
+                    {`Ой-ой!`}
                     <br />
                     {"Ошибочка - бывает. Попробуй еще"}
+                    <div
+                      className=" text-primary text-center font-jura font-light  text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"
+                      contentEditable
+                      onBlur={handleNameChange}
+                      suppressContentEditableWarning={true}
+                    >
+                      {name}
+                    </div>
                   </>
                 )}
               </div>
             </div>
           </div>
 
-          <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col flex justify-around ">
-            <Button className="  btn-ghost text-2xl" onClick={() => onStart()}>
+          <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col   flex justify-around ">
+            <Button className="  btn-ghost text-xl" onClick={() => onStart()}>
               <MdRestartAlt />
             </Button>
             <Button
-              className="   btn-ghost text-2xl"
+              className="   btn-ghost text-xl"
               onClick={() => clickListner()}
             >
               <GiSettingsKnobs />
             </Button>
 
-            <Button onClick={handleOpenResult} className="btn-ghost text-2xl">
+            <Button onClick={handleOpenResult} className="btn-ghost text-xl">
               <label>
                 <IoMdCheckmarkCircleOutline />
               </label>
             </Button>
           </div>
-          <div className=" absolute left-0 top-0 bg-primary mask mask-squircle p-5 flex justify-center items-center">
+
+          <div className=" absolute left-0 top-0 bg-primary mask mask-squircle p-2 m-0 flex justify-center items-center">
             <div className={classFontSizeNumber}>
               {game.getAnswer() === userAnwer ? points : game.getScore()}
             </div>

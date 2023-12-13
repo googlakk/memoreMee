@@ -22,6 +22,7 @@ export enum OPERATIONS {
 export type MultiConfig = {
   operation: OPERATIONS; // Математические операции
   numberDepth: number; // разрядность цифр (однозначные, двузначные и т.д.)
+
   usedNumber1: number[]; // числа для первого множителя
   usedNumber2: number[]; // числа для второго множителя
 };
@@ -49,37 +50,44 @@ export class MultiCore {
     let num2: number = 0;
 
     if (operation === OPERATIONS.DIVIDE) {
+      num1 = new Array(numberDepth + 1)
+        .fill(0)
+        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
+      if (!usedNumber2 || usedNumber2.length === 0) {
+        num2 = random(1, 10);
+      } else {
+        do {
+          num2 = new Array(numberDepth)
+            .fill(0)
+            .reduce(
+              (acc) => acc * 10 + usedNumber2[random(usedNumber2.length)],
+              0
+            );
+        } while (num1 % num2 === 0 || num2 === 0);
+      }
+      this.answer = num1 / num2;
+    } else {
       num1 = new Array(numberDepth)
         .fill(0)
         .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
-
-      do {
-        num2 = new Array(numberDepth - 1)
+      if (usedNumber2) {
+        num2 = new Array(numberDepth)
           .fill(0)
           .reduce(
             (acc) => acc * 10 + usedNumber2[random(usedNumber2.length)],
             0
           );
-      } while (num1 % num2 !== 0 || num2 === 0);
-    } else {
-      num1 = new Array(numberDepth)
-        .fill(0)
-        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
-      num2 = new Array(numberDepth)
-        .fill(0)
-        .reduce((acc) => acc * 10 + usedNumber2[random(usedNumber2.length)], 0);
+      }
     }
 
     if (operation === OPERATIONS.MULTIPLY) {
       this.answer = num1 * num2;
-    } else if (operation === OPERATIONS.DIVIDE) {
-      this.answer = num1 / num2;
     } else if (operation === OPERATIONS.SQUAERE) {
       this.answer = Math.pow(num1, 2);
+      num2 = NaN;
     } else if (operation === OPERATIONS.CUBE) {
       this.answer = Math.pow(num1, 3);
-    } else if (operation == OPERATIONS.QUAEREROOT) {
-      this.answer = Math.floor(usedNumber1[random(usedNumber1.length)]) ** 2;
+      num2 = NaN;
     }
 
     return { num1, num2 };
@@ -101,14 +109,22 @@ export class MultiCore {
     return this.answer;
   }
 }
-const multiConfig: MultiConfig = {
-  operation: OPERATIONS.MULTIPLY,
-  numberDepth: 2,
-  usedNumber1: [1, 2, 3, 4],
-  usedNumber2: [2, 3, 4],
+
+const con: MultiConfig = {
+  usedNumber1: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  usedNumber2: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  numberDepth: 3,
+  operation: OPERATIONS.DIVIDE,
 };
 
-const core = new MultiCore(multiConfig);
+const core = new MultiCore(con);
 
-console.log(core.generateNumber());
-console.log(core.getResult());
+for (let i = 0; i < 20; i++) {
+  core.generateNumbers();
+  const { num1, num2 } = core.generateNumbers();
+  console.log(
+    `Iteration ${
+      i + 1
+    }: num1 = ${num1}, num2 = ${num2}, result=${core.getResult()}`
+  );
+}

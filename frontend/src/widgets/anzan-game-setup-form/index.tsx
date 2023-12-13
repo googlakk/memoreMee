@@ -1,18 +1,7 @@
-import { AnzanConfig, OPERATIONS } from "@shared/core";
-import { Button, ButtonGroup } from "react-daisyui";
 import { FC, useCallback, useEffect, useState } from "react";
-import {
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-} from "@chakra-ui/react";
 
-import { FaCheck } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
-import { IconContext } from "react-icons";
-import ModalSetting from "./ui-settings-modal";
+import { AnzanConfig } from "@shared/core";
+import { Button } from "react-daisyui";
 
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -20,7 +9,6 @@ const AnzanSettingForm: FC<{
   onSave: (settings: { config?: AnzanConfig; playersCount?: number }) => void;
   defaultSettings: { config: AnzanConfig; playersCount: number };
 }> = ({ onSave, defaultSettings }) => {
-  const [open, setOpen] = useState(false);
   const [playersCount, setPlayersCount] = useState(1);
 
   useEffect(() => {

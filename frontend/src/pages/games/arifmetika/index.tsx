@@ -12,7 +12,7 @@ const Arifmetika: FC = () => {
       <GameCard
         titleGame="multiply"
         imgGame={mental}
-        routes={ROUTES.ARIFMETIKA}
+        routes={ROUTES.MULTIPLY}
       />
     </div>
   );

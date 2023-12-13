@@ -78,9 +78,21 @@ export class AnzanCore {
   }
   generateNumbers() {
     this.resetAnswer();
-    this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
-      return this.generateNumber();
-    });
+    this.numbers = new Array(this.config.numbersCount)
+      .fill(null)
+      .map((_, index) => {
+        if (index === 0) {
+          // Генерация первого элемента массива с учетом numberDepth
+          const firstNumber = new Array(this.config.numberDepth)
+            .fill(0)
+            .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
+            .join("");
+          return parseInt(firstNumber, 10);
+        } else {
+          // Генерация остальных элементов массива
+          return this.generateNumber();
+        }
+      });
   }
   getNumbers() {
     return this.numbers;

@@ -167,6 +167,7 @@ export const AnzanGameSettings: React.FC<{
                 defaultValue={config.speed}
                 step={0.1}
                 clampValueOnBlur={false}
+                key={config.speed}
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -184,6 +185,7 @@ export const AnzanGameSettings: React.FC<{
                 onChange={(_, value) => handleChangeNumsCount(value)}
                 defaultValue={config.numbersCount}
                 clampValueOnBlur={false}
+                key={config.numbersCount}
               >
                 <NumberInputField />
                 <NumberInputStepper>

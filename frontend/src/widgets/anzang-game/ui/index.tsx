@@ -100,6 +100,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         game={game}
         playersCount={playersCount}
         setStep={setStep}
+        setName={setName}
       />
     ),
   };

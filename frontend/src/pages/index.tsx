@@ -5,6 +5,7 @@ import Arifmetika from "./games/arifmetika";
 import AudioPage from "./games/spellingBeeGame/audioPage";
 import HomePage from "./home";
 import LoginPage from "./login";
+import MultiplicationGame from "./games/arifmetika/umnozhenie";
 // import MultiGameManagerComponent from "./games/arifmetika/umnozhenie";
 import OlimpPage from "./games/spellingBeeGame/olimpPage";
 import { ROUTES } from "./routes";
@@ -27,10 +28,7 @@ const Routing: React.FC = () => {
       <Route path={ROUTES.OLIMPING} element={<SpellingGame />} />
       <Route path={ROUTES.SPELLINGLEVEL} element={<AudioPage />} />
       <Route path={ROUTES.OLIMPINGLEVEL} element={<OlimpPage />} />
-      {/* <Route
-        path={ROUTES.MULTIPLY}
-        element={<MultiGameManagerComponent players={4} />}
-      /> */}
+      <Route path={ROUTES.MULTIPLY} element={<MultiplicationGame />} />
     </Routes>
   );
 };
