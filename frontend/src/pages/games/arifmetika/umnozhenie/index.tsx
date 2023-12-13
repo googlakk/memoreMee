@@ -13,8 +13,8 @@ const USED_NUMBER2: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const defaultMultiConfig: MultiConfig = {
   operation: OPERATIONS.DIVIDE,
   numberDepth: 2,
-  usedNumber1: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  usedNumber2: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  usedNumbers1: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  usedNumbers2: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 };
 const MultiplicationGame: FC = () => {
   const [config, setConfig] = useState<MultiConfig>(defaultMultiConfig);
@@ -23,18 +23,18 @@ const MultiplicationGame: FC = () => {
   const handleChangeUsedNumbers1 = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      usedNumber1: prevConfig.usedNumber1.includes(number)
-        ? prevConfig.usedNumber1.filter((num) => num !== number)
-        : [...prevConfig.usedNumber1, number],
+      usedNumbers1: prevConfig.usedNumbers1.includes(number)
+        ? prevConfig.usedNumbers1.filter((num) => num !== number)
+        : [...prevConfig.usedNumbers1, number],
     }));
   };
   const handleChangeUsedNumbers2 = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      usedNumber2:
-        prevConfig.usedNumber2 && prevConfig.usedNumber2.includes(number)
-          ? prevConfig.usedNumber2.filter((num) => num !== number)
-          : [...prevConfig.usedNumber2, number],
+      usedNumbers2:
+        prevConfig.usedNumbers2 && prevConfig.usedNumbers2.includes(number)
+          ? prevConfig.usedNumbers2.filter((num) => num !== number)
+          : [...prevConfig.usedNumbers2, number],
     }));
   };
   const handleChangeOperation = (operations: MultiConfig["operation"]) => {
@@ -79,11 +79,11 @@ const MultiplicationGame: FC = () => {
           <Button
             type="button"
             className={`${
-              config.usedNumber1.includes(num)
+              config.usedNumbers1.includes(num)
                 ? "bg-primary text-base-100"
                 : " text-neutral-900"
             } `}
-            active={config.usedNumber1.includes(num)}
+            active={config.usedNumbers1.includes(num)}
             onClick={() => handleChangeUsedNumbers1(num)}
             key={num}
           >
@@ -95,11 +95,11 @@ const MultiplicationGame: FC = () => {
         {USED_NUMBER2.map((num) => (
           <Button
             className={`${
-              config.usedNumber2.includes(num)
+              config.usedNumbers2.includes(num)
                 ? "bg-primary text-base-100"
                 : " text-neutral-900"
             }`}
-            active={config.usedNumber2.includes(num)}
+            active={config.usedNumbers2.includes(num)}
             onClick={() => handleChangeUsedNumbers2(num)}
             type="button"
           >
