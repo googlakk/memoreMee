@@ -1,5 +1,5 @@
 import { AnzanConfig, AnzanCore } from "@shared/core";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const useAnzanGame = (config: AnzanConfig, playersCount: number) => {
   const [games, setGames] = useState<AnzanCore[]>([]);
@@ -22,17 +22,14 @@ export const useAnzanGame = (config: AnzanConfig, playersCount: number) => {
     });
   };
 
-  //   const gamesSpeeds = games.map(game => game.config.speed);
-
-  //   const isGamesSpeedsEquals = Math.min(...gamesSpeeds) === Math.max(...gamesSpeeds)
-
-  let isGamesSpeedsEquals = true;
-
-  for (let i = 1; i < games.length; i++) {
-    if (games[i - 1].config.speed !== games[i].config.speed) {
-      isGamesSpeedsEquals = false;
+  const isGamesSpeedsEquals = useMemo(() => {
+    for (let i = 1; i < games.length; i++) {
+      if (games[i - 1].config.speed !== games[i].config.speed) {
+        return false;
+      }
     }
-  }
+    return true;
+  }, [games]);
 
   return {
     games,
