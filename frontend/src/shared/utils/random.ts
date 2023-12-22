@@ -8,5 +8,3 @@ export function random(min: number, max?: number): number {
     : Math.random() * min;
   return Math.floor(randomNumber);
 }
-
-console.log(random(0, 5));

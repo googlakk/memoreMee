@@ -13,7 +13,7 @@ export const Header: FC<HeaderProps> = () => {
       <div className="navbar w-[90%] mx-auto">
         <div className="navbar-start">
           <Link to={ROUTES.HOME}>
-            <img className="w-[80px]" src={logo} alt="logo" />
+            <img className="w-[60px]" src={logo} alt="logo" />
           </Link>
         </div>
 

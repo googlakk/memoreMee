@@ -21,10 +21,10 @@ export enum OPERATIONS {
 
 export type MultiConfig = {
   operation: OPERATIONS; // Математические операции
-  numberDepth: number; // разрядность цифр (однозначные, двузначные и т.д.)
-
-  usedNumber1: number[]; // числа для первого множителя
-  usedNumber2: number[]; // числа для второго множителя
+  numberDepth1: number;
+  numberDepth2: number; // разрядность цифр (однозначные, двузначные и т.д.)
+  usedNumbers1: number[]; // числа для первого множителя
+  usedNumbers2: number[]; // числа для второго множителя
 };
 
 export class MultiCore {
@@ -43,59 +43,75 @@ export class MultiCore {
     this.answer = newAnswer;
   }
 
-  generateNumber(): { num1: number; num2: number } {
-    const { operation, numberDepth, usedNumber1, usedNumber2 } = this.config;
+  generateNumbers(): { operand1: number; operand2: number } {
+    const {
+      operation,
+      numberDepth1,
+      numberDepth2,
+      usedNumbers1,
+      usedNumbers2,
+    } = this.config;
 
-    let num1: number;
-    let num2: number = 0;
+    let operand1: number = 0;
+    let operand2: number = 0;
 
-    if (operation === OPERATIONS.DIVIDE) {
-      num1 = new Array(numberDepth + 1)
-        .fill(0)
-        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
-      if (!usedNumber2 || usedNumber2.length === 0) {
-        num2 = random(1, 10);
-      } else {
+    switch (operation) {
+      case OPERATIONS.MULTIPLY:
+        if (numberDepth2 > numberDepth1) {
+          throw new Error("Number depth 2 cannot be more then number depth 1");
+        }
+        operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
+        operand2 = this.generateRandomNumber(usedNumbers2, numberDepth2);
+        this.answer = operand1 * operand2;
+        return { operand1, operand2 };
+
+      case OPERATIONS.DIVIDE:
+        if (numberDepth2 > numberDepth1) {
+          throw new Error("NUmber depth 2 cannot be more then depth 1");
+        }
         do {
-          num2 = new Array(numberDepth)
-            .fill(0)
-            .reduce(
-              (acc) => acc * 10 + usedNumber2[random(usedNumber2.length)],
-              0
-            );
-        } while (num1 % num2 === 0 || num2 === 0);
-      }
-      this.answer = num1 / num2;
-    } else {
-      num1 = new Array(numberDepth)
-        .fill(0)
-        .reduce((acc) => acc * 10 + usedNumber1[random(usedNumber1.length)], 0);
-      if (usedNumber2) {
-        num2 = new Array(numberDepth)
-          .fill(0)
-          .reduce(
-            (acc) => acc * 10 + usedNumber2[random(usedNumber2.length)],
-            0
+          operand2 = this.generateRandomNumber(usedNumbers1, numberDepth2);
+          const minAnswer = Math.max(
+            Math.floor(10 ** (numberDepth1 - 1) / operand2),
+            1
           );
-      }
-    }
+          const maxAnswer = Math.max(Math.floor(10 ** numberDepth1 - 1 / 2), 1);
+          this.answer = random(minAnswer, maxAnswer);
 
-    if (operation === OPERATIONS.MULTIPLY) {
-      this.answer = num1 * num2;
-    } else if (operation === OPERATIONS.SQUAERE) {
-      this.answer = Math.pow(num1, 2);
-      num2 = NaN;
-    } else if (operation === OPERATIONS.CUBE) {
-      this.answer = Math.pow(num1, 3);
-      num2 = NaN;
-    }
+          operand1 = operand2 * this.answer;
+        } while (this.answer === 1);
 
-    return { num1, num2 };
+        return { operand1, operand2 };
+      case OPERATIONS.SQUAERE:
+        operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
+        this.answer = operand1 ** 2;
+        return { operand1, operand2: 0 };
+      case OPERATIONS.CUBE:
+        operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
+        this.answer = operand1 ** 3;
+        return { operand1, operand2: 0 };
+      case OPERATIONS.QUAEREROOT:
+        operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 2;
+        this.answer = Math.sqrt(operand1);
+        return { operand1, operand2: 0 };
+      case OPERATIONS.CUBEROOT:
+        operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 3;
+        this.answer = Math.cbrt(operand1);
+        return { operand1, operand2: 0 };
+    }
   }
 
-  generateNumbers() {
-    this.resetAnswer();
-    return this.generateNumber();
+  private generateRandomNumber(numbers: number[], depth: number) {
+    const numberWithputZero = numbers.filter((num) => num !== 0);
+    return Number(
+      new Array(depth)
+        .fill(null)
+        .map((_, idx) => {
+          const _numbers = idx === 0 ? numberWithputZero : numbers;
+          return _numbers[random(0, numbers.length - 1)];
+        })
+        .join("")
+    );
   }
 
   getAnswer() {
@@ -105,26 +121,34 @@ export class MultiCore {
   resetAnswer() {
     this.answer = 0;
   }
-  getResult(): number {
-    return this.answer;
-  }
 }
-
-const con: MultiConfig = {
-  usedNumber1: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  usedNumber2: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  numberDepth: 3,
+const Test = new MultiCore({
+  usedNumbers1: [1],
+  usedNumbers2: [1],
+  numberDepth1: 2,
+  numberDepth2: 2,
   operation: OPERATIONS.DIVIDE,
-};
+});
+const { operand1, operand2 } = Test.generateNumbers();
+const answer = Test.getAnswer();
+let testing = operand1 / operand2 === answer;
+operand1;
+operand2;
+answer;
+testing;
 
-const core = new MultiCore(con);
+/*
+  1) Установка настроек. first render компонент "Setup", где также можно выбрать кол-во игроков->
+  -> После нажатия на кнопку start ->
+  -> Показать компонент "Tasks", с полем для ввода ответа->
+  -> После ввода ответа ->
+  -> Показать компонент "Result", с результатом того правильно или не правильно решили задание.
+  2) States for games: 
+  
+  PREVIEW
+  GAME
+  ANSWER
+  RESULT
+  SETTINGS
 
-for (let i = 0; i < 20; i++) {
-  core.generateNumbers();
-  const { num1, num2 } = core.generateNumbers();
-  console.log(
-    `Iteration ${
-      i + 1
-    }: num1 = ${num1}, num2 = ${num2}, result=${core.getResult()}`
-  );
-}
+*/

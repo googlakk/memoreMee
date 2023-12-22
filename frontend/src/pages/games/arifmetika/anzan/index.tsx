@@ -19,6 +19,7 @@ const defaultAnzanConfig: AnzanConfig = {
   operations: [OPERATIONS.MINUS, OPERATIONS.PLUS],
   speed: 1,
   usedNumber: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  usedNumberMinus: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 };
 
 const Anzan: FC = () => {

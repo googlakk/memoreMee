@@ -2,12 +2,12 @@ export function random(min: number, max?: number): number {
   if (max && min >= max) {
     throw new Error("Min value must be smaller than max value");
   }
-
   const randomNumber = max
     ? Math.random() * (max - min) + min
     : Math.random() * min;
   return Math.floor(randomNumber);
 }
+1;
 
 export enum OPERATIONS {
   PLUS = "+",
@@ -78,22 +78,25 @@ export class AnzanCore {
   }
   generateNumbers() {
     this.resetAnswer();
+    let firstNum = parseInt(
+      new Array(this.config.numberDepth)
+        .fill(0)
+        .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
+        .join(""),
+      10
+    );
     this.numbers = new Array(this.config.numbersCount)
       .fill(null)
-      .map((_, index) => {
-        if (index === 0) {
-          // Генерация первого элемента массива с учетом numberDepth
-          const firstNumber = new Array(this.config.numberDepth)
-            .fill(0)
-            .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
-            .join("");
-          return parseInt(firstNumber, 10);
-        } else {
-          // Генерация остальных элементов массива
-          return this.generateNumber();
+      .map((_, numIndex) => {
+        if (numIndex === 0) {
+          this.numbers[0] = firstNum; // Установка значения в первый элемент массива
+          return firstNum;
         }
+        return this.generateNumber();
       });
+    this.answer = this.answer + firstNum;
   }
+
   getNumbers() {
     return this.numbers;
   }

@@ -103,6 +103,7 @@ const AnzanHeadSettingForm: FC<{
         : [...prevConfig.usedNumber, number],
     }));
   };
+
   const handleToggleAllNumbers = () => {
     // Если все числа уже активны, деактивируем их; иначе активируем все
     const allNumbersActive = config.usedNumber.length === USED_NUMBERS.length;
@@ -221,6 +222,7 @@ const AnzanHeadSettingForm: FC<{
                     </Button>
                   </ButtonGroup>
                 </div>
+
                 <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
                   <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
                     Используемые числа
@@ -246,6 +248,7 @@ const AnzanHeadSettingForm: FC<{
                     </Button>
                   </div>
                 </div>
+
                 <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
                   <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
                     Кол-во игроков
@@ -268,6 +271,7 @@ const AnzanHeadSettingForm: FC<{
                     ))}
                   </div>
                 </div>
+
                 <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
                   <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
                     Разрядность чисел
