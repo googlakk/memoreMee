@@ -38,8 +38,8 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   const [userAnswer, setUserAnswer] = useState<number>(0);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
-  const [textToSpeachMuted, setTextToSpeachMuted] = useState(false);
   const [name, setName] = useState<string>(`Игрок`);
+  const [textToSpeachMuted, setTextToSpeachMuted] = useState(false);
 
   useEffect(() => {
     if (autostart) {

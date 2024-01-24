@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export function random(min: number, max?: number): number {
   if (max && min >= max) {
     throw new Error("Min value must be smaller than max value");
@@ -78,13 +80,18 @@ export class AnzanCore {
   }
   generateNumbers() {
     this.resetAnswer();
-    let firstNum = parseInt(
-      new Array(this.config.numberDepth)
-        .fill(0)
-        .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
-        .join(""),
-      10
-    );
+    let firstNum: number;
+    if (this.config.operations.includes(OPERATIONS.MINUS)) {
+      firstNum = this.generateNumber();
+    } else {
+      firstNum = parseInt(
+        new Array(this.config.numberDepth)
+          .fill(0)
+          .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
+          .join(""),
+        10
+      );
+    }
     this.numbers = new Array(this.config.numbersCount)
       .fill(null)
       .map((_, numIndex) => {

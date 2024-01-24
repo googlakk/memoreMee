@@ -30,7 +30,7 @@ export type MultiConfig = {
 export class MultiCore {
   public config: MultiConfig;
   private answer = 0;
-
+  private score = 0;
   constructor(config: MultiConfig) {
     this.config = config;
   }
@@ -41,6 +41,12 @@ export class MultiCore {
 
   setAnswer(newAnswer: number) {
     this.answer = newAnswer;
+  }
+  setScore(newScore: number) {
+    this.score = newScore;
+  }
+  incrementScore() {
+    this.score += 10;
   }
 
   generateNumbers(): { operand1: number; operand2: number } {
@@ -113,7 +119,9 @@ export class MultiCore {
         .join("")
     );
   }
-
+  getScore() {
+    return this.score;
+  }
   getAnswer() {
     return this.answer;
   }

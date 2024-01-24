@@ -48,7 +48,7 @@ const Counter: FC<FuncProps> = ({
     game.generateNumbers();
     return game.getNumbers();
   }, [game]);
-  console.log(numbers);
+
   const Numlenght = String(numbers[numberIndex]).replace(/-/g, "").length;
   useEffect(() => {
     if (numberIndex >= numbers.length) {

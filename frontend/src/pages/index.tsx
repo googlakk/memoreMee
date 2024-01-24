@@ -6,13 +6,14 @@ import AudioPage from "./games/spellingBeeGame/audioPage";
 import HomePage from "./home";
 import LoginPage from "./login";
 import MultiplicationGame from "./games/arifmetika/umnozhenie";
-// import MultiGameManagerComponent from "./games/arifmetika/umnozhenie";
 import OlimpPage from "./games/spellingBeeGame/olimpPage";
 import { ROUTES } from "./routes";
 import RegisterPage from "./register";
 import SpellingBeeGame from "./games/spellingBeeGame";
 import SpellingGame from "./games/spellingBeeGame/game";
 import StaticsPage from "./statics";
+
+// import MultiGameManagerComponent from "./games/arifmetika/umnozhenie";
 
 const Routing: React.FC = () => {
   return (

@@ -1,13 +1,12 @@
 import { FC, useCallback, useEffect, useState } from "react";
 
-import { AnzanConfig } from "@shared/core";
 import { Button } from "react-daisyui";
 
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const AnzanSettingForm: FC<{
-  onSave: (settings: { config?: AnzanConfig; playersCount?: number }) => void;
-  defaultSettings: { config: AnzanConfig; playersCount: number };
+const PlayersSettingForm: FC<{
+  onSave: (settings: { playersCount?: number }) => void;
+  defaultSettings: { playersCount: number };
 }> = ({ onSave, defaultSettings }) => {
   const [playersCount, setPlayersCount] = useState(1);
 
@@ -59,4 +58,4 @@ const AnzanSettingForm: FC<{
     </div>
   );
 };
-export default AnzanSettingForm;
+export default PlayersSettingForm;

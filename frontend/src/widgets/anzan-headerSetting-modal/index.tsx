@@ -16,7 +16,10 @@ import { IconContext } from "react-icons";
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
-
+export interface nzanHeadSettingFormProps {
+  onSave: () => {};
+  defaultSettings: {};
+}
 const AnzanHeadSettingForm: FC<{
   onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
   defaultSettings: { config: AnzanConfig; playersCount: number };
@@ -339,12 +342,8 @@ const AnzanHeadSettingForm: FC<{
                 </div>
               </div>
             </div>
+            <label htmlFor="settingsModal" className="modal-backdrop" />
           </div>
-          <input
-            type="checkbox"
-            id="settingsModal"
-            className="modal-backdrop"
-          />
         </div>
       </div>
     </>

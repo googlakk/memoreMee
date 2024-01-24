@@ -9,7 +9,6 @@ export const useMultiplyGame = (config: MultiConfig, playersCount: number) => {
       new Array(playersCount).fill(null).map(() => new MultiCore(config))
     );
   }, [config, playersCount]);
-
   const setPlayerConfig = (newConfig: MultiConfig, playerIndex: number) => {
     setGames((_games) => {
       return _games.map((_game, idx) => {
@@ -21,11 +20,6 @@ export const useMultiplyGame = (config: MultiConfig, playersCount: number) => {
       });
     });
   };
-
-  //   const gamesSpeeds = games.map(game => game.config.speed);
-
-  //   const isGamesSpeedsEquals = Math.min(...gamesSpeeds) === Math.max(...gamesSpeeds)
-
   return {
     games,
     setPlayerConfig,

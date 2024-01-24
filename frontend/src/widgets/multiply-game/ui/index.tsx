@@ -1,45 +1,93 @@
-import { Button, ButtonGroup } from "react-daisyui";
 import { FC, useState } from "react";
-import {
-  MultiConfig,
-  MultiCore,
-  OPERATIONS,
-} from "@shared/core/games/multiplication";
+import { MultiConfig, MultiCore } from "@shared/core/games/multiplication";
 
-import MultiAnswerForm from "./steps/answer-form";
-import MultiPreview from "./steps/preview";
+import { MultiGameSettings } from "./steps/settings-modal/indxe";
+import { MultiPreview } from "./steps/preview";
 import MultiResult from "./steps/result";
-import MultiTusk from "./steps/counter";
+import MultiTusk from "./steps/tusk";
 
-enum GAME_STEPS {
+export enum GAME_STEPS {
   PREVIEW,
   TUSKS,
-  ANSWER_FORM,
+
   RESULT,
 }
 
 interface MultiplicationStepsProps {
   defaultConfig: MultiConfig;
+  game: MultiCore;
+  autostart?: number;
+  playersCount: number;
+  onChangeConfig: (config: MultiConfig) => void;
+  autoAnswer?: number;
+  setAutoAnser?: React.Dispatch<React.SetStateAction<number>>;
+  index: number;
 }
-const MultiplicationSteps: FC<MultiplicationStepsProps> = ({
-  defaultConfig,
+const MultiplicationGame: FC<MultiplicationStepsProps> = ({
+  index,
+  game,
+  playersCount,
+  onChangeConfig,
 }) => {
-  const [config, setConfig] = useState<MultiConfig>(defaultConfig);
-  const [answer, setAnswer] = useState<number>(0);
-  const [operands, setOperands] = useState({
-    num1: NaN,
-    num2: NaN,
-  });
-  const { num1, num2 } = operands;
-  const game = new MultiCore(config);
+  const [step, setStep] = useState(GAME_STEPS.PREVIEW);
+  const [userAnswer, setUserAnswer] = useState<number>(0);
+  const [isOpenSettings, setIsOpenSettings] = useState(false);
+  const [name, setName] = useState<string>(`Игрок`);
 
   const steps = {
-    [GAME_STEPS.PREVIEW]: <MultiPreview />,
-    [GAME_STEPS.TUSKS]: <MultiTusk />,
-    [GAME_STEPS.ANSWER_FORM]: <MultiAnswerForm />,
-    [GAME_STEPS.RESULT]: <MultiResult />,
+    [GAME_STEPS.PREVIEW]: (
+      <MultiPreview
+        onStart={() => setStep(GAME_STEPS.TUSKS)}
+        onSettings={() => setIsOpenSettings(true)}
+        name={name}
+        setName={setName}
+        setStep={setStep}
+        playersCount={index + 1}
+        game={game}
+      />
+    ),
+    [GAME_STEPS.TUSKS]: (
+      <MultiTusk
+        name={name}
+        onAnswer={(answer) => {
+          setUserAnswer(answer);
+          setStep(GAME_STEPS.RESULT);
+        }}
+        playersCount={playersCount}
+        game={game}
+      />
+    ),
+
+    [GAME_STEPS.RESULT]: (
+      <MultiResult
+        onStart={() => setStep(GAME_STEPS.TUSKS)}
+        onSettings={() => setIsOpenSettings(true)}
+        userAnwer={userAnswer}
+        name={name}
+        game={game}
+        playersCount={playersCount}
+        setStep={setStep}
+        setName={setName}
+      />
+    ),
   };
 
-  return <>{steps[GAME_STEPS.PREVIEW]}</>;
+  return (
+    <>
+      {steps[step]}
+      <MultiGameSettings
+        playersCount={playersCount}
+        open={isOpenSettings}
+        onSave={(config) => {
+          onChangeConfig(config);
+          setIsOpenSettings(false);
+        }}
+        onCancel={() => {
+          setIsOpenSettings(false);
+        }}
+        defaultSettings={game.config}
+      />
+    </>
+  );
 };
-export default MultiplicationSteps;
+export default MultiplicationGame;

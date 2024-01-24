@@ -3,8 +3,8 @@ import AnzanGameNavbar, { ToolbarProps } from "@widgets/anzan-game-navbar";
 import { FC, useState } from "react";
 
 import { AnzanGame } from "@widgets/anzang-game/ui";
-import AnzanSettingForm from "@widgets/anzan-game-setup-form";
 import { MultiplayerGameGrid } from "@widgets/anzan-multiplayer-game-grid";
+import PlayersSettingForm from "@widgets/anzan-game-setup-form";
 import { useAnzanGame } from "@widgets/anzang-game/model/useAnzanGame";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
@@ -14,12 +14,11 @@ enum ANZAN_STEPS {
 }
 
 const defaultAnzanConfig: AnzanConfig = {
-  numberDepth: 3,
+  numberDepth: 2,
   numbersCount: 5,
   operations: [OPERATIONS.MINUS, OPERATIONS.PLUS],
   speed: 1,
   usedNumber: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-  usedNumberMinus: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 };
 
 const Anzan: FC = () => {
@@ -55,13 +54,12 @@ const Anzan: FC = () => {
 
   const steps = {
     [ANZAN_STEPS.SETUP]: (
-      <AnzanSettingForm
+      <PlayersSettingForm
         onSave={(settings) => {
-          if (settings.config) setConfig(settings.config);
           if (settings.playersCount) setPlayersCount(settings.playersCount);
           setStep(ANZAN_STEPS.PLAY);
         }}
-        defaultSettings={{ config, playersCount }}
+        defaultSettings={{ playersCount }}
       />
     ),
     [ANZAN_STEPS.PLAY]: (

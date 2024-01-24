@@ -12,6 +12,7 @@ export default {
     fontFamily: {
       arena: ["CATArena", "sans-serif"],
       jura: ["Jura", " sans-serif"],
+      roboto: ["Roboto", "sans-serif"],
     },
     extend: {
       screens: {
