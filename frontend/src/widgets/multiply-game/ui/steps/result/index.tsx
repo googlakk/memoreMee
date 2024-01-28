@@ -1,5 +1,6 @@
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect, useMemo } from "react";
+import { FaEquals, FaNotEqual } from "react-icons/fa";
 
 import { GAME_STEPS } from "../..";
 import { GiSettingsKnobs } from "react-icons/gi";
@@ -17,14 +18,16 @@ interface FuncProps {
   playersCount?: number;
   setStep: (s: GAME_STEPS) => void;
   setName: (s: string) => void;
+  totalSeconds: number;
 }
 
 const MultiResult: FC<FuncProps> = ({
   game: _game,
   setStep,
-
+  totalSeconds,
   name,
   playersCount,
+  userAnwer,
 }) => {
   const game = useMemo(() => _game, []);
   useEffect(() => {
@@ -61,8 +64,8 @@ const MultiResult: FC<FuncProps> = ({
         <Card.Body className={`${classFontSizeNumber} font-roboto`}>
           <h2 className="font-jura">Ответ:</h2>
           {game.getAnswer()}
-          {/**открыть после олимпиалы */}
-          {/* {game.getAnswer() !== userAnwer ? (
+
+          {game.getAnswer() !== userAnwer ? (
             <>
               {" "}
               <FaNotEqual />{" "}
@@ -70,7 +73,7 @@ const MultiResult: FC<FuncProps> = ({
           ) : (
             <FaEquals />
           )}
-          {userAnwer} */}
+          {userAnwer}
           <div className=" bg-primary rounded-xl text-base-100 absolute right-0 top-0 flex-col   flex justify-around ">
             <Button className="  btn-ghost text-xl">
               <MdRestartAlt />
@@ -86,7 +89,10 @@ const MultiResult: FC<FuncProps> = ({
             </Button>
           </div>
         </Card.Body>
-        <Card.Title className="mx-auto pb-5 text-primary">{name}</Card.Title>
+        <Card.Title className="mx-auto pb-5 text-primary">
+          {name}, решил(а) за {totalSeconds} секунд
+          <div></div>
+        </Card.Title>
       </Card>
     </>
   );

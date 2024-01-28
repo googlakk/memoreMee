@@ -33,7 +33,10 @@ const MultiplicationGame: FC<MultiplicationStepsProps> = ({
   const [userAnswer, setUserAnswer] = useState<number>(0);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
   const [name, setName] = useState<string>(`Игрок`);
-
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const handleTotalSecondsChange = (value: number) => {
+    setTotalSeconds(value);
+  };
   const steps = {
     [GAME_STEPS.PREVIEW]: (
       <MultiPreview
@@ -48,6 +51,7 @@ const MultiplicationGame: FC<MultiplicationStepsProps> = ({
     ),
     [GAME_STEPS.TUSKS]: (
       <MultiTusk
+        setTotalSeconds={handleTotalSecondsChange}
         name={name}
         onAnswer={(answer) => {
           setUserAnswer(answer);
@@ -68,6 +72,7 @@ const MultiplicationGame: FC<MultiplicationStepsProps> = ({
         playersCount={playersCount}
         setStep={setStep}
         setName={setName}
+        totalSeconds={totalSeconds}
       />
     ),
   };

@@ -1,7 +1,8 @@
-import { Card, Form } from "react-daisyui";
+import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useEffect, useState } from "react";
 
 import { MultiCore } from "@shared/core/games/multiplication";
+import StopWatches from "@widgets/stopwatches";
 import { getClassFontSizeStarter } from "@widgets/anzang-game/ui/steps/counter/stylesUttils";
 
 interface MultiTusksProps {
@@ -9,14 +10,17 @@ interface MultiTusksProps {
   playersCount: number;
   name: string;
   onAnswer: (answer: number) => void;
+  setTotalSeconds: (sec: number) => void;
 }
 const MultiTusk: FC<MultiTusksProps> = ({
   game,
   playersCount,
   onAnswer,
   name,
+  setTotalSeconds,
 }) => {
   const [answer, setAnswer] = useState<string>("");
+  const [autoStartWatches, setAutoStartWatches] = useState(true);
   const [nums, setNums] = useState({
     num1: 0,
     num2: 0,
@@ -27,6 +31,7 @@ const MultiTusk: FC<MultiTusksProps> = ({
     const { operand1, operand2 } = game.generateNumbers();
     setNums({ num1: operand1, num2: operand2 });
   }, []);
+
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
@@ -42,6 +47,7 @@ const MultiTusk: FC<MultiTusksProps> = ({
     (e: any) => {
       e.preventDefault();
       onAnswer(Number(answer));
+      setAutoStartWatches(!autoStartWatches);
     },
     [onAnswer, answer]
   );
@@ -53,13 +59,22 @@ const MultiTusk: FC<MultiTusksProps> = ({
         onDone={() => setIsGameStarted(true)}
       />
     );
-
+  const handleTotalSecondsChange = (value: number) => {
+    // Передаем значение в родительский компонент
+    setTotalSeconds(value);
+  };
   return (
     <Card
       className={`   rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-base-100 bg-[#E0F4FF] brightness-90`}
     >
       <div className="absolute left-5 top-0 font-jura text-xl text-primary ">
         {name}
+      </div>
+      <div className="absolute right-5 top-0 font-jura text-2xl font-bold text-primary">
+        <StopWatches
+          setTotalSeconds={handleTotalSecondsChange}
+          isStarting={autoStartWatches}
+        />
       </div>
       <Card.Body className=" card-body items-center  justify-center text-primary leading-none">
         <div className=" font-roboto">
@@ -68,15 +83,23 @@ const MultiTusk: FC<MultiTusksProps> = ({
           <div className={`${classFontSizeStarter} m-0 p-0 `}>{nums.num2}</div>
         </div>
         <div className=" w-full ">
-          <Form onSubmit={handleAnswer}>
-            <input
+          <Form
+            className=" text-center flex flex-col items-center"
+            onSubmit={handleAnswer}
+          >
+            <Input
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               type="number"
               placeholder="Type here"
               className="input input-bordered input-primary w-full max-w-xs text-primary h-10"
             />
-            <button type="submit" style={{ display: "none" }}></button>
+            <Button
+              className="mt-5 btn-outline hover:bg-primary p-3 w-fit text-[14px]"
+              type="submit"
+            >
+              Ответить
+            </Button>
           </Form>
         </div>
       </Card.Body>

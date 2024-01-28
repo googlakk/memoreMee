@@ -1,5 +1,3 @@
-import { number } from "yup";
-
 export function random(min: number, max?: number): number {
   if (max && min >= max) {
     throw new Error("Min value must be smaller than max value");

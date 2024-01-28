@@ -27,7 +27,7 @@ const MultiplyGameNavbar: FC<ToolbarProps> = ({
           className={`mb-3 bg-transparent  text-base-100 hover:text-neutral-900 text-xs`}
           onClick={onStartClick}
         >
-          Начать всем
+          Начать заного
         </Button>
         <div
           className={`w-5  bg-transparent text-base-100 hover:text-neutral-900 text-xs `}
