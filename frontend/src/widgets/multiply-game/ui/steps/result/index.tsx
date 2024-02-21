@@ -1,6 +1,10 @@
 import { Button, Card } from "react-daisyui";
 import { FC, useEffect, useMemo } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
+import {
+  useCrateGameHistoryMutation,
+  useUpdateUserScoreMutation,
+} from "@app/api/mutations.gen";
 
 import { GAME_STEPS } from "../..";
 import { GiSettingsKnobs } from "react-icons/gi";
@@ -8,6 +12,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
 import { MultiCore } from "@shared/core/games/multiplication";
 import cn from "clsx";
+import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
   onStart: () => void;
@@ -17,7 +22,7 @@ interface FuncProps {
   userAnwer: number;
   name: string;
   game: MultiCore;
-  playersCount?: number;
+  playersCount: number;
   setStep: (s: GAME_STEPS) => void;
   setName: (s: string) => void;
   totalSeconds: number;
@@ -49,6 +54,35 @@ const MultiResult: FC<FuncProps> = ({
     return () => {
       document.removeEventListener("keydown", handleClickEnter);
     };
+  }, []);
+
+  const { user } = useAuthContext();
+
+  const [createGameHistory] = useCrateGameHistoryMutation();
+  const [upaateUserScore] = useUpdateUserScoreMutation();
+
+  useEffect(() => {
+    if (!user || playersCount > 1) return;
+
+    createGameHistory({
+      variables: {
+        data: {
+          game: "2",
+          isWin: userAnwer === game.getAnswer(),
+          user: user.id,
+          score: 1,
+          publishedAt: new Date(),
+          result: {
+            gameSettings: game.config,
+            numbers: [...game.numbers],
+            rightAnswer: game.getAnswer(),
+            userAnswer: userAnwer,
+          },
+        },
+      },
+    });
+
+    upaateUserScore({ variables: { id: user.id, score: 1 } });
   }, []);
 
   const lengthNumber = game.getAnswer().toString().length;

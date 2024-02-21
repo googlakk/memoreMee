@@ -23,7 +23,7 @@ interface FuncProps {
   onSetVisible: (t: boolean) => void;
   name: string;
   game: AnzanCore;
-  playersCount?: number;
+  playersCount: number;
   setStep: (s: ANZAN_STEPS) => void;
   setName: (s: string) => void;
 }
@@ -84,7 +84,7 @@ const AnzanResult: FC<FuncProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || playersCount > 1) return;
 
     createGameHistory({
       variables: {

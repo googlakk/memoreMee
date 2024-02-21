@@ -29,10 +29,13 @@ export type MultiConfig = {
 
 export class MultiCore {
   public config: MultiConfig;
+  public numbers: number[];
+
   private answer = 0;
   private score = 0;
   constructor(config: MultiConfig) {
     this.config = config;
+    this.numbers = [];
   }
 
   setConfig(config: MultiConfig) {
@@ -69,6 +72,7 @@ export class MultiCore {
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
         operand2 = this.generateRandomNumber(usedNumbers2, numberDepth2);
         this.answer = operand1 * operand2;
+        this.numbers = [operand1, operand2];
         return { operand1, operand2 };
 
       case OPERATIONS.DIVIDE:
@@ -87,22 +91,27 @@ export class MultiCore {
           operand1 = operand2 * this.answer;
         } while (this.answer === 1);
 
+        this.numbers = [operand1, operand2];
         return { operand1, operand2 };
       case OPERATIONS.SQUAERE:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
         this.answer = operand1 ** 2;
+        this.numbers = [operand1, operand2];
         return { operand1, operand2: 0 };
       case OPERATIONS.CUBE:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
         this.answer = operand1 ** 3;
+        this.numbers = [operand1];
         return { operand1, operand2: 0 };
       case OPERATIONS.QUAEREROOT:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 2;
         this.answer = Math.sqrt(operand1);
+        this.numbers = [operand1];
         return { operand1, operand2: 0 };
       case OPERATIONS.CUBEROOT:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 3;
         this.answer = Math.cbrt(operand1);
+        this.numbers = [operand1];
         return { operand1, operand2: 0 };
     }
   }
