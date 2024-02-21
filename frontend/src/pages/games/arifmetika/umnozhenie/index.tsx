@@ -32,7 +32,7 @@ const Multiplication: FC = () => {
   const { games, setPlayerConfig } = useMultiplyGame(config, playersCount);
   const toolbarProps: ToolbarProps = {
     onStartClick: () => {
-      setStart((i) => ++i);
+      setStart((i) => i++);
     },
     onSettingsSave: (settings) => {
       setConfig(settings.config);

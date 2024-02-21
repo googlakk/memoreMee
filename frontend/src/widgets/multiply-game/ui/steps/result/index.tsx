@@ -12,6 +12,8 @@ import cn from "clsx";
 interface FuncProps {
   onStart: () => void;
   onSettings: () => void;
+  onSetVisible: (t: boolean) => void;
+  visible: boolean;
   userAnwer: number;
   name: string;
   game: MultiCore;
@@ -22,13 +24,20 @@ interface FuncProps {
 }
 
 const MultiResult: FC<FuncProps> = ({
+  onSetVisible,
+  onSettings,
   game: _game,
   setStep,
   totalSeconds,
   name,
   playersCount,
   userAnwer,
+  onStart,
 }) => {
+  const clickListner = () => {
+    onSettings();
+    onSetVisible(false);
+  };
   const game = useMemo(() => _game, []);
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
@@ -76,9 +85,12 @@ const MultiResult: FC<FuncProps> = ({
           {userAnwer}
           <div className=" bg-primary rounded-xl text-base-100 absolute right-0 top-0 flex-col   flex justify-around ">
             <Button className="  btn-ghost text-xl">
-              <MdRestartAlt />
+              <MdRestartAlt onClick={() => onStart()} />
             </Button>
-            <Button className="   btn-ghost text-xl">
+            <Button
+              onClick={() => clickListner()}
+              className="   btn-ghost text-xl"
+            >
               <GiSettingsKnobs />
             </Button>
 
