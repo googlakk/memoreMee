@@ -1,7 +1,9 @@
 import { FC } from "react";
 import GameCard from "@pages/home/ui/card";
 import { ROUTES } from "@pages/routes";
+import { compose } from "ramda";
 import mental from "/img/mental.svg";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const Arifmetika: FC = () => {
@@ -17,4 +19,4 @@ const Arifmetika: FC = () => {
     </div>
   );
 };
-export default withMainLayout(Arifmetika);
+export default compose(withMainLayout, withAuthMiddleware)(Arifmetika);

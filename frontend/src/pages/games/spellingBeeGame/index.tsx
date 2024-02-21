@@ -1,5 +1,7 @@
 import React from "react";
 import SpellStages from "@widgets/spellStages";
+import { compose } from "ramda";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const SpellingBeeGame: React.FC = () => {
@@ -10,4 +12,4 @@ const SpellingBeeGame: React.FC = () => {
   );
 };
 
-export default withMainLayout(SpellingBeeGame);
+export default compose(withMainLayout, withAuthMiddleware)(SpellingBeeGame);

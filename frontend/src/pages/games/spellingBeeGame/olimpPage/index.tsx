@@ -1,6 +1,8 @@
 import { FC } from "react";
 import OlimpSpellingAudioPlayer from "@widgets/olimp-spell";
+import { compose } from "ramda";
 import { useParams } from "react-router-dom";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 import { words } from "@widgets/spell-SubLevel/words";
 
@@ -16,4 +18,4 @@ const OlimpPage: FC = () => {
     </>
   );
 };
-export default withMainLayout(OlimpPage);
+export default compose(withMainLayout, withAuthMiddleware)(OlimpPage);

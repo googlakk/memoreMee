@@ -1,6 +1,8 @@
 import { FC } from "react";
 import SpellingAudioPlayer from "@widgets/spell-VoiceSelection";
+import { compose } from "ramda";
 import { useParams } from "react-router-dom";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 import { words } from "@widgets/spell-SubLevel/words";
 const AudioPage: FC = () => {
@@ -12,4 +14,4 @@ const AudioPage: FC = () => {
 
   return <SpellingAudioPlayer words={selectedWords} />;
 };
-export default withMainLayout(AudioPage);
+export default compose(withMainLayout, withAuthMiddleware)(AudioPage);

@@ -5,7 +5,9 @@ import { FC, useState } from "react";
 import { AnzanGame } from "@widgets/anzang-game/ui";
 import { MultiplayerGameGrid } from "@widgets/anzan-multiplayer-game-grid";
 import PlayersSettingForm from "@widgets/anzan-game-setup-form";
+import { compose } from "ramda";
 import { useAnzanGame } from "@widgets/anzang-game/model/useAnzanGame";
+import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 enum ANZAN_STEPS {
@@ -89,4 +91,4 @@ const Anzan: FC = () => {
   return <>{steps[step]}</>;
 };
 
-export default withMainLayout(Anzan);
+export default compose(withMainLayout, withAuthMiddleware)(Anzan);
