@@ -6,10 +6,9 @@ import MultiplyGameNavbar, {
 
 import { MultiplayerGameGrid } from "@widgets/anzan-multiplayer-game-grid";
 import MultiplicationGame from "@widgets/multiply-game/ui";
-import PlayersSettingForm from "@widgets/anzan-game-setup-form";
+import PlayersSettingForm from "@widgets/anzan/anzan-game-setup-form";
 import { compose } from "ramda";
 import { useMultiplyGame } from "@widgets/multiply-game/model";
-import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 enum MULTIPLY_STEPS {
@@ -86,4 +85,4 @@ const Multiplication: FC = () => {
 
   return <>{steps[step]}</>;
 };
-export default compose(withMainLayout, withAuthMiddleware)(Multiplication);
+export default compose(withMainLayout)(Multiplication);

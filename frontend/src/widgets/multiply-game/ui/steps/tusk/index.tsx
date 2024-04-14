@@ -2,7 +2,7 @@ import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useEffect, useState } from "react";
 
 import { MultiCore } from "@shared/core/games/multiplication";
-import StopWatches from "@widgets/stopwatches";
+import StopWatches from "@widgets/ui-kit/stopwatches";
 import { getClassFontSizeStarter } from "@widgets/anzang-game/ui/steps/counter/stylesUttils";
 
 interface MultiTusksProps {

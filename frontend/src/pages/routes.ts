@@ -13,4 +13,6 @@ export const ROUTES = {
   OLIMPINGLEVEL: "/olimpspell/:stage/:level",
   MULTIPLY: "/multiply",
   GENERATOR: "/generator-tusk",
+
+  MANAGER: "/manager",
 };

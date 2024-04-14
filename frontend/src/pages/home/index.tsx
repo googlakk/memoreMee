@@ -5,7 +5,6 @@ import { compose } from "ramda";
 import memoryImg from "/img/memory.svg";
 import mental from "/img/mental.svg";
 import spellImg from "/img/bee.svg";
-import { withAuthMiddleware } from "@app/hocs";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
@@ -29,4 +28,4 @@ const HomePage: FC = () => {
   );
 };
 
-export default compose(withMainLayout, withAuthMiddleware)(HomePage);
+export default compose(withMainLayout)(HomePage);

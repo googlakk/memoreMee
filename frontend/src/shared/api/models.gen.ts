@@ -1043,14 +1043,20 @@ export type UsersPermissionsUpdateRolePayload = {
 };
 
 export type UsersPermissionsUser = {
+  readonly avatar?: Maybe<Scalars['String']['output']>;
   readonly blocked?: Maybe<Scalars['Boolean']['output']>;
   readonly confirmed?: Maybe<Scalars['Boolean']['output']>;
   readonly createdAt?: Maybe<Scalars['DateTime']['output']>;
   readonly email: Scalars['String']['output'];
+  readonly first_name: Scalars['String']['output'];
   readonly game_histrories?: Maybe<GameHistroryRelationResponseCollection>;
+  readonly last_name: Scalars['String']['output'];
   readonly provider?: Maybe<Scalars['String']['output']>;
   readonly role?: Maybe<UsersPermissionsRoleEntityResponse>;
+  readonly school?: Maybe<SchoolEntityResponse>;
   readonly score?: Maybe<Scalars['Int']['output']>;
+  readonly students?: Maybe<UsersPermissionsUserRelationResponseCollection>;
+  readonly teacher?: Maybe<UsersPermissionsUserEntityResponse>;
   readonly updatedAt?: Maybe<Scalars['DateTime']['output']>;
   readonly username: Scalars['String']['output'];
 };
@@ -1060,6 +1066,13 @@ export type UsersPermissionsUserGame_HistroriesArgs = {
   filters?: InputMaybe<GameHistroryFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type UsersPermissionsUserStudentsArgs = {
+  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['String']['input']>>>;
 };
 
@@ -1079,35 +1092,47 @@ export type UsersPermissionsUserEntityResponseCollection = {
 
 export type UsersPermissionsUserFiltersInput = {
   readonly and?: InputMaybe<ReadonlyArray<InputMaybe<UsersPermissionsUserFiltersInput>>>;
+  readonly avatar?: InputMaybe<StringFilterInput>;
   readonly blocked?: InputMaybe<BooleanFilterInput>;
   readonly confirmationToken?: InputMaybe<StringFilterInput>;
   readonly confirmed?: InputMaybe<BooleanFilterInput>;
   readonly createdAt?: InputMaybe<DateTimeFilterInput>;
   readonly email?: InputMaybe<StringFilterInput>;
+  readonly first_name?: InputMaybe<StringFilterInput>;
   readonly game_histrories?: InputMaybe<GameHistroryFiltersInput>;
   readonly id?: InputMaybe<IdFilterInput>;
+  readonly last_name?: InputMaybe<StringFilterInput>;
   readonly not?: InputMaybe<UsersPermissionsUserFiltersInput>;
   readonly or?: InputMaybe<ReadonlyArray<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   readonly password?: InputMaybe<StringFilterInput>;
   readonly provider?: InputMaybe<StringFilterInput>;
   readonly resetPasswordToken?: InputMaybe<StringFilterInput>;
   readonly role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  readonly school?: InputMaybe<SchoolFiltersInput>;
   readonly score?: InputMaybe<IntFilterInput>;
+  readonly students?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  readonly teacher?: InputMaybe<UsersPermissionsUserFiltersInput>;
   readonly updatedAt?: InputMaybe<DateTimeFilterInput>;
   readonly username?: InputMaybe<StringFilterInput>;
 };
 
 export type UsersPermissionsUserInput = {
+  readonly avatar?: InputMaybe<Scalars['String']['input']>;
   readonly blocked?: InputMaybe<Scalars['Boolean']['input']>;
   readonly confirmationToken?: InputMaybe<Scalars['String']['input']>;
   readonly confirmed?: InputMaybe<Scalars['Boolean']['input']>;
   readonly email?: InputMaybe<Scalars['String']['input']>;
+  readonly first_name?: InputMaybe<Scalars['String']['input']>;
   readonly game_histrories?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['ID']['input']>>>;
+  readonly last_name?: InputMaybe<Scalars['String']['input']>;
   readonly password?: InputMaybe<Scalars['String']['input']>;
   readonly provider?: InputMaybe<Scalars['String']['input']>;
   readonly resetPasswordToken?: InputMaybe<Scalars['String']['input']>;
   readonly role?: InputMaybe<Scalars['ID']['input']>;
+  readonly school?: InputMaybe<Scalars['ID']['input']>;
   readonly score?: InputMaybe<Scalars['Int']['input']>;
+  readonly students?: InputMaybe<ReadonlyArray<InputMaybe<Scalars['ID']['input']>>>;
+  readonly teacher?: InputMaybe<Scalars['ID']['input']>;
   readonly username?: InputMaybe<Scalars['String']['input']>;
 };
 

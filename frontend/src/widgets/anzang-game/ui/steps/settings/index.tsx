@@ -9,7 +9,10 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 
-const USED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+import { FaCheck } from "react-icons/fa";
+
+const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const DEPTH = [1, 2, 3, 4, 5, 6];
 
 export const AnzanGameSettings: React.FC<{
@@ -43,14 +46,37 @@ export const AnzanGameSettings: React.FC<{
   const handleChangeNumsCount = (numbersCount: number) => {
     setConfig((prevConfig) => ({ ...prevConfig, numbersCount }));
   };
-  const handleChangeUsedNumbers = (number: number) => {
+  const handleChangeUsedNumbersPlus = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      usedNumber: prevConfig.usedNumber.includes(number)
-        ? prevConfig.usedNumber.filter((num) => num !== number)
-        : [...prevConfig.usedNumber, number],
+      usedNumberPlus: prevConfig.usedNumberPlus.includes(number)
+        ? prevConfig.usedNumberPlus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberPlus, number],
     }));
   };
+  const handleChangeUsedNumbersMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      usedNumberMinus: prevConfig.usedNumberMinus.includes(number)
+        ? prevConfig.usedNumberMinus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberMinus, number],
+    }));
+  };
+  const handleToggleAllNumbersPlus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberPlus.length === USED_NUMBERS_PLUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_PLUS];
+    setConfig({ ...config, usedNumberPlus: newUsedNumbers });
+  };
+  const handleToggleAllNumbersMinus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberMinus.length === USED_NUMBERS_MINUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_MINUS];
+    setConfig({ ...config, usedNumberMinus: newUsedNumbers });
+  };
+
   const handleChangeNumberDepth = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
@@ -119,24 +145,54 @@ export const AnzanGameSettings: React.FC<{
             </div>
             <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
               <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
-                Используемые числа
+                Используемые числа (+)
               </h1>
               <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
-                {USED_NUMBERS.map((num) => (
-                  <Button
-                    type="button"
-                    className={`${
-                      config.usedNumber.includes(num)
-                        ? "bg-primary text-base-100"
-                        : " text-neutral-900"
-                    } `}
-                    key={num}
-                    onClick={() => handleChangeUsedNumbers(num)}
-                    active={config.usedNumber.includes(num)}
-                  >
-                    {num}
-                  </Button>
-                ))}
+                {config.usedNumberPlus &&
+                  USED_NUMBERS_PLUS.map((num) => (
+                    <Button
+                      type="button"
+                      className={`${
+                        config.usedNumberPlus.includes(num)
+                          ? "bg-primary text-base-100"
+                          : " text-neutral-900"
+                      } `}
+                      key={num}
+                      onClick={() => handleChangeUsedNumbersPlus(num)}
+                      active={config.usedNumberPlus.includes(num)}
+                    >
+                      {num}
+                    </Button>
+                  ))}
+                <Button type="button" onClick={handleToggleAllNumbersPlus}>
+                  <FaCheck />
+                </Button>
+              </div>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Используемые числа (-)
+              </h1>
+              <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
+                {config.usedNumberMinus &&
+                  USED_NUMBERS_MINUS.map((num) => (
+                    <Button
+                      type="button"
+                      className={`${
+                        config.usedNumberMinus.includes(num)
+                          ? "bg-primary text-base-100"
+                          : " text-neutral-900"
+                      } `}
+                      key={num}
+                      onClick={() => handleChangeUsedNumbersMinus(num)}
+                      active={config.usedNumberMinus.includes(num)}
+                    >
+                      {num}
+                    </Button>
+                  ))}
+                <Button type="button" onClick={handleToggleAllNumbersMinus}>
+                  <FaCheck />
+                </Button>
               </div>
             </div>
             <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">

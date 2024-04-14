@@ -6,6 +6,7 @@ import AudioPage from "./games/spellingBeeGame/audioPage";
 // import GeneratorTusks from "./games/arifmetika/generator-tusks-anzan";
 import HomePage from "./home";
 import LoginPage from "./login";
+import ManagerPage from "./manager";
 import MultiplicationGame from "./games/arifmetika/umnozhenie";
 import OlimpPage from "./games/spellingBeeGame/olimpPage";
 import { ROUTES } from "./routes";
@@ -31,6 +32,7 @@ const Routing: React.FC = () => {
       <Route path={ROUTES.SPELLINGLEVEL} element={<AudioPage />} />
       <Route path={ROUTES.OLIMPINGLEVEL} element={<OlimpPage />} />
       <Route path={ROUTES.MULTIPLY} element={<MultiplicationGame />} />
+      <Route path={ROUTES.MANAGER} element={<ManagerPage />} />
     </Routes>
   );
 };

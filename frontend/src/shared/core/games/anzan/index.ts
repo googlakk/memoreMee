@@ -2,24 +2,23 @@ export function random(min: number, max?: number): number {
   if (max && min >= max) {
     throw new Error("Min value must be smaller than max value");
   }
+
   const randomNumber = max
     ? Math.random() * (max - min) + min
     : Math.random() * min;
   return Math.floor(randomNumber);
 }
-1;
-
 export enum OPERATIONS {
   PLUS = "+",
   MINUS = "-",
 }
-
 export type AnzanConfig = {
   operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
   speed: number; // сколько секунд будет высвечиваться одна цифра 0.1 - 9.9
   numbersCount: number; // сколько цифр будет появляться
   numberDepth: number; // разрядность цифр (однозначне, двузначные и тд)
-  usedNumber: number[]; // какие цифры будем использовать
+  usedNumberPlus: number[]; // какие цифры будем использовать
+  usedNumberMinus: number[]; // какие цифры будем использовать
 };
 
 export class AnzanCore {
@@ -44,7 +43,7 @@ export class AnzanCore {
     this.answer = newAnswer;
   }
   generateNumber(): number {
-    const { operations, numberDepth, usedNumber } = this.config;
+    const { operations, numberDepth } = this.config;
 
     let number = -Infinity;
 
@@ -56,18 +55,18 @@ export class AnzanCore {
       number =
         Number(
           new Array(this.config.numberDepth)
-            .fill(Math.max(...this.config.usedNumber))
+            .fill(Math.max(...this.config.usedNumberMinus))
             .join("")
         ) * this.config.numbersCount;
     } else {
-      while (this.answer + number < 0) {
+      while (0 > this.answer + number) {
         const operation = operations[random(operations.length)];
+        const numbers = new Array(numberDepth).fill(0).map((_) => {
+          let newUsedNumbers: number[] =
+            operation === OPERATIONS.MINUS
+              ? this.config.usedNumberMinus
+              : this.config.usedNumberPlus;
 
-        const numbers = new Array(numberDepth).fill(0).map((_, numIndex) => {
-          const newUsedNumbers = [...usedNumber];
-          if (numberDepth != 1 && numIndex != 0) {
-            newUsedNumbers.push(0);
-          }
           return newUsedNumbers[random(newUsedNumbers.length)];
         });
         number = Number.parseInt(`${operation}${numbers.join("")}`);
@@ -78,30 +77,10 @@ export class AnzanCore {
   }
   generateNumbers() {
     this.resetAnswer();
-    let firstNum: number;
-    if (this.config.operations.includes(OPERATIONS.MINUS)) {
-      firstNum = this.generateNumber();
-    } else {
-      firstNum = parseInt(
-        new Array(this.config.numberDepth)
-          .fill(0)
-          .map(() => random(9) + 1) // Генерация случайных цифр от 1 до 9
-          .join(""),
-        10
-      );
-    }
-    this.numbers = new Array(this.config.numbersCount)
-      .fill(null)
-      .map((_, numIndex) => {
-        if (numIndex === 0) {
-          this.numbers[0] = firstNum; // Установка значения в первый элемент массива
-          return firstNum;
-        }
-        return this.generateNumber();
-      });
-    this.answer = this.answer + firstNum;
+    this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
+      return this.generateNumber();
+    });
   }
-
   getNumbers() {
     return this.numbers;
   }
@@ -166,7 +145,7 @@ export class AnzanGameManager {
     ) {
       return this.games.map((game) => {
         const newAnswer =
-          Math.max(...this.config.usedNumber) * this.settings.numsCount;
+          Math.max(...this.config.usedNumberMinus) * this.settings.numsCount;
         game.setAnswer(newAnswer);
         return newAnswer;
       });

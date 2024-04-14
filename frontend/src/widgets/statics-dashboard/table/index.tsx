@@ -42,8 +42,8 @@ const TableData: FC = () => {
               <th></th>
             </tr>
           </thead>
-          {data?.gameHistrories?.data.map((data) => (
-            <tbody>
+          {data?.gameHistrories?.data.map((data, idx) => (
+            <tbody key={idx}>
               {/* row 1 */}
               <tr className={`${data.attributes?.isWin ? "bg-accent" : ""}`}>
                 <th>
