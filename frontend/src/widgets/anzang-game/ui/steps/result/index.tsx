@@ -1,6 +1,7 @@
 import { Button, Card } from "react-daisyui";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
+import { reSizes, toggleBackgroundImage } from "@app/uttils";
 import {
   useCrateGameHistoryMutation,
   useUpdateUserScoreMutation,
@@ -152,13 +153,20 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 8 && "absolute top-0",
     playersCount === 9 && "absolute top-0"
   );
-
+  const backgroundSize = reSizes(playersCount);
+  const backgroundImage = toggleBackgroundImage(playersCount);
   return (
     <>
-      <Card className="rounded-3xl   p-0 card w-[100%] shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]   bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover brightness-90 text-base-100">
-        <Card.Body className="p-0 card-body justify-center items-center">
-          <div className="flex justify-center w-full ">
-            <div className={classPosition}>
+      <Card className="rounded-3xl flex flex-col items-center   p-0 card w-[100%] s   text-base-100">
+        <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+          <div className="grid w-64 rounded-xl place-items-center">{name}</div>
+        </Card.Title>
+        <Card.Body
+          className={`w-full  p-0 card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
+          style={{ backgroundSize: backgroundSize }}
+        >
+          <div className="flex justify-center w-full h-fit">
+            <div className={""}>
               <div className="flex flex-col items-center justify-center mb-5 text-primary">
                 <div
                   className={`${
@@ -216,7 +224,7 @@ const AnzanResult: FC<FuncProps> = ({
             </div>
           </div>
 
-          <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col   flex justify-around ">
+          {/* <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col   flex justify-around ">
             <Button className="  btn-ghost text-xl" onClick={() => onStart()}>
               <MdRestartAlt />
             </Button>
@@ -238,7 +246,7 @@ const AnzanResult: FC<FuncProps> = ({
             <div className={classFontSizeNumber}>
               {game.getAnswer() === userAnwer ? points : game.getScore()}
             </div>
-          </div>
+          </div> */}
         </Card.Body>
         <Card.Title className="mx-auto pb-5"></Card.Title>
       </Card>

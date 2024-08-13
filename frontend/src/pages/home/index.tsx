@@ -1,29 +1,27 @@
 import { FC } from "react";
-import GameCard from "./ui/card";
+import HomePageCard from "./ui/HomeCards";
 import { ROUTES } from "@pages/routes";
+import anzan from "@assets/newImg/Button-Mental-arifmetic.png";
 import { compose } from "ramda";
-import memoryImg from "/img/memory.svg";
-import mental from "/img/mental.svg";
-import spellImg from "/img/bee.svg";
+import english from "@assets/newImg/Button-Spelling-Bee.png";
+import logo from "@assets/newImg/logo-intellect.png";
+import memory from "@assets/newImg/Button-Memory.png";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const HomePage: FC = () => {
   return (
     <div
-      className={`container mx-auto flex mt-[2%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap`}
+      className={`container   mx-auto flex justify-center items-center mt-[5%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap`}
     >
-      <h1>{}</h1>
-      <GameCard
-        titleGame="Ментальная арифметика"
-        imgGame={mental}
-        routes={ROUTES.ARIFMETIKA}
-      />
-      <GameCard
-        titleGame="spelling bee"
-        imgGame={spellImg}
-        routes={ROUTES.SPELLINGBEE}
-      />
-      <GameCard titleGame="memory" imgGame={memoryImg} routes={ROUTES.LOGIN} />
+      <div className=" flex flex-col items-center">
+        <img src={logo} alt="" />
+
+        <div className="flex mt-10">
+          <HomePageCard routes={ROUTES.ARIFMETIKA} imgGame={anzan} />
+          <HomePageCard routes={ROUTES.SPELLINGBEE} imgGame={english} />
+          <HomePageCard routes={ROUTES.ARIFMETIKA} imgGame={memory} />
+        </div>
+      </div>
     </div>
   );
 };

@@ -32,7 +32,6 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   onChangeConfig,
   isSpeedEquals,
   autoAnswer,
-  index,
 }) => {
   const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PREVIEW);
   const [userAnswer, setUserAnswer] = useState<number>(0);
@@ -63,7 +62,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         name={name}
         setName={setName}
         setStep={setStep}
-        playersCount={index}
+        playersCount={playersCount}
         game={game}
       />
     ),
@@ -81,6 +80,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (
       <AnzanAnswerForm
+        playersCount={playersCount}
         name={name}
         setStep={setStep}
         onAnswer={(answer) => {

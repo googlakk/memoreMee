@@ -35,3 +35,29 @@ export function formatDate(dateString: string) {
 
   return formattedDate;
 }
+
+export function toggleBackgroundImage(playersCount: number) {
+  const backgroundImage =
+    playersCount > 1 ? "bg-manyCounterBg" : "bg-oneCounterBg";
+
+  return backgroundImage;
+}
+
+export function reSizes(playersCount: number) {
+  const backgroundSizes: { [key: number]: string } = {
+    1: "100% 100%",
+    2: "100% 100%",
+    3: "100% 100%",
+    4: "550px 100%",
+    5: "500px 100%",
+    6: "100% 100%",
+    7: "380px 100%",
+    8: "400px 100%",
+    9: "300px 100%",
+    10: "300px 100%",
+  };
+
+  const backgroundSize = backgroundSizes[playersCount] || "100% 100%";
+
+  return backgroundSize;
+}

@@ -1,5 +1,6 @@
 import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { reSizes, toggleBackgroundImage } from "@app/uttils";
 
 import { ANZAN_STEPS } from "../..";
 
@@ -7,9 +8,14 @@ type AnzanAnswerFormProps = {
   name: string;
   onAnswer: (answer: number) => void;
   setStep: (s: ANZAN_STEPS) => void;
+  playersCount: number;
 };
 
-const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer, name }) => {
+const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
+  onAnswer,
+  name,
+  playersCount,
+}) => {
   const [answer, setAnswer] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,11 +41,17 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({ onAnswer, name }) => {
     },
     [onAnswer, answer]
   );
-
+  const backgroundSize = reSizes(playersCount);
+  const backgroundImage = toggleBackgroundImage(playersCount);
   return (
-    <Card className="bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover rounded-3xl overflow-hidden relative card w-[100%] shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] brightness-90 ">
-      <Card.Body className="flex m-0 p-0 items-center justify-center">
-        <div className=" font-jura text-xl font-bold">{name}</div>
+    <Card className=" flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%]   ">
+      <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+        <div className="grid w-64 rounded-xl place-items-center">{name}</div>
+      </Card.Title>
+      <Card.Body
+        className={`flex m-0 p-0 w-full items-center justify-center ${backgroundImage} bg-no-repeat bg-center`}
+        style={{ backgroundSize: backgroundSize }}
+      >
         <Form
           className="flex items-center justify-center flex-col"
           onSubmit={handleAnswer}

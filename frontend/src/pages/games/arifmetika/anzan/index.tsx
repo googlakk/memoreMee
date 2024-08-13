@@ -24,8 +24,8 @@ const defaultAnzanConfig: AnzanConfig = {
 };
 
 const Anzan: FC = () => {
-  const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.SETUP);
-
+  const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PLAY);
+  const [isModalOpen, setModalOpen] = useState(true);
   const [config, setConfig] = useState<AnzanConfig>(defaultAnzanConfig);
   const [playersCount, setPlayersCount] = useState(1);
   const { games, setPlayerConfig, isGamesSpeedsEquals } = useAnzanGame(
@@ -48,6 +48,9 @@ const Anzan: FC = () => {
     onOpenAnswersClick: () => {
       setAutoAnswer((i) => ++i);
     },
+    onModalToggle: (isOpen) => {
+      setModalOpen(isOpen);
+    },
     config,
     playersCount,
   };
@@ -67,23 +70,27 @@ const Anzan: FC = () => {
     [ANZAN_STEPS.PLAY]: (
       <>
         {toolbarMarkup}
-        <MultiplayerGameGrid playersCount={playersCount}>
-          {games.map((game, idx) => (
-            <AnzanGame
-              key={idx}
-              index={idx}
-              isSpeedEquals={isGamesSpeedsEquals}
-              game={game}
-              autostart={autoStart}
-              autoAnswer={autoVisibleAnswer}
-              playersCount={playersCount}
-              setAutoAnser={setAutoAnswer}
-              onChangeConfig={(config) => {
-                setPlayerConfig(config, idx);
-              }}
-            />
-          ))}
-        </MultiplayerGameGrid>
+        {isModalOpen ? (
+          ""
+        ) : (
+          <MultiplayerGameGrid playersCount={playersCount}>
+            {games.map((game, idx) => (
+              <AnzanGame
+                key={idx}
+                index={idx}
+                isSpeedEquals={isGamesSpeedsEquals}
+                game={game}
+                autostart={autoStart}
+                autoAnswer={autoVisibleAnswer}
+                playersCount={playersCount}
+                setAutoAnser={setAutoAnswer}
+                onChangeConfig={(config) => {
+                  setPlayerConfig(config, idx);
+                }}
+              />
+            ))}
+          </MultiplayerGameGrid>
+        )}
       </>
     ),
   };

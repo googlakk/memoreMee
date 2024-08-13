@@ -3,6 +3,7 @@ import {
   getClassFontSizeNumber,
   getClassFontSizeStarter,
 } from "./stylesUttils";
+import { reSizes, toggleBackgroundImage } from "@app/uttils";
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
@@ -14,11 +15,13 @@ interface FuncProps {
   game: AnzanCore;
   name: string;
   speed: number;
-  playersCount?: number;
+  playersCount: number;
   muted: boolean;
   setStep: (s: ANZAN_STEPS) => void;
   isTextToSpeach: boolean;
 }
+
+// Component
 const Counter: FC<FuncProps> = ({
   onFinish,
   game,
@@ -99,20 +102,27 @@ const Counter: FC<FuncProps> = ({
     }
   }, [isGameStarted, muted, numberIndex]);
 
-  const classFontSizeNumber = getClassFontSizeNumber(Numlenght, playersCount);
   if (!isGameStarted)
     return (
       <StarterCounter
+        name={name}
         numLenght={Numlenght}
         playersCount={playersCount}
         onDone={() => setIsGameStarted(true)}
       />
     );
-
+  const classFontSizeNumber = getClassFontSizeNumber(Numlenght, playersCount);
+  const backgroundSize = reSizes(playersCount);
+  const backgroundImage = toggleBackgroundImage(playersCount);
   return (
-    <Card className="rounded-3xl overflow-hidden relative card w-[100%] m-0 p-0  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  bg-[#E0F4FF] brightness-90 ">
-      <div className="absolute left-5 top-0 font-jura text-xl ">{name}</div>
-      <Card.Body className=" w-full  card-body items-center justify-center p-0 m-0">
+    <Card className="rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0    ">
+      <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+        <div className="grid w-64 rounded-xl place-items-center">{name}</div>
+      </Card.Title>
+      <Card.Body
+        className={`w-full ${backgroundImage} bg-no-repeat bg-center card-body items-center justify-center p-0 m-0`}
+        style={{ backgroundSize: backgroundSize }}
+      >
         <div
           key={numberIndex}
           className={classFontSizeNumber}
@@ -126,14 +136,16 @@ const Counter: FC<FuncProps> = ({
     </Card>
   );
 };
-
+// Component
 const StarterCounter: FC<{
   onDone: () => void;
-  playersCount?: number;
+  playersCount: number;
   numLenght: number;
-}> = ({ onDone, playersCount }) => {
+  name: string;
+}> = ({ onDone, playersCount, name }) => {
   const [steps, setSteps] = useState(["На старт", "Внимание", "Марш!"]);
-
+  const backgroundSize = reSizes(playersCount);
+  const backgroundImage = toggleBackgroundImage(playersCount);
   const SoundCount = new Howl({
     src: ["/sounds/countdown.mp3"],
     volume: 0.8,
@@ -158,9 +170,15 @@ const StarterCounter: FC<{
   const classFontSizeStarter = getClassFontSizeStarter(playersCount);
   return (
     <Card
-      className={`   rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-base-100 bg-[#E0F4FF] brightness-90`}
+      className={`  flex flex-col items-center rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full justify-center font-arena  text-primary`}
     >
-      <Card.Body className=" card-body items-center justify-center text-primary">
+      <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+        <div className="grid w-64 rounded-xl place-items-center">{name}</div>
+      </Card.Title>
+      <Card.Body
+        className={`card-body w-full  ${backgroundImage} bg-center bg-no-repeat items-center justify-center   text-center`}
+        style={{ backgroundSize: backgroundSize }}
+      >
         <div className={classFontSizeStarter}>{steps[0]}</div>
       </Card.Body>
     </Card>

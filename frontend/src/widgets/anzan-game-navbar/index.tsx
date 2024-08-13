@@ -5,6 +5,7 @@ import { FC } from "react";
 
 export interface ToolbarProps {
   onStartClick: () => void;
+  onModalToggle: (isOpen: boolean) => void;
   onSettingsSave: (settings: {
     config: AnzanConfig;
     playersCount: number;
@@ -19,6 +20,7 @@ const AnzanGameNavbar: FC<ToolbarProps> = ({
   onOpenAnswersClick,
   config,
   playersCount,
+  onModalToggle,
 }) => {
   return (
     <>
@@ -33,6 +35,7 @@ const AnzanGameNavbar: FC<ToolbarProps> = ({
           className={`w-5  bg-transparent text-base-100 hover:text-neutral-900 text-xs `}
         >
           <AnzanHeadSettingForm
+            onModalToggle={onModalToggle}
             onSave={(settings) => {
               onSettingsSave({
                 config: settings.config,

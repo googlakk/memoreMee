@@ -38,7 +38,9 @@
       "@entities/*": ["entities/*"],
       // shared layer
       "@shared": ["shared/index.ts", "shared/index.tsx"],
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      // public layer
+      "@assets/*": ["public/*"]
     }
   },
   "include": ["src"],

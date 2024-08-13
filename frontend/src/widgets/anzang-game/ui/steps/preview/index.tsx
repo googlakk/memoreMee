@@ -1,10 +1,12 @@
 import { Button, Card } from "react-daisyui";
+import { reSizes, toggleBackgroundImage } from "@app/uttils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
 import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdSettingsSuggest } from "react-icons/md";
+import btnStart from "@assets/newImg/Button-START.png";
 
 interface FuncProps {
   onStart: () => void;
@@ -64,27 +66,17 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
     };
   }, []);
 
+  const backgroundSize = reSizes(playersCount);
+  const backgroundImage = toggleBackgroundImage(playersCount);
   return (
-    <Card className=" rounded-3xl overflow-hidden relative card w-[100%] h-full mx-0  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] bg-[url('/img/colorGradientBg.jpeg')] bg-center bg-cover brightness-90">
-      <Card.Title className=" absolute left-2 text-left mt-5">
-        <div className="indicator">
-          <span
-            className={`indicator-item badge badge-primary opacity-100  transition-opacity duration-[5000] ${
-              displayText ? "opacity-100" : "opacity-10"
-            }`}
-          >
+    <Card className="overflow-hidden relative card w-[100%] h-full p-5 flex flex-col justify-center items-center ">
+      <div
+        className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full    mx-0  `}
+      >
+        <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+          <div className="grid w-64 rounded-xl place-items-center">
             <div
-              className={`opacity-100  transition-opacity duration-[5000] ${
-                displayText ? "opacity-100" : "opacity-10"
-              }`}
-            >
-              {displayText}
-              {points}
-            </div>
-          </span>
-          <div className="grid w-32 mt-2 rounded-xl bg-base-300 place-items-center">
-            <div
-              className=" text-primary font-jura font-light text-left text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"
+              className=" text-primary font-jura font-bold text-left text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"
               contentEditable
               onBlur={handleNameChange}
               suppressContentEditableWarning={true}
@@ -92,22 +84,27 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
               {namePlayer}
             </div>
           </div>
-        </div>
-      </Card.Title>
-      <Card.Body className="card-body items-center justify-center   text-center">
-        <Button
-          className="btn bg-transparent text-xl px-2 rounded-xl"
-          onClick={() => onStart()}
+        </Card.Title>
+        <Card.Body
+          className={`card-body w-full bg-no-repeat ${backgroundImage}  bg-center  items-center justify-center   text-center`}
+          style={{
+            backgroundSize: backgroundSize,
+          }}
         >
-          <FaRegCirclePlay />
-        </Button>
-        <Button
-          className="btn btn-ghost xl:text-[30px] text-[16px]"
-          onClick={() => onSettings()}
-        >
-          <MdSettingsSuggest />
-        </Button>
-      </Card.Body>
+          <Button
+            className=" border-none bg-transparent text-xl px-2 rounded-xl w-32 mb-5 hover:bg-transparent"
+            onClick={() => onStart()}
+          >
+            <img src={btnStart} alt="" />
+          </Button>
+          <Button
+            className="btn btn-ghost xl:text-[30px] text-[16px]"
+            onClick={() => onSettings()}
+          >
+            <MdSettingsSuggest />
+          </Button>
+        </Card.Body>
+      </div>
     </Card>
   );
 };
