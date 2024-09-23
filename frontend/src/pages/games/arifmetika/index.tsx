@@ -11,7 +11,7 @@ import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const Arifmetika: FC = () => {
   return (
-    <div className="w-full min-h-screen bg-anzanMenuBg flex flex-col items-center justify-center bg-cover">
+    <div className="w-full min-h-screen bg-anzanMenuBg  bg-no-repeat bg-center flex flex-col items-center justify-center max-l:bg-contain">
       <div className=" absolute top-36 w-96">
         <img src={logo} />
       </div>

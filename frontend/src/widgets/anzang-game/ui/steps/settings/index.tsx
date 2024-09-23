@@ -13,7 +13,8 @@ import { FaCheck } from "react-icons/fa";
 
 const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const DEPTH = [1, 2, 3, 4, 5, 6];
+const DEPTH_PLUS = [1, 2, 3, 4, 5, 6];
+const DEPTH_MINUS = [1, 2, 3, 4, 5, 6];
 
 export const AnzanGameSettings: React.FC<{
   onSave: (config: AnzanConfig) => void;
@@ -77,10 +78,16 @@ export const AnzanGameSettings: React.FC<{
     setConfig({ ...config, usedNumberMinus: newUsedNumbers });
   };
 
-  const handleChangeNumberDepth = (number: number) => {
+  const handleChangeNumberDepthPlus = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      numberDepth: number,
+      numberDepthPlus: number,
+    }));
+  };
+  const handleChangeNumberDepthMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthMinus: number,
     }));
   };
   const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
@@ -197,16 +204,34 @@ export const AnzanGameSettings: React.FC<{
             </div>
             <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
               <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
-                Разрядность чисел
+                Разрядность чисел (+)
               </h1>
               <ButtonGroup>
-                {DEPTH.map((depth) => (
+                {DEPTH_PLUS.map((depth) => (
                   <Button
                     type="button"
                     className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                     key={depth}
-                    onClick={() => handleChangeNumberDepth(depth)}
-                    active={config.numberDepth === depth}
+                    onClick={() => handleChangeNumberDepthPlus(depth)}
+                    active={config.numberDepthPlus === depth}
+                  >
+                    {depth}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
+                Разрядность чисел (-)
+              </h1>
+              <ButtonGroup>
+                {DEPTH_MINUS.map((depth) => (
+                  <Button
+                    type="button"
+                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                    key={depth}
+                    onClick={() => handleChangeNumberDepthMinus(depth)}
+                    active={config.numberDepthMinus === depth}
                   >
                     {depth}
                   </Button>

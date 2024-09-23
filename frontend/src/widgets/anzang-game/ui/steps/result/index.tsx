@@ -1,4 +1,3 @@
-import { Button, Card } from "react-daisyui";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
 import { reSizes, toggleBackgroundImage } from "@app/uttils";
@@ -9,10 +8,8 @@ import {
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
+import { Card } from "react-daisyui";
 import { FaArrowDown } from "react-icons/fa6";
-import { GiSettingsKnobs } from "react-icons/gi";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import { MdRestartAlt } from "react-icons/md";
 import cn from "clsx";
 import { useAuthContext } from "@app/hooks";
 
@@ -31,31 +28,24 @@ interface FuncProps {
 
 const AnzanResult: FC<FuncProps> = ({
   userAnwer,
-  onStart,
-  onSettings,
-  onSetVisible,
+  
   name,
   game: _game,
   playersCount,
   setStep,
   setName,
 }) => {
-  const clickListner = () => {
-    onSettings();
-    onSetVisible(false);
-  };
+
 
   const { user } = useAuthContext();
 
   const [createGameHistory] = useCrateGameHistoryMutation();
   const [upaateUserScore] = useUpdateUserScoreMutation();
-  const [points, setPoints] = useState<number>(0);
-  const [isOpenResult, setIsOpenResult] = useState(false);
+  const [,setPoints] = useState<number>(0);
+  const [isOpenResult] = useState(false);
   const game = useMemo(() => _game, []);
 
-  const handleOpenResult = () => {
-    setIsOpenResult(!isOpenResult);
-  };
+
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
@@ -141,18 +131,18 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 8 && "text-[32px]",
     playersCount === 9 && "text-[32px]"
   );
-  const classPosition = cn(
-    "flex flex-col items-center  ",
-    playersCount === 1 && "justify-center",
-    playersCount === 2 && "justify-center",
-    playersCount === 3 && "justify-center",
-    playersCount === 4 && "justify-center",
-    playersCount === 5 && "absolute top-0",
-    playersCount === 6 && "absolute top-0",
-    playersCount === 7 && "absolute top-0",
-    playersCount === 8 && "absolute top-0",
-    playersCount === 9 && "absolute top-0"
-  );
+  // const classPosition = cn(
+  //   "flex flex-col items-center  ",
+  //   playersCount === 1 && "justify-center",
+  //   playersCount === 2 && "justify-center",
+  //   playersCount === 3 && "justify-center",
+  //   playersCount === 4 && "justify-center",
+  //   playersCount === 5 && "absolute top-0",
+  //   playersCount === 6 && "absolute top-0",
+  //   playersCount === 7 && "absolute top-0",
+  //   playersCount === 8 && "absolute top-0",
+  //   playersCount === 9 && "absolute top-0"
+  // );
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
   return (

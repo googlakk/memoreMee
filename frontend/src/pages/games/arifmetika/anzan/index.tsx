@@ -15,7 +15,8 @@ enum ANZAN_STEPS {
 }
 
 const defaultAnzanConfig: AnzanConfig = {
-  numberDepth: 2,
+  numberDepthMinus: 2,
+  numberDepthPlus: 3,
   numbersCount: 5,
   operations: [OPERATIONS.MINUS, OPERATIONS.PLUS],
   speed: 1,

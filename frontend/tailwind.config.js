@@ -9,18 +9,18 @@ export default {
       ],
     },
     backgroundImage: {
-      mainBg: "url(./public/newImg/mainBg.png)",
-      anzanMenuBg: "url(./public/newImg/menuAnzanBg.png)",
-      anzanGameBg: "url(./public/newImg/gameBg.png)",
-      dialogBg: "url(./public/newImg/dialog-Bg.png)",
-      oneCounterBg: "url(./public/newImg/counterBg.png)",
-      manyCounterBg: "url(./public/newImg/ramka.png)",
-      counterBg: "url(./public/newImg/counter-bg.png)",
-      longBtnBg: "url(./public/newImg/)",
-      btnLongBg: "url(./public/newImg/Button-long.png)",
-      btnWideBg: "url(./public/newImg/Button-wide.png)",
-      miniDialogBg: "url(./public/newImg/mini-bg-dialog.png)",
-      btnSettingBg: "url(./public/newImg/btn-Settings.png)",
+      mainBg: "url(/newImg/mainBg.png)",
+      anzanMenuBg: "url(/newImg/menuAnzanBg.png)",
+      anzanGameBg: "url(/newImg/gameBg.png)",
+      dialogBg: "url(/newImg/dialog-Bg.png)",
+      oneCounterBg: "url(/newImg/counterBg.png)",
+      manyCounterBg: "url(/newImg/ramka.png)",
+      counterBg: "url(/newImg/counter-bg.png)",
+      longBtnBg: "url(/newImg/Button-long.png)",
+      btnLongBg: "url(/newImg/Button-long.png)",
+      btnWideBg: "url(/newImg/Button-wide.png)",
+      miniDialogBg: "url(/newImg/mini-bg-dialog.png)",
+      btnSettingBg: "url(/newImg/btn-settings.png)",
     },
 
     fontFamily: {
@@ -30,7 +30,10 @@ export default {
     },
     extend: {
       screens: {
-        l: "999px", // Название точки останова и значение ширины
+        
+        l: "990px", // Название точки останова и значение ширины
+        xl: "1300px"
+        
       },
       animation: {
         "fade-in": "fade-in 3s linear infinite",

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
-import { FaRegCirclePlay } from "react-icons/fa6";
 import { MdSettingsSuggest } from "react-icons/md";
 import btnStart from "@assets/newImg/Button-START.png";
 
@@ -29,8 +28,8 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
 }) => {
   const game = useMemo(() => _game, []);
   const namePlayer = `${name}  ${playersCount}`;
-  const [displayText, setDisplayText] = useState<string | null>(null);
-  const [points, setPoints] = useState<number | null>(null);
+  const [, setDisplayText] = useState<string | null>(null);
+  const [, setPoints] = useState<number | null>(null);
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {

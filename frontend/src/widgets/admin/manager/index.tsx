@@ -4,7 +4,6 @@ import { ImCreditCard } from "react-icons/im";
 import { PiStudentFill } from "react-icons/pi";
 import Sidebar from "@widgets/ui-kit/sidebar";
 import TabHome from "./tabs-components/home";
-import TabTeacher from "./tabs-components/teacher";
 import { VscAccount } from "react-icons/vsc";
 import { useState } from "react";
 
@@ -42,7 +41,7 @@ const AdminBoard = () => {
       case "Home":
         return <TabHome />;
       case "Teacher":
-        return <TabTeacher />;
+        return "";
       case "Students":
         return "Tab students";
       case "Account":

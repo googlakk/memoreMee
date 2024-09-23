@@ -16,7 +16,8 @@ export type AnzanConfig = {
   operations: [OPERATIONS, ...OPERATIONS[]]; // Математические операции
   speed: number; // сколько секунд будет высвечиваться одна цифра 0.1 - 9.9
   numbersCount: number; // сколько цифр будет появляться
-  numberDepth: number; // разрядность цифр (однозначне, двузначные и тд)
+  numberDepthPlus: number; // разрядность цифр (однозначне, двузначные и тд)
+  numberDepthMinus: number; // разрядность цифр (однозначне, двузначные и тд)
   usedNumberPlus: number[]; // какие цифры будем использовать
   usedNumberMinus: number[]; // какие цифры будем использовать
 };
@@ -43,7 +44,7 @@ export class AnzanCore {
     this.answer = newAnswer;
   }
   generateNumber(): number {
-    const { operations, numberDepth } = this.config;
+    const { operations, numberDepthPlus, numberDepthMinus } = this.config;
 
     let number = -Infinity;
 
@@ -54,13 +55,17 @@ export class AnzanCore {
     ) {
       number =
         Number(
-          new Array(this.config.numberDepth)
+          new Array(this.config.numberDepthMinus)
             .fill(Math.max(...this.config.usedNumberMinus))
             .join("")
         ) * this.config.numbersCount;
     } else {
       while (0 > this.answer + number) {
         const operation = operations[random(operations.length)];
+        const numberDepth =
+          operation === OPERATIONS.MINUS
+            ? numberDepthMinus
+            : numberDepthPlus;
         const numbers = new Array(numberDepth).fill(0).map((_) => {
           let newUsedNumbers: number[] =
             operation === OPERATIONS.MINUS

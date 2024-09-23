@@ -5,17 +5,15 @@
 // } from "@entities/user/api/queries.gen";
 
 // import { Student } from "@app/uttils";
-// import StudentAddForms from "@widgets/ui-kit/studentAddForms";
-// import StudentProfile from "@widgets/ui-kit/student-profile";
 // import { TableUsers } from "@widgets/ui-kit/table";
 
 // const TabStudents: FC = () => {
 //   const theads = ["name", "teacher", "points"];
 //   const { data } = useGetStudentsQuery();
 //   const { data: teachersData } = useGetTeachersQuery();
-//   const [selectedStudent, setSelectedStudent] = useState(null);
+//   const [, setSelectedStudent] = useState(null);
 //   const [showAddForms, setShowAddForms] = useState(false);
-//   const [isProfileOpen, setIsProfileOpen] = useState(true);
+//   const [, setIsProfileOpen] = useState(true);
 //   const [sortOrder] = useState<"asc" | "desc">("asc");
 //   const handleSelectedUser = (t: Student) => {
 //     setSelectedStudent(t);
@@ -23,9 +21,7 @@
 //   const onProfileOpen = () => {
 //     setIsProfileOpen(true);
 //   };
-//   const onProfileClose = () => {
-//     setIsProfileOpen(false);
-//   };
+
 //   const handleChangeTeachers = (e) => {
 //     setSelecatedTeacher(e.target.value);
 //   };
@@ -114,18 +110,6 @@
 //             onSelectUser={handleSelectedUser}
 //             onOpen={onProfileOpen}
 //           />
-//           <div className="flex gap-5 flex-col">
-//             {selectedStudent != null && isProfileOpen ? (
-//               <StudentProfile
-//                 student={selectedStudent}
-//                 onClose={onProfileClose}
-//               />
-//             ) : (
-//               ""
-//             )}
-
-//             {showAddForms ? <StudentAddForms onClose={onAddFormsClose} /> : ""}
-//           </div>
 //         </div>
 //       </div>
 //     </>

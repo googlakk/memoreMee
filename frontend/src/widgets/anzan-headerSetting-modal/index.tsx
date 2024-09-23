@@ -17,7 +17,8 @@ const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const DEPTH = [1, 2, 3, 4, 5, 6];
+const DEPTH_PLUS = [1, 2, 3, 4, 5, 6];
+const DEPTH_MINUS = [1, 2, 3, 4, 5, 6];
 export interface nzanHeadSettingFormProps {
   onSave: () => {};
   defaultSettings: {};
@@ -134,10 +135,16 @@ const AnzanHeadSettingForm: FC<{
     setConfig({ ...config, usedNumberMinus: newUsedNumbers });
   };
 
-  const handleChangeNumberDepth = (number: number) => {
+  const handleChangeNumberDepthPlus = (number: number) => {
     setConfig((prevConfig) => ({
       ...prevConfig,
-      numberDepth: number,
+      numberDepthPlus: number,
+    }));
+  };
+  const handleChangeNumberDepthMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthMinus: number,
     }));
   };
   const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
@@ -221,8 +228,8 @@ const AnzanHeadSettingForm: FC<{
         />
         <div className="modal  ">
           <div
-            className=" absolute w-[1500px] h-[700px]  bg-dialogBg bg-center  bg-no-repeat p-0 m-0  flex flex-col items-center justify-center "
-            style={{ backgroundSize: "100% 90%" }}
+            className=" absolute w-[1500px] h-[700px]  bg-dialogBg bg-center  bg-no-repeat  p-0 m-0  flex flex-col items-center justify-center min-l:w-[600px]"
+            style={{ backgroundSize: "" }}
           >
             <div className="modal-action absolute -top-2 w-56">
               <img src={anzanLogo} alt="" />
@@ -317,7 +324,7 @@ const AnzanHeadSettingForm: FC<{
                         onClick={handleToggleAllNumbersPlus}
                       >
                         <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
-                          _+
+                          all
                         </div>
                       </button>
                     </div>
@@ -399,16 +406,20 @@ const AnzanHeadSettingForm: FC<{
                   <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium  ">
-                        Разрядность чисел
+                        Разрядность чисел (+)
                       </h1>
                     </div>
                     <div className="flex flex-wrap justify-center gap-y-3">
-                      {DEPTH.map((depth) => (
+                      {DEPTH_PLUS.map((depth) => (
                         <button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent `}
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent ${
+                            config.numberDepthPlus === depth
+                              ? `text-base-100`
+                              : `text-neutral-700`
+                          }`}
                           key={depth}
-                          onClick={() => handleChangeNumberDepth(depth)}
+                          onClick={() => handleChangeNumberDepthPlus(depth)}
                         >
                           <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
                             {depth}
@@ -423,16 +434,20 @@ const AnzanHeadSettingForm: FC<{
                   <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium  ">
-                        Разрядность чисел
+                        Разрядность чисел (-)
                       </h1>
                     </div>
                     <div className="flex flex-wrap justify-center gap-y-3">
-                      {DEPTH.map((depth) => (
+                      {DEPTH_MINUS.map((depth) => (
                         <button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent `}
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent ${
+                            config.numberDepthMinus === depth
+                              ? `text-base-100`
+                              : `text-neutral-900`
+                          }`}
                           key={depth}
-                          onClick={() => handleChangeNumberDepth(depth)}
+                          onClick={() => handleChangeNumberDepthMinus(depth)}
                         >
                           <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
                             {depth}
