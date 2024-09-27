@@ -14,12 +14,14 @@ const HomePage: FC = () => {
       className={`container   mx-auto flex justify-center items-center mt-[5%] flex-col sm:flex-row sm:mt-[10%] md:flex-wrap`}
     >
       <div className=" flex flex-col items-center">
-        <img src={logo} alt="" />
+       <div className=" w-70">
+       <img src={logo} alt="" />
+       </div>
 
-        <div className="flex mt-10">
-          <HomePageCard routes={ROUTES.ARIFMETIKA} imgGame={anzan} />
-          <HomePageCard routes={ROUTES.SPELLINGBEE} imgGame={english} />
-          <HomePageCard routes={ROUTES.ARIFMETIKA} imgGame={memory} />
+        <div className="flex mt-10  ">
+          <HomePageCard width="52" routes={ROUTES.ARIFMETIKA} imgGame={anzan} />
+          <HomePageCard width="52" routes={ROUTES.SPELLINGBEE} imgGame={english} />
+          <HomePageCard width="52" routes={ROUTES.ARIFMETIKA} imgGame={memory} />
         </div>
       </div>
     </div>

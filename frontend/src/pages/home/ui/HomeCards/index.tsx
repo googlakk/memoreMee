@@ -7,14 +7,15 @@ interface gameCardProps {
   imgGame: string;
   routes: string;
   disabled?: boolean;
+  width?: string
 }
-const HomePageCard: FC<gameCardProps> = ({ imgGame, routes }) => {
+const HomePageCard: FC<gameCardProps> = ({ imgGame, routes, width }) => {
   return (
     <>
-      <Link className=" w-64 h-fit p-0 m-0" to={routes}>
+      <Link className={` w-${width} h-fit p-0 m-0 mt-2`} to={routes}>
         <Button className=" bg-transparent border-none hover:bg-transparent">
-          <Card className={` h-fit w-60`}>
-            <Card.Body className=" h-fit p-2   m-0">
+          <Card className={` h-fit w-full `}>
+            <Card.Body className=" h-fit p-0  m-0">
               <img src={imgGame} className=" w-fit" alt="" />
             </Card.Body>
           </Card>
@@ -24,3 +25,4 @@ const HomePageCard: FC<gameCardProps> = ({ imgGame, routes }) => {
   );
 };
 export default HomePageCard;
+

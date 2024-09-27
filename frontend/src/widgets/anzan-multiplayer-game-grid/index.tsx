@@ -10,15 +10,15 @@ export const MultiplayerGameGrid: React.FC<
   const className = cn(
     " w-96 grow flex ",
     playersCount === 1 && "basis-full h-[80vh]  lg:h-[80vh] xs:h-[80vh]",
-    playersCount === 2 && "basis-1/2 h-[80vh]",
-    playersCount === 3 && "basis-1/3 h-[60vh]",
-    playersCount === 4 && "basis-1/2 h-[45vh]",
-    playersCount === 5 && " w-[550px]   h-[45vh]",
-    playersCount === 6 && "basis-1/3 h-[45vh]",
-    playersCount === 7 && "basis-1/4 h-[45vh]",
-    playersCount === 8 && "basis-1/4 h-[45vh]",
-    playersCount === 9 && "basis-1/5 h-[45vh] ",
-    playersCount === 10 && "basis-1/5 h-[45vh] "
+    playersCount === 2 && "w-[50%] h-[80vh]",
+    playersCount === 3 && "w-[33%] h-[60vh]",
+    playersCount === 4 && "w-[50%] h-[45vh]",
+    playersCount === 5 && "w-[33%] h-[45vh]",
+    playersCount === 6 && "w-[33%] h-[45vh]",
+    playersCount === 7 && "w-[25%] h-[45vh]",
+    playersCount === 8 && "w-[25%] h-[45vh]",
+    playersCount === 9 && " w-[20%] h-[45vh] ",
+    playersCount === 10 && " w-[20%] h-[45vh] "
   );
 
   // Если два игрока, каждый занимает половину ширины

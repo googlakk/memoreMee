@@ -7,8 +7,6 @@ export const withMainLayout =
       >
         <div className="z-20 w-full flex flex-col justify-between min-h-screen mx-auto">
           <div className="flex-1">
-            {/* flex-1 занимает всю доступную высоту */}
-
             <Component />
           </div>
         </div>

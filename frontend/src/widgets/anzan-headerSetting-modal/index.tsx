@@ -228,17 +228,17 @@ const AnzanHeadSettingForm: FC<{
         />
         <div className="modal  ">
           <div
-            className=" absolute w-[1500px] h-[700px]  bg-dialogBg bg-center  bg-no-repeat  p-0 m-0  flex flex-col items-center justify-center min-l:w-[600px]"
-            style={{ backgroundSize: "" }}
+            className=" absolute w-[1300px] h-[560px]  bg-dialogBg bg-center bg-contain  bg-no-repeat  p-0 m-0  flex flex-col items-center justify-center min-l:w-[600px]"
+            style={{ backgroundSize: "1300px 500px" }}
           >
             <div className="modal-action absolute -top-2 w-56">
               <img src={anzanLogo} alt="" />
             </div>
             <div className="flex px-5  flex-col items-center lg:gap-x-10 xl:gap-x-10 gap-x-2 ">
-              <div className=" flex justify-around w-full gap-x-16 mb-14">
+              <div className=" flex justify-around w-full gap-x-0 mb-14">
                 {/*  1 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className=" w-full h-36 flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className=" bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className=" text-l font-bold text-[#ffff]  mr-0 ">
                         Выберите действие
@@ -293,19 +293,19 @@ const AnzanHeadSettingForm: FC<{
                 </div>
                 {/*  2 block */}
 
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className=" text-l font-medium ">
                         Используемые числа (+)
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-3 ">
+                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
                       {USED_NUMBERS_PLUS &&
                         USED_NUMBERS_PLUS.map((num) => (
                           <button
                             type="button"
-                            className={`flex items-start max-h-5 h-fit bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent disabled:bg-transparent ${
+                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
                               config.usedNumberPlus.includes(num)
                                 ? "text-base-100"
                                 : " text-neutral-900"
@@ -313,7 +313,7 @@ const AnzanHeadSettingForm: FC<{
                             key={num}
                             onClick={() => handleChangeUsedNumbersPlus(num)}
                           >
-                            <div className=" w-11 py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm">
+                            <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
                               {num}
                             </div>
                           </button>
@@ -331,65 +331,65 @@ const AnzanHeadSettingForm: FC<{
                   </div>
                 </div>
                 {/*  3 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36 flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className=" text-l font-medium ">
                         Используемые числа (-)
                       </h1>
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-y-3 ">
-                      {USED_NUMBERS_MINUS &&
+                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
+                      {USED_NUMBERS_MINUS&&
                         USED_NUMBERS_MINUS.map((num) => (
                           <button
                             type="button"
-                            className={`flex items-start max-h-5 h-fit bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent disabled:bg-transparent ${
-                              config.usedNumberMinus.includes(num)
+                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
+                              config.usedNumberPlus.includes(num)
                                 ? "text-base-100"
                                 : " text-neutral-900"
                             } `}
                             key={num}
                             onClick={() => handleChangeUsedNumbersMinus(num)}
                           >
-                            <div className=" w-11 py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm">
+                            <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
                               {num}
                             </div>
                           </button>
                         ))}
-                      <Button
-                        className=" bg-transparent flex items-start border-none p-0 h-3 w-12 m-0 gap-0 hover:bg-transparent "
+                      <button
+                        className=" bg-transparent   flex items-start border-none p-0 h-fit w-12 m-0 gap-0 hover:bg-transparent "
                         type="button"
                         onClick={handleToggleAllNumbersMinus}
                       >
                         <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
-                          _+
+                          all
                         </div>
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </div>
                 {/*  4 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className=" text-l font-medium ">
                         Количество игроков
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-3">
+                    <div className="flex flex-wrap justify-center gap-y-2 gap-x-1 p-0 m-0">
                       {PLAYERS_COUNT.map((cnt) => (
                         <button
                           type="button"
                           key={cnt}
                           onClick={() => setPlayersCount(cnt)}
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent ${
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
                             playersCount === cnt
                               ? "text-base-100"
                               : " text-neutral-900"
                           }`}
                         >
-                          <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
+                          <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "  style={{backgroundSize: "56px 30px"}}>
                             {cnt}
                           </div>
                         </button>
@@ -400,20 +400,20 @@ const AnzanHeadSettingForm: FC<{
               </div>
               {/*  2 row */}
 
-              <div className=" flex w-full gap-x-16">
+              <div className=" flex w-full ">
                 {/*  1 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium  ">
                         Разрядность чисел (+)
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-3">
+                    <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
                       {DEPTH_PLUS.map((depth) => (
                         <button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent ${
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
                             config.numberDepthPlus === depth
                               ? `text-base-100`
                               : `text-neutral-700`
@@ -421,7 +421,7 @@ const AnzanHeadSettingForm: FC<{
                           key={depth}
                           onClick={() => handleChangeNumberDepthPlus(depth)}
                         >
-                          <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
+                          <div className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold " style={{backgroundSize: "56px 30px"}}>
                             {depth}
                           </div>
                         </button>
@@ -430,18 +430,18 @@ const AnzanHeadSettingForm: FC<{
                   </div>
                 </div>
                 {/*  2 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium  ">
                         Разрядность чисел (-)
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-3">
+                    <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
                       {DEPTH_MINUS.map((depth) => (
                         <button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-11 m-0  hover:bg-transparent ${
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
                             config.numberDepthMinus === depth
                               ? `text-base-100`
                               : `text-neutral-900`
@@ -449,7 +449,7 @@ const AnzanHeadSettingForm: FC<{
                           key={depth}
                           onClick={() => handleChangeNumberDepthMinus(depth)}
                         >
-                          <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
+                          <div className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
                             {depth}
                           </div>
                         </button>
@@ -459,8 +459,8 @@ const AnzanHeadSettingForm: FC<{
                 </div>
 
                 {/*  3 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium ">Скорость</h1>
                     </div>
@@ -483,8 +483,8 @@ const AnzanHeadSettingForm: FC<{
                   </div>
                 </div>
                 {/*  4 block */}
-                <div className="flex flex-col items-center w-[260px]">
-                  <div className="w-full h-36  flex flex-col row items-center px-2 bg-miniDialogBg bg-cover py-0 bg-center text-center">
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
                     <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
                       <h1 className="text-l font-medium  ">
                         Количество действий
@@ -511,7 +511,7 @@ const AnzanHeadSettingForm: FC<{
               <div className="modal-action absolute bottom-0">
                 <label
                   htmlFor="settingsModal"
-                  className=" border-none bg-transparent cursor-pointer  py-9 w-60 text-center bg-btnLongBg bg-contain bg-no-repeat bg-center text-xl  "
+                  className=" border-none bg-transparent cursor-pointer  py-8 w-60 text-center bg-btnLongBg bg-contain bg-no-repeat bg-center text-xl font-bold  "
                   onClick={handleSaveConfig}
                 >
                   Apply

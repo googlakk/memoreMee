@@ -26,6 +26,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   playersCount,
   game: _game,
 }) => {
+
   const game = useMemo(() => _game, []);
   const namePlayer = `${name}  ${playersCount}`;
   const [, setDisplayText] = useState<string | null>(null);
@@ -67,8 +68,9 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
 
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
+  
   return (
-    <Card className="overflow-hidden relative card w-[100%] h-full p-5 flex flex-col justify-center items-center ">
+    <Card className="rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0  ">
       <div
         className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full    mx-0  `}
       >
@@ -85,7 +87,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
           </div>
         </Card.Title>
         <Card.Body
-          className={`card-body w-full bg-no-repeat ${backgroundImage}  bg-center  items-center justify-center   text-center`}
+          className={`card-body w-full bg-no-repeat bg-contain ${backgroundImage}  bg-center  items-center justify-center p-0 m-0   text-center`}
           style={{
             backgroundSize: backgroundSize,
           }}

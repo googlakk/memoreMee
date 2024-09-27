@@ -22,7 +22,7 @@ export default {
       miniDialogBg: "url(/newImg/mini-bg-dialog.png)",
       btnSettingBg: "url(/newImg/btn-settings.png)",
     },
-
+    
     fontFamily: {
       arena: ["CATArena", "sans-serif"],
       jura: ["Jura", " sans-serif"],
