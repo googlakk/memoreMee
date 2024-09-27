@@ -19,9 +19,9 @@ const HomePage: FC = () => {
        </div>
 
         <div className="flex mt-10  ">
-          <HomePageCard width="52" routes={ROUTES.ARIFMETIKA} imgGame={anzan} />
-          <HomePageCard width="52" routes={ROUTES.SPELLINGBEE} imgGame={english} />
-          <HomePageCard width="52" routes={ROUTES.ARIFMETIKA} imgGame={memory} />
+          <HomePageCard width="165" routes={ROUTES.ARIFMETIKA} imgGame={anzan} />
+          <HomePageCard width="165" routes={ROUTES.SPELLINGBEE} imgGame={english} />
+          <HomePageCard width="165" routes={ROUTES.ARIFMETIKA} imgGame={memory} />
         </div>
       </div>
     </div>

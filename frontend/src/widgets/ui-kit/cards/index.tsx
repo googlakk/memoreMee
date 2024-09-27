@@ -9,10 +9,10 @@ interface gameCardProps {
   disabled?: boolean;
   width?: string
 }
-const HomePageCard: FC<gameCardProps> = ({ imgGame, routes, width }) => {
+const MyCard: FC<gameCardProps> = ({ imgGame, routes, width }) => {
   return (
     <>
-      <Link className={`  h-fit p-0 m-0 mt-2`} style={{width: `${width}px`}} to={routes}>
+      <Link className={` h-fit p-0 m-0 mt-2`} to={routes} style={{width: width}}>
         <Button className=" bg-transparent border-none hover:bg-transparent">
           <Card className={` h-fit w-full `}>
             <Card.Body className=" h-fit p-0  m-0">
@@ -24,5 +24,5 @@ const HomePageCard: FC<gameCardProps> = ({ imgGame, routes, width }) => {
     </>
   );
 };
-export default HomePageCard;
+export default MyCard;
 

@@ -24,7 +24,7 @@ export const MultiplayerGameGrid: React.FC<
   // Если два игрока, каждый занимает половину ширины
 
   return (
-    <div className="flex flex-wrap w-full h-[80vh]  ">
+    <div className="flex flex-wrap w-full h-[95vh]  ">
       {children.map((el) => (
         <div key={el} className={`${className} `}>
           {el}

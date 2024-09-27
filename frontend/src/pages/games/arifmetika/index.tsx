@@ -12,15 +12,15 @@ import { withMainLayout } from "@app/hocs/withMainLayout";
 const Arifmetika: FC = () => {
   console.log(window.innerWidth)
   return (
-    <div className="w-full min-h-[calc(100vh+50px)]   bg-anzanMenuBg bg-cover bg-no-repeat bg-center flex flex-col items-center justify-center  ">
-      <div className=" absolute  w-72 top-32">
+    <div className="w-full min-h-[calc(100vh)]   bg-anzanMenuBg bg-cover bg-no-repeat bg-center flex flex-col items-center justify-center  ">
+      <div className=" absolute  w-72 top-24">
         <img src={logo} />
       </div>
       <div className=" flex flex-col items-center mt-10 w-full ">
-        <HomePageCard width="64" imgGame={anzan} routes={ROUTES.ANZAN} />
-        <HomePageCard width="64" imgGame={multiply} routes={ROUTES.MULTIPLY} />
-        <HomePageCard width="64" imgGame={generator} routes={ROUTES.MULTIPLY} />
-        <HomePageCard width="64" imgGame={collums} routes={ROUTES.MULTIPLY} />
+        <HomePageCard width="260" imgGame={anzan} routes={ROUTES.ANZAN} />
+        <HomePageCard width="260" imgGame={multiply} routes={ROUTES.MULTIPLY} />
+        <HomePageCard width="260" imgGame={generator} routes={ROUTES.MULTIPLY} />
+        <HomePageCard width="260" imgGame={collums} routes={ROUTES.MULTIPLY} />
       </div>
     </div>
   );
