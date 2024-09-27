@@ -10,9 +10,10 @@ import multiply from "@assets/newImg/Button-multiply.png";
 import { withMainLayout } from "@app/hocs/withMainLayout";
 
 const Arifmetika: FC = () => {
+  console.log(window.innerWidth)
   return (
-    <div className="w-full min-h-[calc(100vh+50px)]  bg-anzanMenuBg bg-cover bg-no-repeat bg-center flex flex-col items-center justify-center ">
-      <div className=" absolute top-[5em] w-72">
+    <div className="w-full min-h-[calc(100vh+50px)]   bg-anzanMenuBg bg-cover bg-no-repeat bg-center flex flex-col items-center justify-center  ">
+      <div className=" absolute  w-72 top-32">
         <img src={logo} />
       </div>
       <div className=" flex flex-col items-center mt-10 w-full ">

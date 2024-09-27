@@ -30,10 +30,10 @@ export default {
     },
     extend: {
       screens: {
-        
-        l: "990px", // Название точки останова и значение ширины
-        xl: "1300px"
-        
+        mobile: "600px",
+        tablet: "900px",
+        sLaptop: "1400px",
+        desktops: "1410px"
       },
       animation: {
         "fade-in": "fade-in 3s linear infinite",
