@@ -30,10 +30,10 @@ export default {
     },
     extend: {
       screens: {
-        mobile: "600px",
-        tablet: "900px",
-        sLaptop: "1400px",
-        desktops: "1410px"
+        mobile: "200px",
+        tablet: "600px",
+        sLaptop: "900px",
+        desktops: "1400px"
       },
       animation: {
         "fade-in": "fade-in 3s linear infinite",
