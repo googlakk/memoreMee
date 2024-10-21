@@ -15,6 +15,7 @@ interface FuncProps {
   setStep: (s: ANZAN_STEPS) => void;
   playersCount: number;
   game: AnzanCore;
+  index: number;
 }
 
 export const AnzanGamePreview: React.FC<FuncProps> = ({
@@ -26,9 +27,8 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   playersCount,
   game: _game,
 }) => {
-
   const game = useMemo(() => _game, []);
-  const namePlayer = `${name}  ${playersCount}`;
+  const namePlayer = `${name}`;
   const [, setDisplayText] = useState<string | null>(null);
   const [, setPoints] = useState<number | null>(null);
   useEffect(() => {
@@ -68,7 +68,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
 
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
-  
+
   return (
     <Card className="rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0  ">
       <div
@@ -99,10 +99,10 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
             <img src={btnStart} alt="" />
           </Button>
           <Button
-            className="btn btn-ghost xl:text-[30px] text-[16px]"
+            className="btn btn-ghost bg-transparent bg-btnWideBg bg-contain bg-no-repeat bg-center hover:bg-transparent  "
             onClick={() => onSettings()}
           >
-            <MdSettingsSuggest />
+            <MdSettingsSuggest className="w-10  text-[#CA1028] text-[20px]" />
           </Button>
         </Card.Body>
       </div>

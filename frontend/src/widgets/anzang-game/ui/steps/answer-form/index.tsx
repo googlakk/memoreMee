@@ -3,18 +3,21 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { reSizes, toggleBackgroundImage } from "@app/uttils";
 
 import { ANZAN_STEPS } from "../..";
+import { AnzanCore } from "@shared/core";
 
 type AnzanAnswerFormProps = {
   name: string;
   onAnswer: (answer: number) => void;
   setStep: (s: ANZAN_STEPS) => void;
   playersCount: number;
+  game: AnzanCore;
 };
 
 const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
   onAnswer,
   name,
   playersCount,
+  game: _game,
 }) => {
   const [answer, setAnswer] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,11 +41,13 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
     (e: any) => {
       e.preventDefault();
       onAnswer(Number(answer));
+  
     },
     [onAnswer, answer]
   );
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
+
   return (
     <Card className=" flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%]   ">
       <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
@@ -59,7 +64,7 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
           <Input
             type="number"
             placeholder="введите ответ"
-            className="input-bordered w-auto placeholder:text-[12px] font-bold text-center tracking-wider font-jura input-primary input-ghost text-[15px] h-auto p-2 "
+            className="input-bordered w-auto placeholder:text-[16px] font-bold text-center tracking-wider font-jura input-primary input-ghost text-[24px] h-auto p-2 "
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             ref={inputRef}

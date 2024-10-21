@@ -1,4 +1,4 @@
-import { AnzanConfig, OPERATIONS } from "@shared/core";
+import { AnzanConfig, AnzanCore, OPERATIONS } from "@shared/core";
 import { FC, useCallback, useEffect, useState } from "react";
 import {
   NumberDecrementStepper,
@@ -16,34 +16,32 @@ import anzanLogo from "@assets/newImg/Button-Anzan.png";
 const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const DEPTH_PLUS = [1, 2, 3, 4, 5, 6];
 const DEPTH_MINUS = [1, 2, 3, 4, 5, 6];
-export interface nzanHeadSettingFormProps {
+export interface AnzanHeadSettingFormProps {
   onSave: () => {};
   defaultSettings: {};
   onModalToggle: (isOpen: boolean) => void;
 }
 const AnzanHeadSettingForm: FC<{
   onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
-  defaultSettings: { config: AnzanConfig; playersCount: number };
+  setPlayerConfig: (config: AnzanConfig, idx: number) => void;
   onModalToggle: (isOpen: boolean) => void;
-}> = ({ onSave, defaultSettings, onModalToggle }) => {
+  games: AnzanCore[];
+  defaultConfig: AnzanConfig;
+  setAllConfigs: (config: AnzanConfig) => void
+}> = ({ onSave, onModalToggle, games, setPlayerConfig, defaultConfig, setAllConfigs }) => {
   // Устонавливаем значение по умолчанию
-  const [config, setConfig] = useState<AnzanConfig>(defaultSettings.config);
+  const [config, setConfig] = useState<AnzanConfig>(defaultConfig);
+
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [playersCount, setPlayersCount] = useState(
-    defaultSettings.playersCount
-  );
+  const [playersCount, setPlayersCount] = useState(games.length);
+
 
   useEffect(() => {
-    setConfig(defaultSettings.config);
-    setPlayersCount(defaultSettings.playersCount);
-  }, [defaultSettings, setConfig]);
-
-  useEffect(() => {
-    onSave({ config, playersCount });
-  }, [config, playersCount, onSave]);
+    setConfig(config);
+    onSave({ config: config, playersCount });
+  }, [playersCount, config]);
 
   const handlePlayerIncrement = () => {
     setPlayersCount((prevCount) => {
@@ -54,47 +52,78 @@ const AnzanHeadSettingForm: FC<{
         return prevCount;
       }
     });
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+        },
+        idx
+      );
+    });
   };
 
-  const handlePLayerDiccrement = () => {
+  const handlePLayerDiccrement = () => {    
     setPlayersCount((prevCount) => {
       const newCount = prevCount - 1;
-
       if (newCount >= 1) {
         return newCount;
       } else {
         return prevCount;
       }
     });
+    
   };
   const handleSpeedIncrement = () => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      speed: Math.round((prevConfig.speed + 0.1) * 10) / 10,
-    }));
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          speed: Math.max(Math.round((game.config.speed + 0.1) * 10) / 10, 0.1),
+        },
+        idx
+      );
+    });
+
+
   };
 
   const handleSpeedDecrement = () => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      speed: Math.max(Math.round((prevConfig.speed - 0.1) * 10) / 10, 0.1),
-    }));
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          speed: Math.max(Math.round((game.config.speed - 0.1) * 10) / 10, 0.1),
+        },
+        idx
+      );
+    });
+
   };
 
   const handleNumbersCountIncrement = () => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      numbersCount: prevConfig.numbersCount + 1 + 1,
-    }));
-    handleSaveConfig();
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          numbersCount: Math.max(game.config.numbersCount + 1, 1),
+        },
+        idx
+      );
+    });
+
   };
 
   const handleNumbersCountDecrement = () => {
-    setConfig((prevConfig) => ({
-      ...prevConfig,
-      numbersCount: Math.max(prevConfig.numbersCount - 1, 1),
-    }));
-    handleSaveConfig();
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          numbersCount: Math.max(game.config.numbersCount - 1, 1),
+        },
+        idx
+      );
+    });
+
   };
 
   const handleChangeSpeed = (speed: number) => {
@@ -165,7 +194,8 @@ const AnzanHeadSettingForm: FC<{
   };
 
   const handleSaveConfig = useCallback(() => {
-    onSave({ config, playersCount });
+    onSave({ config: config, playersCount });
+    setAllConfigs(config)
     handleCloseModal();
   }, [onSave, config, playersCount]);
 
@@ -183,39 +213,39 @@ const AnzanHeadSettingForm: FC<{
         </label>
         <div className="join mx-2 relative text-center">
           <div onClick={handlePLayerDiccrement} className="join-item btn">
-            «
+            -
           </div>
           <div className="absolute text-base-100 z-20  -top-4 w-full">
             Кол-во игроков
           </div>
           <div className="join-item btn">{playersCount}</div>
           <div onClick={handlePlayerIncrement} className="join-item btn">
-            »
+            +
           </div>
         </div>
 
         <div className="join mx-2 relative text-center">
           <div onClick={handleNumbersCountDecrement} className=" join-item btn">
-            «
+            -
           </div>
           <div className="absolute text-base-100 z-20 w-full -top-4">
             Кол-во действий
           </div>
-          <div className=" join-item btn">{config.numbersCount}</div>
+          <div className=" join-item btn"> 1 </div>
           <div onClick={handleNumbersCountIncrement} className=" join-item btn">
-            »
+            +
           </div>
         </div>
         <div className="join mx-2 relative text-center">
           <div onClick={handleSpeedDecrement} className=" join-item btn">
-            «
+            -
           </div>
           <div className="absolute text-base-100 z-20 w-full -top-4">
             Скорость
           </div>
-          <div className=" join-item btn">{config.speed}</div>
+          <div className=" join-item btn"> 0. 1 </div>
           <div onClick={handleSpeedIncrement} className=" join-item btn">
-            »
+            +
           </div>
         </div>
 
@@ -313,7 +343,10 @@ const AnzanHeadSettingForm: FC<{
                             key={num}
                             onClick={() => handleChangeUsedNumbersPlus(num)}
                           >
-                            <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
+                            <div
+                              className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                              style={{ backgroundSize: "56px 30px" }}
+                            >
                               {num}
                             </div>
                           </button>
@@ -340,19 +373,23 @@ const AnzanHeadSettingForm: FC<{
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
-                      {USED_NUMBERS_MINUS&&
+                      {USED_NUMBERS_MINUS &&
                         USED_NUMBERS_MINUS.map((num) => (
                           <button
                             type="button"
                             className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
-                              config.usedNumberPlus.includes(num)
+                              config.usedNumberMinus.includes(num)
                                 ? "text-base-100"
                                 : " text-neutral-900"
                             } `}
+                            disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
                             key={num}
                             onClick={() => handleChangeUsedNumbersMinus(num)}
                           >
-                            <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
+                            <div
+                              className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                              style={{ backgroundSize: "56px 30px" }}
+                            >
                               {num}
                             </div>
                           </button>
@@ -389,7 +426,10 @@ const AnzanHeadSettingForm: FC<{
                               : " text-neutral-900"
                           }`}
                         >
-                          <div className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "  style={{backgroundSize: "56px 30px"}}>
+                          <div
+                            className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
                             {cnt}
                           </div>
                         </button>
@@ -421,7 +461,10 @@ const AnzanHeadSettingForm: FC<{
                           key={depth}
                           onClick={() => handleChangeNumberDepthPlus(depth)}
                         >
-                          <div className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold " style={{backgroundSize: "56px 30px"}}>
+                          <div
+                            className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
                             {depth}
                           </div>
                         </button>
@@ -448,8 +491,12 @@ const AnzanHeadSettingForm: FC<{
                           }`}
                           key={depth}
                           onClick={() => handleChangeNumberDepthMinus(depth)}
+                          disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
                         >
-                          <div className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold" style={{backgroundSize: "56px 30px"}}>
+                          <div
+                            className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
                             {depth}
                           </div>
                         </button>

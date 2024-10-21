@@ -128,11 +128,6 @@ const MultiResult: FC<FuncProps> = ({
               <GiSettingsKnobs />
             </Button>
 
-            <Button className="btn-ghost text-xl">
-              <label>
-                <IoMdCheckmarkCircleOutline />
-              </label>
-            </Button>
           </div>
         </Card.Body>
         <Card.Title className="mx-auto pb-5 text-primary">

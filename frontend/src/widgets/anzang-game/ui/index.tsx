@@ -32,12 +32,13 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
   onChangeConfig,
   isSpeedEquals,
   autoAnswer,
+  index,
 }) => {
   const [step, setStep] = useState<ANZAN_STEPS>(ANZAN_STEPS.PREVIEW);
   const [userAnswer, setUserAnswer] = useState<number>(0);
   const [visible, setVisible] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
-  const [name, setName] = useState<string>(`Игрок`);
+  const [name, setName] = useState<string>(`Игрок ${index + 1}`);
   const [textToSpeachMuted, setTextToSpeachMuted] = useState(false);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
         setStep={setStep}
         playersCount={playersCount}
         game={game}
+        index={index}
       />
     ),
     [ANZAN_STEPS.COUNTER]: (
@@ -80,6 +82,7 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     ),
     [ANZAN_STEPS.ANSWER_FORM]: (
       <AnzanAnswerForm
+      game={game}
         playersCount={playersCount}
         name={name}
         setStep={setStep}
@@ -91,6 +94,9 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
     ),
     [ANZAN_STEPS.RESULT]: (
       <AnzanResult
+        onChangeConfig={(config) => {
+          onChangeConfig(config);
+        }}
         onSetVisible={setVisible}
         onStart={() => setStep(ANZAN_STEPS.COUNTER)}
         onSettings={() => setIsOpenSettings(true)}
