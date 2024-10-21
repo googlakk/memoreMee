@@ -1,0 +1,22 @@
+mutation updateUserScore($id: ID!, $score: Int!) {
+  updateUsersPermissionsUser(id: $id, data: { score: $score }) {
+    data {
+      attributes {
+        score
+      }
+    }
+  }
+}
+
+mutation CrateGameHistory($data: GameHistroryInput!) {
+  createGameHistrory(data: $data) {
+    data {
+      id
+      attributes {
+        result
+        isWin
+        score
+      }
+    }
+  }
+}

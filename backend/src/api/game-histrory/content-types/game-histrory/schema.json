@@ -24,6 +24,9 @@
     "isWin": {
       "type": "boolean"
     },
+    "score": {
+      "type": "integer"
+    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",

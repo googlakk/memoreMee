@@ -1,0 +1,575 @@
+import { AnzanConfig, AnzanCore, OPERATIONS } from "@shared/core";
+import { FC, useCallback, useEffect, useState } from "react";
+import {
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+} from "@chakra-ui/react";
+
+import { Button } from "react-daisyui";
+import { FiSettings } from "react-icons/fi";
+import { IconContext } from "react-icons";
+import anzanLogo from "@assets/newImg/Button-Anzan.png";
+
+const PLAYERS_COUNT = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const DEPTH_PLUS = [1, 2, 3, 4, 5, 6];
+const DEPTH_MINUS = [1, 2, 3, 4, 5, 6];
+export interface AnzanHeadSettingFormProps {
+  onSave: () => {};
+  defaultSettings: {};
+  onModalToggle: (isOpen: boolean) => void;
+}
+const AnzanHeadSettingForm: FC<{
+  onSave: (settings: { config: AnzanConfig; playersCount: number }) => void;
+  setPlayerConfig: (config: AnzanConfig, idx: number) => void;
+  onModalToggle: (isOpen: boolean) => void;
+  games: AnzanCore[];
+  defaultConfig: AnzanConfig;
+  setAllConfigs: (config: AnzanConfig) => void
+}> = ({ onSave, onModalToggle, games, setPlayerConfig, defaultConfig, setAllConfigs }) => {
+  // Устонавливаем значение по умолчанию
+  const [config, setConfig] = useState<AnzanConfig>(defaultConfig);
+
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [playersCount, setPlayersCount] = useState(games.length);
+
+
+  useEffect(() => {
+    setConfig(config);
+    onSave({ config: config, playersCount });
+  }, [playersCount, config]);
+
+  const handlePlayerIncrement = () => {
+    setPlayersCount((prevCount) => {
+      const newCount = prevCount + 1;
+      if (newCount <= 10) {
+        return newCount;
+      } else {
+        return prevCount;
+      }
+    });
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+        },
+        idx
+      );
+    });
+  };
+
+  const handlePLayerDiccrement = () => {    
+    setPlayersCount((prevCount) => {
+      const newCount = prevCount - 1;
+      if (newCount >= 1) {
+        return newCount;
+      } else {
+        return prevCount;
+      }
+    });
+    
+  };
+  const handleSpeedIncrement = () => {
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          speed: Math.max(Math.round((game.config.speed + 0.1) * 10) / 10, 0.1),
+        },
+        idx
+      );
+    });
+
+
+  };
+
+  const handleSpeedDecrement = () => {
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          speed: Math.max(Math.round((game.config.speed - 0.1) * 10) / 10, 0.1),
+        },
+        idx
+      );
+    });
+
+  };
+
+  const handleNumbersCountIncrement = () => {
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          numbersCount: Math.max(game.config.numbersCount + 1, 1),
+        },
+        idx
+      );
+    });
+
+  };
+
+  const handleNumbersCountDecrement = () => {
+    games.forEach((game, idx) => {
+      setPlayerConfig(
+        {
+          ...game.config,
+          numbersCount: Math.max(game.config.numbersCount - 1, 1),
+        },
+        idx
+      );
+    });
+
+  };
+
+  const handleChangeSpeed = (speed: number) => {
+    setConfig((prevConfig) => ({ ...prevConfig, speed }));
+  };
+  const handleChangeNumsCount = (numbersCount: number) => {
+    setConfig((prevConfig) => ({ ...prevConfig, numbersCount }));
+  };
+
+  const handleChangeUsedNumbersPlus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      usedNumberPlus: prevConfig.usedNumberPlus.includes(number)
+        ? prevConfig.usedNumberPlus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberPlus, number],
+    }));
+  };
+  const handleChangeUsedNumbersMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      usedNumberMinus: prevConfig.usedNumberMinus.includes(number)
+        ? prevConfig.usedNumberMinus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberMinus, number],
+    }));
+  };
+  const handleToggleAllNumbersPlus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberPlus.length === USED_NUMBERS_PLUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_PLUS];
+    setConfig({ ...config, usedNumberPlus: newUsedNumbers });
+  };
+  const handleToggleAllNumbersMinus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberMinus.length === USED_NUMBERS_MINUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_MINUS];
+    setConfig({ ...config, usedNumberMinus: newUsedNumbers });
+  };
+
+  const handleChangeNumberDepthPlus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthPlus: number,
+    }));
+  };
+  const handleChangeNumberDepthMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthMinus: number,
+    }));
+  };
+  const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      operations: operations,
+    }));
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    onModalToggle(true); // Pass true when opening the modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    onModalToggle(false); // Pass false when closing the modal
+  };
+
+  const handleSaveConfig = useCallback(() => {
+    onSave({ config: config, playersCount });
+    setAllConfigs(config)
+    handleCloseModal();
+  }, [onSave, config, playersCount]);
+
+  return (
+    <>
+      <div className="flex">
+        <label className="" htmlFor="settingsModal">
+          <IconContext.Provider
+            value={{ color: "black", className: "w-10 h-10" }}
+          >
+            <div className="btn" onClick={handleOpenModal}>
+              <FiSettings />
+            </div>
+          </IconContext.Provider>
+        </label>
+        <div className="join mx-2 relative text-center">
+          <div onClick={handlePLayerDiccrement} className="join-item btn">
+            -
+          </div>
+          <div className="absolute text-base-100 z-20  -top-4 w-full">
+            Кол-во игроков
+          </div>
+          <div className="join-item btn">{playersCount}</div>
+          <div onClick={handlePlayerIncrement} className="join-item btn">
+            +
+          </div>
+        </div>
+
+        <div className="join mx-2 relative text-center">
+          <div onClick={handleNumbersCountDecrement} className=" join-item btn">
+            -
+          </div>
+          <div className="absolute text-base-100 z-20 w-full -top-4">
+            Кол-во действий
+          </div>
+          <div className=" join-item btn"> 1 </div>
+          <div onClick={handleNumbersCountIncrement} className=" join-item btn">
+            +
+          </div>
+        </div>
+        <div className="join mx-2 relative text-center">
+          <div onClick={handleSpeedDecrement} className=" join-item btn">
+            -
+          </div>
+          <div className="absolute text-base-100 z-20 w-full -top-4">
+            Скорость
+          </div>
+          <div className=" join-item btn"> 0. 1 </div>
+          <div onClick={handleSpeedIncrement} className=" join-item btn">
+            +
+          </div>
+        </div>
+
+        <input
+          type="checkbox"
+          id="settingsModal"
+          className="modal-toggle"
+          checked={isModalOpen} // Use isModalOpen
+          onChange={() => {}} //
+        />
+        <div className="modal  ">
+          <div
+            className=" absolute w-[1300px] h-[560px]  bg-dialogBg bg-center bg-contain  bg-no-repeat  p-0 m-0  flex flex-col items-center justify-center min-l:w-[600px]"
+            style={{ backgroundSize: "1300px 500px" }}
+          >
+            <div className="modal-action absolute -top-2 w-56">
+              <img src={anzanLogo} alt="" />
+            </div>
+            <div className="flex px-5  flex-col items-center lg:gap-x-10 xl:gap-x-10 gap-x-2 ">
+              <div className=" flex justify-around w-full gap-x-0 mb-14">
+                {/*  1 block */}
+                <div className="flex flex-col items-center w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className=" bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className=" text-l font-bold text-[#ffff]  mr-0 ">
+                        Выберите действие
+                      </h1>
+                    </div>
+                    <div>
+                      <Button
+                        type="button"
+                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        onClick={() => handleChangeOperation([OPERATIONS.PLUS])}
+                        active={
+                          config.operations.length === 1 &&
+                          config.operations[0] === OPERATIONS.PLUS
+                        }
+                      >
+                        <div className=" w-full pb-1 bg-btnWideBg bg-contain bg-center bg-no-repeat ">
+                          +
+                        </div>
+                      </Button>
+                      <Button
+                        type="button"
+                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        active={
+                          config.operations.length === 1 &&
+                          config.operations[0] === OPERATIONS.MINUS
+                        }
+                        onClick={() =>
+                          handleChangeOperation([OPERATIONS.MINUS])
+                        }
+                      >
+                        <div className="w-full pb-1 bg-btnWideBg bg-contain bg-center bg-no-repeat">
+                          -
+                        </div>
+                      </Button>
+                      <Button
+                        type="button"
+                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        active={config.operations.length === 2}
+                        onClick={() =>
+                          handleChangeOperation([
+                            OPERATIONS.PLUS,
+                            OPERATIONS.MINUS,
+                          ])
+                        }
+                      >
+                        <div className="w-full pb-1 bg-btnWideBg bg-contain bg-center bg-no-repeat">
+                          + | -
+                        </div>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                {/*  2 block */}
+
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className=" text-l font-medium ">
+                        Используемые числа (+)
+                      </h1>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
+                      {USED_NUMBERS_PLUS &&
+                        USED_NUMBERS_PLUS.map((num) => (
+                          <button
+                            type="button"
+                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
+                              config.usedNumberPlus.includes(num)
+                                ? "text-base-100"
+                                : " text-neutral-900"
+                            } `}
+                            key={num}
+                            onClick={() => handleChangeUsedNumbersPlus(num)}
+                          >
+                            <div
+                              className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                              style={{ backgroundSize: "56px 30px" }}
+                            >
+                              {num}
+                            </div>
+                          </button>
+                        ))}
+                      <button
+                        className=" bg-transparent   flex items-start border-none p-0 h-fit w-12 m-0 gap-0 hover:bg-transparent "
+                        type="button"
+                        onClick={handleToggleAllNumbersPlus}
+                      >
+                        <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
+                          all
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {/*  3 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className=" text-l font-medium ">
+                        Используемые числа (-)
+                      </h1>
+                    </div>
+
+                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
+                      {USED_NUMBERS_MINUS &&
+                        USED_NUMBERS_MINUS.map((num) => (
+                          <button
+                            type="button"
+                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
+                              config.usedNumberMinus.includes(num)
+                                ? "text-base-100"
+                                : " text-neutral-900"
+                            } `}
+                            disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
+                            key={num}
+                            onClick={() => handleChangeUsedNumbersMinus(num)}
+                          >
+                            <div
+                              className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                              style={{ backgroundSize: "56px 30px" }}
+                            >
+                              {num}
+                            </div>
+                          </button>
+                        ))}
+                      <button
+                        className=" bg-transparent   flex items-start border-none p-0 h-fit w-12 m-0 gap-0 hover:bg-transparent "
+                        type="button"
+                        onClick={handleToggleAllNumbersMinus}
+                      >
+                        <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
+                          all
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {/*  4 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className=" text-l font-medium ">
+                        Количество игроков
+                      </h1>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-y-2 gap-x-1 p-0 m-0">
+                      {PLAYERS_COUNT.map((cnt) => (
+                        <button
+                          type="button"
+                          key={cnt}
+                          onClick={() => setPlayersCount(cnt)}
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                            playersCount === cnt
+                              ? "text-base-100"
+                              : " text-neutral-900"
+                          }`}
+                        >
+                          <div
+                            className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
+                            {cnt}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/*  2 row */}
+
+              <div className=" flex w-full ">
+                {/*  1 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className="text-l font-medium  ">
+                        Разрядность чисел (+)
+                      </h1>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
+                      {DEPTH_PLUS.map((depth) => (
+                        <button
+                          type="button"
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                            config.numberDepthPlus === depth
+                              ? `text-base-100`
+                              : `text-neutral-700`
+                          }`}
+                          key={depth}
+                          onClick={() => handleChangeNumberDepthPlus(depth)}
+                        >
+                          <div
+                            className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
+                            {depth}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/*  2 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className="text-l font-medium  ">
+                        Разрядность чисел (-)
+                      </h1>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
+                      {DEPTH_MINUS.map((depth) => (
+                        <button
+                          type="button"
+                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                            config.numberDepthMinus === depth
+                              ? `text-base-100`
+                              : `text-neutral-900`
+                          }`}
+                          key={depth}
+                          onClick={() => handleChangeNumberDepthMinus(depth)}
+                          disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
+                        >
+                          <div
+                            className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                            style={{ backgroundSize: "56px 30px" }}
+                          >
+                            {depth}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/*  3 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className="text-l font-medium ">Скорость</h1>
+                    </div>
+                    <div>
+                      <NumberInput
+                        className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                        onChange={(_, value) => handleChangeSpeed(value)}
+                        defaultValue={config.speed}
+                        step={0.1}
+                        clampValueOnBlur={false}
+                        key={config.speed}
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </div>
+                  </div>
+                </div>
+                {/*  4 block */}
+                <div className="flex flex-col items-center  w-[320px] h-40">
+                  <div className=" w-full h-40 flex flex-col row items-center bg-contain bg-no-repeat bg-center px-0 bg-miniDialogBg py-0 text-center">
+                    <div className="bg-btnLongBg bg-no-repeat bg-cover py-4 w-52 mb-3 text-center">
+                      <h1 className="text-l font-medium  ">
+                        Количество действий
+                      </h1>
+                    </div>
+                    <NumberInput
+                      className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                      onChange={(_, value) => handleChangeNumsCount(value)}
+                      defaultValue={config.numbersCount}
+                      clampValueOnBlur={false}
+                      key={config.numbersCount}
+                    >
+                      <NumberInputField />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </div>
+                </div>
+              </div>
+
+              {/*  3 row */}
+              <div className="modal-action absolute bottom-0">
+                <label
+                  htmlFor="settingsModal"
+                  className=" border-none bg-transparent cursor-pointer  py-8 w-60 text-center bg-btnLongBg bg-contain bg-no-repeat bg-center text-xl font-bold  "
+                  onClick={handleSaveConfig}
+                >
+                  Apply
+                </label>
+              </div>
+            </div>
+          </div>
+          <label htmlFor="settingsModal" className="modal-backdrop" />
+        </div>
+      </div>
+    </>
+  );
+};
+export default AnzanHeadSettingForm;

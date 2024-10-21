@@ -1,0 +1,313 @@
+import { AnzanConfig, OPERATIONS } from "@shared/core";
+import { Button, ButtonGroup } from "react-daisyui";
+import {
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+} from "@chakra-ui/react";
+import { useCallback, useEffect, useState } from "react";
+
+import { FaCheck } from "react-icons/fa";
+
+const USED_NUMBERS_PLUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const USED_NUMBERS_MINUS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const DEPTH_PLUS = [1, 2, 3, 4, 5, 6];
+const DEPTH_MINUS = [1, 2, 3, 4, 5, 6];
+
+export const AnzanGameSettings: React.FC<{
+  onSave: (config: AnzanConfig) => void;
+  defaultSettings: AnzanConfig;
+  open: boolean;
+  onCancel: () => void;
+  textToSpeachChecked: boolean;
+  onChangeChacked: () => void;
+  playersCount: number;
+}> = ({
+  onSave,
+  defaultSettings,
+  open,
+  onCancel,
+  textToSpeachChecked,
+  onChangeChacked,
+  playersCount,
+}) => {
+  // Устонавливаем значение по умолчанию
+  const [config, setConfig] = useState<AnzanConfig>(defaultSettings);
+
+  useEffect(() => {
+    setConfig(defaultSettings);
+  }, [defaultSettings]);
+
+  // Слущаетли событий
+  const handleChangeSpeed = (speed: number) => {
+    setConfig((prevConfig) => ({ ...prevConfig, speed }));
+  };
+  const handleChangeNumsCount = (numbersCount: number) => {
+    setConfig((prevConfig) => ({ ...prevConfig, numbersCount }));
+  };
+  const handleChangeUsedNumbersPlus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      usedNumberPlus: prevConfig.usedNumberPlus.includes(number)
+        ? prevConfig.usedNumberPlus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberPlus, number],
+    }));
+  };
+  const handleChangeUsedNumbersMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      usedNumberMinus: prevConfig.usedNumberMinus.includes(number)
+        ? prevConfig.usedNumberMinus.filter((num) => num !== number)
+        : [...prevConfig.usedNumberMinus, number],
+    }));
+  };
+  const handleToggleAllNumbersPlus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberPlus.length === USED_NUMBERS_PLUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_PLUS];
+    setConfig({ ...config, usedNumberPlus: newUsedNumbers });
+  };
+  const handleToggleAllNumbersMinus = () => {
+    // Если все числа уже активны, деактивируем их; иначе активируем все
+    const allNumbersActive =
+      config.usedNumberMinus.length === USED_NUMBERS_MINUS.length;
+    const newUsedNumbers = allNumbersActive ? [] : [...USED_NUMBERS_MINUS];
+    setConfig({ ...config, usedNumberMinus: newUsedNumbers });
+  };
+
+  const handleChangeNumberDepthPlus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthPlus: number,
+    }));
+  };
+  const handleChangeNumberDepthMinus = (number: number) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthMinus: number,
+    }));
+  };
+  const handleChangeOperation = (operations: AnzanConfig["operations"]) => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      operations: operations,
+    }));
+  };
+  const handleSaveConfig = useCallback(() => {
+    onSave(config);
+  }, [onSave, config]);
+
+  return (
+    <>
+      <input
+        type="checkbox"
+        id="settignsModal"
+        className="modal-toggle"
+        checked={open}
+      />
+      <div className="modal">
+        <div className="modal-box p-2 m-0 ">
+          <div className="flex   flex-col items-center lg:gap-x-10 xl:gap-x-10 gap-x-2 ">
+            <div className="w-full my-3 flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Выберите действие
+              </h1>
+              <ButtonGroup className="flex justify-center">
+                <Button
+                  type="button"
+                  className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                  onClick={() => handleChangeOperation([OPERATIONS.PLUS])}
+                  active={
+                    config.operations.length === 1 &&
+                    config.operations[0] === OPERATIONS.PLUS
+                  }
+                >
+                  +
+                </Button>
+                <Button
+                  type="button"
+                  className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                  active={
+                    config.operations.length === 1 &&
+                    config.operations[0] === OPERATIONS.MINUS
+                  }
+                  onClick={() => handleChangeOperation([OPERATIONS.MINUS])}
+                >
+                  -
+                </Button>
+                <Button
+                  type="button"
+                  className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                  active={config.operations.length === 2}
+                  onClick={() =>
+                    handleChangeOperation([OPERATIONS.PLUS, OPERATIONS.MINUS])
+                  }
+                >
+                  + | -
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Используемые числа (+)
+              </h1>
+              <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
+                {config.usedNumberPlus &&
+                  USED_NUMBERS_PLUS.map((num) => (
+                    <Button
+                      type="button"
+                      className={`${
+                        config.usedNumberPlus.includes(num)
+                          ? "bg-primary text-base-100"
+                          : " text-neutral-900"
+                      } `}
+                      key={num}
+                      onClick={() => handleChangeUsedNumbersPlus(num)}
+                      active={config.usedNumberPlus.includes(num)}
+                    >
+                      {num}
+                    </Button>
+                  ))}
+                <Button type="button" onClick={handleToggleAllNumbersPlus}>
+                  <FaCheck />
+                </Button>
+              </div>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Используемые числа (-)
+              </h1>
+              <div className="flex flex-wrap justify-center gap-x-2 lg:gap-y-2">
+                {config.usedNumberMinus &&
+                  USED_NUMBERS_MINUS.map((num) => (
+                    <Button
+                      type="button"
+                      className={`${
+                        config.usedNumberMinus.includes(num)
+                          ? "bg-primary text-base-100"
+                          : " text-neutral-900"
+                      } `}
+                      key={num}
+                      onClick={() => handleChangeUsedNumbersMinus(num)}
+                      active={config.usedNumberMinus.includes(num)}
+                    >
+                      {num}
+                    </Button>
+                  ))}
+                <Button type="button" onClick={handleToggleAllNumbersMinus}>
+                  <FaCheck />
+                </Button>
+              </div>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
+                Разрядность чисел (+)
+              </h1>
+              <ButtonGroup>
+                {DEPTH_PLUS.map((depth) => (
+                  <Button
+                    type="button"
+                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                    key={depth}
+                    onClick={() => handleChangeNumberDepthPlus(depth)}
+                    active={config.numberDepthPlus === depth}
+                  >
+                    {depth}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0 ">
+                Разрядность чисел (-)
+              </h1>
+              <ButtonGroup>
+                {DEPTH_MINUS.map((depth) => (
+                  <Button
+                    type="button"
+                    className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                    key={depth}
+                    onClick={() => handleChangeNumberDepthMinus(depth)}
+                    active={config.numberDepthMinus === depth}
+                  >
+                    {depth}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
+            <div className="my-3 w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className="text-l font-medium lg:mr-10 xl:mr-10 mr-0">
+                Скорость
+              </h1>
+              <NumberInput
+                className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                onChange={(_, value) => handleChangeSpeed(value)}
+                defaultValue={config.speed}
+                step={0.1}
+                clampValueOnBlur={false}
+                key={config.speed}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </div>
+            <div className="my-3  w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0  ">
+                Количество действий
+              </h1>
+              <NumberInput
+                className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
+                onChange={(_, value) => handleChangeNumsCount(value)}
+                defaultValue={config.numbersCount}
+                clampValueOnBlur={false}
+                key={config.numbersCount}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </div>
+            <div className="my-3  w-full flex flex-col lg:flex-row xl:flex-row justify-between items-center">
+              <h1 className=" text-l font-medium lg:mr-10 xl:mr-10 mr-0  ">
+                Голосовое сопровождение
+              </h1>
+              <div className="form-control">
+                <label className="cursor-pointer label">
+                  <input
+                    type="checkbox"
+                    checked={textToSpeachChecked}
+                    onChange={onChangeChacked}
+                    className="checkbox checkbox-primary"
+                    disabled={playersCount >= 2 ? true : false}
+                  />
+                </label>
+              </div>
+            </div>
+            <Button
+              type="button"
+              className="bg-accent mx-auto"
+              onClick={handleSaveConfig}
+            >
+              Сохранить
+            </Button>
+          </div>
+        </div>
+        <label
+          className="modal-backdrop"
+          htmlFor="settignsModal"
+          onClick={onCancel}
+        >
+          Close
+        </label>
+      </div>
+    </>
+  );
+};

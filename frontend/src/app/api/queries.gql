@@ -1,0 +1,60 @@
+query CurrentUser {
+  me {
+    id
+    username
+    email
+    confirmed
+    blocked
+    role {
+      id
+      name
+      type
+      description
+    }
+  }
+}
+
+query GetGameHistory($userID: ID) {
+  gameHistrories(filters: { user: { id: { eq: $userID } } }) {
+    data {
+      id
+      attributes {
+        publishedAt
+        result
+        game {
+          data {
+            id
+            attributes {
+              name
+              createdAt
+            }
+          }
+        }
+        isWin
+        score
+      }
+    }
+  }
+}
+
+query GetAllGameStories {
+  gameHistrories {
+    data {
+      id
+      attributes {
+        result
+        game {
+          data {
+            id
+            attributes {
+              name
+              createdAt
+            }
+          }
+        }
+        isWin
+        score
+      }
+    }
+  }
+}

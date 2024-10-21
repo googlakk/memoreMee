@@ -1,0 +1,79 @@
+query Me {
+  me {
+    id
+    email
+  }
+}
+
+query getTeachers {
+  usersPermissionsUsers(
+    filters: { role: { id: { eq: 1 } }, school: { id: { eq: 1 } } }
+  ) {
+    data {
+      id
+      attributes {
+        email
+        score
+        username
+        last_name
+        first_name
+        avatar
+        students {
+          data {
+            id
+            attributes {
+              username
+              score
+              email
+            }
+          }
+        }
+      }
+    }
+  }
+}
+query getStudents {
+  usersPermissionsUsers(
+    filters: { role: { id: { eq: 2 } }, school: { id: { eq: 1 } } }
+  ) {
+    data {
+      id
+      attributes {
+        email
+        score
+        avatar
+        username
+        last_name
+        first_name
+        teacher {
+          data {
+            id
+            attributes {
+              first_name
+              last_name
+            }
+          }
+        }
+        role {
+          data {
+            id
+            attributes {
+              name
+            }
+          }
+        }
+        game_histrories {
+          data {
+            id
+            attributes {
+              result
+              isWin
+              createdAt
+              score
+            }
+          }
+        }
+      }
+    }
+  }
+}

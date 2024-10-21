@@ -19,6 +19,8 @@ export default defineConfig({
       "@entities": path.resolve(__dirname, "src/entities"),
       // shared layer
       "@shared": path.resolve(__dirname, "src/shared"),
+      // assets layer
+      "@assets": path.resolve(__dirname, "public/"),
     },
   },
 });
