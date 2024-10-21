@@ -14,7 +14,7 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
 import cn from "clsx";
-import { url } from "inspector";
+
 import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
@@ -153,44 +153,44 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 1 && "lg:text-3xl md::text-3xl text-xl",
     playersCount === 2 && "text-3xl",
     playersCount === 3 && "text-[22px]",
-    playersCount === 4 && "text-2xl",
-    playersCount === 5 && "text-xl",
-    playersCount === 6 && "text-xl",
-    playersCount === 7 && "text-xl",
-    playersCount === 8 && "text-[18px]",
+    playersCount === 4 && "text-[18px]",
+    playersCount === 5 && "text-[18px]",
+    playersCount === 6 && "text-[18px]",
+    playersCount === 7 && "text-[17px]",
+    playersCount === 8 && "text-[17px]",
     playersCount === 9 && "text-[16px]",
-    playersCount === 10 && "text-[16px]"
+    playersCount === 10 && "text-[14px]"
   );
   const classFontSizeNumber = cn(
     "font-jura font-bold text-center",
     playersCount === 1 && "lg:text-7xl md::text-7xl text-4xl ",
     playersCount === 2 && "text-5xl",
     playersCount === 3 && "text-5xl",
-    playersCount === 4 && "text-4xl",
-    playersCount === 5 && "text-4xl",
-    playersCount === 6 && "text-4xl",
-    playersCount === 7 && "text-4xl",
-    playersCount === 8 && "text-[32px]",
-    playersCount === 9 && "text-[32px]",
-    playersCount === 10 && "text-[32px]"
+    playersCount === 4 && "text-2xl",
+    playersCount === 5 && "text-2xl",
+    playersCount === 6 && "text-2xl",
+    playersCount === 7 && "text-2xl",
+    playersCount === 8 && "text-[20px]",
+    playersCount === 9 && "text-[18px]",
+    playersCount === 10 && "text-[18px]"
   );
 
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
   return (
     <>
-      <Card className="rounded-3xl flex flex-col items-center   p-0 card w-[100%]    text-base-100">
+      <Card className="rounded-3xl flex flex-col items-center  p-0 card w-[100%]    text-base-100">
         <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
           <div className="grid w-64 rounded-xl place-items-center">{name}</div>
         </Card.Title>
         <Card.Body
-          className={`w-full  p-0 card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
+          className={`w-full relative p-0 card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
           style={{ backgroundSize: backgroundSize }}
         >
-          <div className="w-fit  bg-center  absolute top-12">
-            <div className="h-12 w-48 flex justify-between items-start gap-x-9">
+          <div className="w-fit  absolute top-0">
+            <div className="h-12 w-56 flex justify-between items-start gap-x-9">
               <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center text-center ">
-                <label className="absolute  -bottom-1 text-primary text-[12px]">
+                <label className="absolute  -top-1 text-base-100 font-semibold text-[12px]">
                   Скорость
                 </label>
                 <Button
@@ -214,7 +214,7 @@ const AnzanResult: FC<FuncProps> = ({
               </div>
 
               <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center">
-                <label className="absolute -bottom-1 text-[12px] text-primary w-full">
+                <label className="absolute -top-1 text-[12px] font-semibold text-base-100 w-full">
                   Кол-во действий
                 </label>
                 <Button
@@ -238,9 +238,9 @@ const AnzanResult: FC<FuncProps> = ({
               </div>
             </div>
           </div>
-          <div className="flex justify-center w-full h-fit relative">
+          <div className="flex justify-center w-full h-fit relative  mt-6">
             <div className={""}>
-              <div className="flex flex-col items-center justify-center mb-5 text-primary">
+              <div className="flex flex-col items-center justify-center mb-0 text-primary">
                 <div
                   className={`${
                     isOpenResult
@@ -270,7 +270,7 @@ const AnzanResult: FC<FuncProps> = ({
                   {game.getAnswer()}
                 </h1>
 
-                <div className="text-3xl ">
+                <div className="text-xl sLaptop:text-sm ">
                   {game.getAnswer() == userAnwer ? (
                     <FaEquals className="text-[#16a34a]" />
                   ) : (
@@ -297,11 +297,13 @@ const AnzanResult: FC<FuncProps> = ({
                 }}
               >
                 {userAnwer == game.getAnswer() ? (
-                  `${name}, молодец!`
+                  <>
+                 { `${name}, молодец!`} <br></br>
+                 <span className=" text-xl">{points}</span>
+                  </>
                 ) : (
                   <>
-                    {`Плаки - плаки...`}
-                    <br />
+                 
                     {"Ошибочка - бывает. Попробуй еще"}
                     <div
                       className=" text-primary text-center font-jura font-light  text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"
@@ -318,7 +320,7 @@ const AnzanResult: FC<FuncProps> = ({
             </div>
           </div>
 
-          <div className="w-fit bg-btnLongBg bg-contain bg-no-repeat bg-center  absolute bottom-0 ">
+          <div className="w-fit bg-btnLongBg bg-contain bg-no-repeat bg-center  absolute -bottom-2 ">
             <div className="h-12 w-48 flex justify-around items-start">
               <Button
                 className="btn bg-transparent border-none hover:bg-transparent hover:border-none text-xl hover:text-base-100"

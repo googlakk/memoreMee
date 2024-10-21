@@ -4,6 +4,7 @@ import { reSizes, toggleBackgroundImage } from "@app/uttils";
 
 import { ANZAN_STEPS } from "../..";
 import { AnzanCore } from "@shared/core";
+import { FaCheck } from "react-icons/fa6";
 
 type AnzanAnswerFormProps = {
   name: string;
@@ -64,17 +65,17 @@ const AnzanAnswerForm: FC<AnzanAnswerFormProps> = ({
           <Input
             type="number"
             placeholder="введите ответ"
-            className="input-bordered w-auto placeholder:text-[16px] font-bold text-center tracking-wider font-jura input-primary input-ghost text-[24px] h-auto p-2 "
+            className="input-bordered w-[80%] placeholder:text-[16px] font-bold text-center tracking-wider font-jura input-primary input-ghost text-[24px] h-auto p-2 "
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
             ref={inputRef}
           />
 
           <Button
-            className="mt-5 btn-outline hover:bg-primary p-3 text-[10px]"
+            className="btn btn-ghost bg-transparent bg-btnWideBg bg-contain bg-no-repeat bg-center hover:bg-transparent  "
             type="submit"
           >
-            Готово
+            <FaCheck className=" w-8 font-bold text-xl text-[#CA1028]" />
           </Button>
         </Form>
       </Card.Body>

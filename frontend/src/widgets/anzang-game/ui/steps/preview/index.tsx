@@ -72,7 +72,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
   return (
     <Card className="rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0  ">
       <div
-        className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full    mx-0  `}
+        className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full  mx-0  `}
       >
         <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
           <div className="grid w-64 rounded-xl place-items-center">
@@ -93,7 +93,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
           }}
         >
           <Button
-            className=" border-none bg-transparent text-xl px-2 rounded-xl w-32 mb-5 hover:bg-transparent"
+            className=" border-none bg-transparent text-xl px-2 rounded-xl w-28 mb-5 hover:bg-transparent"
             onClick={() => onStart()}
           >
             <img src={btnStart} alt="" />
@@ -102,7 +102,7 @@ export const AnzanGamePreview: React.FC<FuncProps> = ({
             className="btn btn-ghost bg-transparent bg-btnWideBg bg-contain bg-no-repeat bg-center hover:bg-transparent  "
             onClick={() => onSettings()}
           >
-            <MdSettingsSuggest className="w-10  text-[#CA1028] text-[20px]" />
+            <MdSettingsSuggest className="w-8  text-[#CA1028] text-[20px]" />
           </Button>
         </Card.Body>
       </div>
