@@ -1,3 +1,5 @@
+import { AnzanConfig, AnzanCore } from "@shared/core";
+import { Button, Card } from "react-daisyui";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { FaEquals, FaNotEqual } from "react-icons/fa";
 import { reSizes, toggleBackgroundImage } from "@app/uttils";
@@ -7,10 +9,12 @@ import {
 } from "@app/api/mutations.gen";
 
 import { ANZAN_STEPS } from "../..";
-import { AnzanCore } from "@shared/core";
-import { Card } from "react-daisyui";
 import { FaArrowDown } from "react-icons/fa6";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdRestartAlt } from "react-icons/md";
 import cn from "clsx";
+import { url } from "inspector";
 import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
@@ -24,27 +28,30 @@ interface FuncProps {
   playersCount: number;
   setStep: (s: ANZAN_STEPS) => void;
   setName: (s: string) => void;
+  onChangeConfig: (config: AnzanConfig) => void;
 }
 
 const AnzanResult: FC<FuncProps> = ({
   userAnwer,
-  
+  onSettings,
+  onSetVisible,
   name,
   game: _game,
   playersCount,
   setStep,
   setName,
+  onStart,
+  onChangeConfig,
 }) => {
-
-
   const { user } = useAuthContext();
 
   const [createGameHistory] = useCrateGameHistoryMutation();
   const [upaateUserScore] = useUpdateUserScoreMutation();
-  const [,setPoints] = useState<number>(0);
-  const [isOpenResult] = useState(false);
-  const game = useMemo(() => _game, []);
+  const [points, setPoints] = useState<number>(0);
+  const [isOpenResult, setIsOpenResult] = useState(false);
+  const [config, setConfig] = useState<AnzanConfig>(_game.config);
 
+  const game = useMemo(() => _game, []);
 
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
@@ -70,9 +77,10 @@ const AnzanResult: FC<FuncProps> = ({
       game.incrementScore();
       setPoints(game.getScore());
     } else {
+      setPoints(game.getScore());
       SoundWrong.play();
     }
-  }, []);
+  }, [userAnwer, game]);
 
   useEffect(() => {
     if (!user || playersCount > 1) return;
@@ -106,7 +114,40 @@ const AnzanResult: FC<FuncProps> = ({
     volume: 0.3,
     rate: 1.5,
   });
-
+  const handleOpenResult = () => {
+    setIsOpenResult(!isOpenResult);
+  };
+  const OpenSettings = () => {
+    onSettings();
+    onSetVisible(false);
+  };
+  const handleSpeedIncrement = () => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      speed: Math.max(Math.round((prevConfig.speed + 0.1) * 10) / 10, 0.1),
+    }));
+  };
+  const handleSpeedDecrement = () => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      speed: Math.max(Math.round((prevConfig.speed - 0.1) * 10) / 10, 0.1),
+    }));
+  };
+  const handleNumberCountPlus = () => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numbersCount: prevConfig.numbersCount + 1,
+    }));
+  };
+  const handleNumberCountMinus = () => {
+    setConfig((prevConfig) => ({
+      ...prevConfig,
+      numberDepthMinus: prevConfig.numbersCount - 1,
+    }));
+  };
+  useEffect(() => {
+    onChangeConfig(config);
+  }, [config]);
   const classFontSizeText = cn(
     "font-jura font-light text-center",
     playersCount === 1 && "lg:text-3xl md::text-3xl text-xl",
@@ -116,8 +157,9 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 5 && "text-xl",
     playersCount === 6 && "text-xl",
     playersCount === 7 && "text-xl",
-    playersCount === 8 && "text-[14px]",
-    playersCount === 9 && "text-[12px]"
+    playersCount === 8 && "text-[18px]",
+    playersCount === 9 && "text-[16px]",
+    playersCount === 10 && "text-[16px]"
   );
   const classFontSizeNumber = cn(
     "font-jura font-bold text-center",
@@ -129,25 +171,15 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 6 && "text-4xl",
     playersCount === 7 && "text-4xl",
     playersCount === 8 && "text-[32px]",
-    playersCount === 9 && "text-[32px]"
+    playersCount === 9 && "text-[32px]",
+    playersCount === 10 && "text-[32px]"
   );
-  // const classPosition = cn(
-  //   "flex flex-col items-center  ",
-  //   playersCount === 1 && "justify-center",
-  //   playersCount === 2 && "justify-center",
-  //   playersCount === 3 && "justify-center",
-  //   playersCount === 4 && "justify-center",
-  //   playersCount === 5 && "absolute top-0",
-  //   playersCount === 6 && "absolute top-0",
-  //   playersCount === 7 && "absolute top-0",
-  //   playersCount === 8 && "absolute top-0",
-  //   playersCount === 9 && "absolute top-0"
-  // );
+
   const backgroundSize = reSizes(playersCount);
   const backgroundImage = toggleBackgroundImage(playersCount);
   return (
     <>
-      <Card className="rounded-3xl flex flex-col items-center   p-0 card w-[100%] s   text-base-100">
+      <Card className="rounded-3xl flex flex-col items-center   p-0 card w-[100%]    text-base-100">
         <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
           <div className="grid w-64 rounded-xl place-items-center">{name}</div>
         </Card.Title>
@@ -155,7 +187,58 @@ const AnzanResult: FC<FuncProps> = ({
           className={`w-full  p-0 card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
           style={{ backgroundSize: backgroundSize }}
         >
-          <div className="flex justify-center w-full h-fit">
+          <div className="w-fit  bg-center  absolute top-12">
+            <div className="h-12 w-48 flex justify-between items-start gap-x-9">
+              <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center text-center ">
+                <label className="absolute  -bottom-1 text-primary text-[12px]">
+                  Скорость
+                </label>
+                <Button
+                  className=" border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
+                  onClick={handleSpeedIncrement}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <span className=" bg-center w-4 font-bold ">{`+`}</span>
+                </Button>
+                <Button
+                  className=" border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
+                  onClick={handleSpeedDecrement}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <span className=" bg-center w-4  ">{`-`}</span>
+                </Button>
+              </div>
+
+              <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center">
+                <label className="absolute -bottom-1 text-[12px] text-primary w-full">
+                  Кол-во действий
+                </label>
+                <Button
+                  className="  border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
+                  onClick={handleNumberCountPlus}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <span className=" bg-center w-4  ">{`+`}</span>
+                </Button>
+                <Button
+                  className=" border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
+                  onClick={handleNumberCountMinus}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <span className=" bg-center w-4  ">{`-`}</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center w-full h-fit relative">
             <div className={""}>
               <div className="flex flex-col items-center justify-center mb-5 text-primary">
                 <div
@@ -176,28 +259,48 @@ const AnzanResult: FC<FuncProps> = ({
                   </div>
                   <FaArrowDown />
                 </div>
-                <h1 className={classFontSizeNumber}>{game.getAnswer()}</h1>
+                <h1
+                  className={classFontSizeNumber}
+                  style={{
+                    color: `${
+                      game.getAnswer() == userAnwer ? `#16a34a` : `#991b1b`
+                    }`,
+                  }}
+                >
+                  {game.getAnswer()}
+                </h1>
 
                 <div className="text-3xl ">
                   {game.getAnswer() == userAnwer ? (
-                    <FaEquals />
+                    <FaEquals className="text-[#16a34a]" />
                   ) : (
-                    <FaNotEqual />
+                    <FaNotEqual className="text-[#991b1b]" />
                   )}
                 </div>
-                <h1 className={classFontSizeNumber}>{userAnwer}</h1>
+                <h1
+                  className={classFontSizeNumber}
+                  style={{
+                    color: `${
+                      game.getAnswer() == userAnwer ? `#16a34a` : `#991b1b`
+                    }`,
+                  }}
+                >
+                  {userAnwer}
+                </h1>
               </div>
               <div
                 className={classFontSizeText}
                 style={{
-                  color: `${game.getAnswer() == userAnwer ? `green` : `black`}`,
+                  color: `${
+                    game.getAnswer() == userAnwer ? `#064e3b` : `#991b1b`
+                  }`,
                 }}
               >
                 {userAnwer == game.getAnswer() ? (
                   `${name}, молодец!`
                 ) : (
                   <>
-                    {`Ой-ой!`}
+                    {`Плаки - плаки...`}
                     <br />
                     {"Ошибочка - бывает. Попробуй еще"}
                     <div
@@ -206,7 +309,8 @@ const AnzanResult: FC<FuncProps> = ({
                       onBlur={handleNameChange}
                       suppressContentEditableWarning={true}
                     >
-                      {name}
+                      {name} <br></br>
+                      <span className=" text-xl">{points}</span>
                     </div>
                   </>
                 )}
@@ -214,31 +318,33 @@ const AnzanResult: FC<FuncProps> = ({
             </div>
           </div>
 
-          {/* <div className=" bg-primary rounded-xl absolute right-0 top-0 flex-col   flex justify-around ">
-            <Button className="  btn-ghost text-xl" onClick={() => onStart()}>
-              <MdRestartAlt />
-            </Button>
-            <Button
-              className="   btn-ghost text-xl"
-              onClick={() => clickListner()}
-            >
-              <GiSettingsKnobs />
-            </Button>
-
-            <Button onClick={handleOpenResult} className="btn-ghost text-xl">
-              <label>
+          <div className="w-fit bg-btnLongBg bg-contain bg-no-repeat bg-center  absolute bottom-0 ">
+            <div className="h-12 w-48 flex justify-around items-start">
+              <Button
+                className="btn bg-transparent border-none hover:bg-transparent hover:border-none text-xl hover:text-base-100"
+                onClick={() => onStart()}
+              >
+                <MdRestartAlt />
+              </Button>
+              <Button
+                className="btn bg-transparent border-none hover:bg-transparent hover:border-none text-xl hover:text-base-100"
+                onClick={() => OpenSettings()}
+              >
+                <GiSettingsKnobs />
+              </Button>
+              <Button
+                onClick={handleOpenResult}
+                className=" btn bg-transparent border-none hover:bg-transparent hover:border-none text-xl hover:text-base-100"
+              >
                 <IoMdCheckmarkCircleOutline />
-              </label>
-            </Button>
+              </Button>
+            </div>
           </div>
 
           <div className=" absolute left-0 top-0 bg-primary mask mask-squircle p-2 m-0 flex justify-center items-center">
-            <div className={classFontSizeNumber}>
-              {game.getAnswer() === userAnwer ? points : game.getScore()}
-            </div>
-          </div> */}
+            <div className={classFontSizeNumber}></div>
+          </div>
         </Card.Body>
-        <Card.Title className="mx-auto pb-5"></Card.Title>
       </Card>
     </>
   );

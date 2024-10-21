@@ -43,6 +43,7 @@ export class AnzanCore {
   setAnswer(newAnswer: number) {
     this.answer = newAnswer;
   }
+
   generateNumber(): number {
     const { operations, numberDepthPlus, numberDepthMinus } = this.config;
 
@@ -63,9 +64,7 @@ export class AnzanCore {
       while (0 > this.answer + number) {
         const operation = operations[random(operations.length)];
         const numberDepth =
-          operation === OPERATIONS.MINUS
-            ? numberDepthMinus
-            : numberDepthPlus;
+          operation === OPERATIONS.MINUS ? numberDepthMinus : numberDepthPlus;
         const numbers = new Array(numberDepth).fill(0).map((_) => {
           let newUsedNumbers: number[] =
             operation === OPERATIONS.MINUS
@@ -74,12 +73,14 @@ export class AnzanCore {
 
           return newUsedNumbers[random(newUsedNumbers.length)];
         });
+        
         number = Number.parseInt(`${operation}${numbers.join("")}`);
       }
     }
     this.answer = this.answer + number;
     return number;
   }
+
   generateNumbers() {
     this.resetAnswer();
     this.numbers = new Array(this.config.numbersCount).fill(null).map(() => {
@@ -162,7 +163,7 @@ export class AnzanGameManager {
     return this.games.map((game) => game.getAnswer());
   }
   getScore() {
-    return this.games.map((game) => game.getScore);
+    return this.games.map((game) => game.getScore());
   }
   subscribe(cb: () => void) {
     this.subscribers.push(cb);

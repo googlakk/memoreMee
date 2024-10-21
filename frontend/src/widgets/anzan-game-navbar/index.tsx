@@ -1,7 +1,8 @@
-import { AnzanConfig } from "@shared/core";
+import { AnzanConfig, AnzanCore } from "@shared/core";
+import { FC, useEffect } from "react";
+
 import AnzanHeadSettingForm from "@widgets/anzan-headerSetting-modal";
 import { Button } from "react-daisyui";
-import { FC } from "react";
 
 export interface ToolbarProps {
   onStartClick: () => void;
@@ -11,16 +12,21 @@ export interface ToolbarProps {
     playersCount: number;
   }) => void;
   onOpenAnswersClick: () => void;
-  config: AnzanConfig;
+  setPlayerConfig: (config: AnzanConfig, idx: number) => void;
   playersCount: number;
+  games: AnzanCore[];
+  defaultConfig: AnzanConfig;
+  setAllConfigs: (config: AnzanConfig) => void;
 }
 const AnzanGameNavbar: FC<ToolbarProps> = ({
   onStartClick,
   onSettingsSave,
   onOpenAnswersClick,
-  config,
-  playersCount,
   onModalToggle,
+  games,
+  setPlayerConfig,
+  defaultConfig,
+  setAllConfigs
 }) => {
   return (
     <>
@@ -35,6 +41,9 @@ const AnzanGameNavbar: FC<ToolbarProps> = ({
           className={`w-5  bg-transparent text-base-100 hover:text-neutral-900 text-xs `}
         >
           <AnzanHeadSettingForm
+            setAllConfigs={setAllConfigs}
+            defaultConfig={defaultConfig}
+            setPlayerConfig={setPlayerConfig}
             onModalToggle={onModalToggle}
             onSave={(settings) => {
               onSettingsSave({
@@ -42,7 +51,7 @@ const AnzanGameNavbar: FC<ToolbarProps> = ({
                 playersCount: settings.playersCount,
               });
             }}
-            defaultSettings={{ config, playersCount }}
+            games={games}
           />
         </div>
 
