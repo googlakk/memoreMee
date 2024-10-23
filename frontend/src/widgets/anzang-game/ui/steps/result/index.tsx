@@ -197,7 +197,7 @@ const AnzanResult: FC<FuncProps> = ({
           <div className="grid w-64 rounded-xl place-items-center">{name}</div>
         </Card.Title>
         <Card.Body
-          className={`w-full relative p-0 card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
+          className={`w-full relative px-0  card-body flex justify-center items-center ${backgroundImage} bg-no-repeat bg-center`}
           style={{ backgroundSize: backgroundSize }}
         >
           <div className="w-fit  absolute top-0">
