@@ -1,8 +1,8 @@
 import { AnzanConfig, AnzanCore } from "@shared/core";
-import { FC, useEffect } from "react";
 
 import AnzanHeadSettingForm from "@widgets/anzan-headerSetting-modal";
 import { Button } from "react-daisyui";
+import { FC } from "react";
 
 export interface ToolbarProps {
   onStartClick: () => void;

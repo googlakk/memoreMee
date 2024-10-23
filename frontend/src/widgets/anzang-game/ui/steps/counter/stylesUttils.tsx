@@ -40,7 +40,7 @@ export const getClassFontSizeNumber = (
       `text-[80px] lg:text-[130px] l:text-[110px] md:[110px] sm:text-[100px]`,
     Numlenght <= 3 &&
       playersCount === 4 &&
-      `text-[100px] lg:text-[180px] l:text-[150px] md:[160px] sm:text-[120px]`,
+      `text-[90px] lg:text-[150px] l:text-[150px] md:[160px] sm:text-[120px]`,
     Numlenght >= 4 &&
       playersCount === 4 &&
       `text-[90px] lg:text-[140px] l:text-[110px] md:[120px] sm:text-[100px]`,
@@ -84,21 +84,3 @@ export const getClassFontSizeNumber = (
   return classFontSizeNumber;
 };
 
-// const BASE_SIZE = 200; // Базовый размер шрифта
-// const MIN_SIZE = 50; // Минимальный размер шрифта
-// const PLAYER_FACTOR = 10; // Фактор уменьшения на количество игроков
-// const NUM_LENGTH_FACTOR = 20; // Фактор уменьшения на длину числа
-
-// export const getClassFontSizeNumber = (
-//   Numlenght: number,
-//   playersCount: number
-// ) => {
-//   // Вычисляем размер шрифта на основе длины числа и количества игроков
-//   let fontSize =
-//     BASE_SIZE - playersCount * PLAYER_FACTOR - Numlenght * NUM_LENGTH_FACTOR;
-
-//   // Ограничиваем размер шрифта минимальным значением
-//   fontSize = Math.max(fontSize, MIN_SIZE);
-
-//   return `font-jura font-bold p-0 m-0 text-center text-base-100 text-[${fontSize}px]`;
-// };

@@ -34,7 +34,7 @@ export class AnzanCore {
     this.score = newScore;
   }
   incrementScore() {
-    this.score += 10;
+    this.score = this.score + 10;
   }
   setCofign(config: AnzanConfig) {
     this.config = config;

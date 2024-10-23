@@ -24,16 +24,13 @@ export const usePlayerConfigs = (defaultConfig: AnzanConfig, initialCount: numbe
     setConfigs((prevConfigs) => [...prevConfigs, defaultConfig]);
   };
 
-  const handlePlayerDecrement = () => {
-    setPlayersCount((prevCount) => Math.max(prevCount - 1, 1));
-    setConfigs((prevConfigs) => prevConfigs.slice(0, Math.max(prevCount - 1, 1)));
-  };
+
 
   return {
     configs,
     playersCount,
     updateConfigAtIndex,
     handlePlayerIncrement,
-    handlePlayerDecrement,
+   
   };
 };

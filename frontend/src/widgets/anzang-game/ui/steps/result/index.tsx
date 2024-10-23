@@ -14,7 +14,6 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
 import cn from "clsx";
-
 import { useAuthContext } from "@app/hooks";
 
 interface FuncProps {
@@ -29,6 +28,8 @@ interface FuncProps {
   setStep: (s: ANZAN_STEPS) => void;
   setName: (s: string) => void;
   onChangeConfig: (config: AnzanConfig) => void;
+  points: number,
+  setPoints:  React.Dispatch<React.SetStateAction<number>>
 }
 
 const AnzanResult: FC<FuncProps> = ({
@@ -42,12 +43,14 @@ const AnzanResult: FC<FuncProps> = ({
   setName,
   onStart,
   onChangeConfig,
+  points,
+  setPoints
 }) => {
   const { user } = useAuthContext();
 
   const [createGameHistory] = useCrateGameHistoryMutation();
   const [upaateUserScore] = useUpdateUserScoreMutation();
-  const [points, setPoints] = useState<number>(0);
+  
   const [isOpenResult, setIsOpenResult] = useState(false);
   const [config, setConfig] = useState<AnzanConfig>(_game.config);
 
@@ -70,17 +73,27 @@ const AnzanResult: FC<FuncProps> = ({
     },
     []
   );
-
   useEffect(() => {
     if (game.getAnswer() === userAnwer) {
       SoundRight.play();
-      game.incrementScore();
-      setPoints(game.getScore());
+
+      setPoints((prevPoint) => prevPoint + 10);;
     } else {
-      setPoints(game.getScore());
+      console.log("Неправильный ответ. Очки остаются:", points);
       SoundWrong.play();
     }
-  }, [userAnwer, game]);
+  }, [userAnwer]);
+  // useEffect(() => {
+  //   if (game.getAnswer() === userAnwer) {
+  //     SoundRight.play();
+  //     game.incrementScore();
+  //     setPoints(game.getScore());
+  //     console.log(game.getScore());
+  //   } else {
+  //     setPoints(game.getScore());
+  //     SoundWrong.play();
+  //   }
+  // }, [userAnwer, game]);
 
   useEffect(() => {
     if (!user || playersCount > 1) return;
@@ -166,7 +179,7 @@ const AnzanResult: FC<FuncProps> = ({
     playersCount === 1 && "lg:text-7xl md::text-7xl text-4xl ",
     playersCount === 2 && "text-5xl",
     playersCount === 3 && "text-5xl",
-    playersCount === 4 && "text-2xl",
+    playersCount === 4 && "text-3xl",
     playersCount === 5 && "text-2xl",
     playersCount === 6 && "text-2xl",
     playersCount === 7 && "text-2xl",
@@ -298,12 +311,11 @@ const AnzanResult: FC<FuncProps> = ({
               >
                 {userAnwer == game.getAnswer() ? (
                   <>
-                 { `${name}, молодец!`} <br></br>
-                 <span className=" text-xl">{points}</span>
+                    {`${name}, молодец!`} <br></br>
+                    <span className=" text-xl">{points}</span>
                   </>
                 ) : (
                   <>
-                 
                     {"Ошибочка - бывает. Попробуй еще"}
                     <div
                       className=" text-primary text-center font-jura font-light  text-l lg:text-[18px] xl:text-[16px] l:text-[16px] ml-2"

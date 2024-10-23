@@ -1,6 +1,6 @@
 import { AnzanConfig, OPERATIONS } from "@shared/core";
 import AnzanGameNavbar, { ToolbarProps } from "@widgets/anzan-game-navbar";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import { AnzanGame } from "@widgets/anzang-game/ui";
 import { MultiplayerGameGrid } from "@widgets/anzan-multiplayer-game-grid";

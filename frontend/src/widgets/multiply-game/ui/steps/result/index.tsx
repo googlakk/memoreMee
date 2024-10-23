@@ -8,7 +8,6 @@ import {
 
 import { GAME_STEPS } from "../..";
 import { GiSettingsKnobs } from "react-icons/gi";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdRestartAlt } from "react-icons/md";
 import { MultiCore } from "@shared/core/games/multiplication";
 import cn from "clsx";
@@ -127,7 +126,6 @@ const MultiResult: FC<FuncProps> = ({
             >
               <GiSettingsKnobs />
             </Button>
-
           </div>
         </Card.Body>
         <Card.Title className="mx-auto pb-5 text-primary">
