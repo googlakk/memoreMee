@@ -74,7 +74,7 @@ export const getClassFontSizeNumber = (
     Numlenght >= 4 &&
       playersCount === 9 &&
       `text-[80px] lg:text-[60px] l:text-[50px] md:[50px] sm:text-[60px]`,
-      Numlenght <= 3 &&
+    Numlenght <= 3 &&
       playersCount === 10 &&
       `text-[80px] lg:text-[95px] l:text-[50px] md:[60px] sm:text-[90px]`,
     Numlenght >= 4 &&
@@ -84,3 +84,19 @@ export const getClassFontSizeNumber = (
   return classFontSizeNumber;
 };
 
+export const getClassFontSizeMultiplyNumber = (playersCount?: number) => {
+  const classFontSizeMultiplyNumber = cn(
+    "font-light p-0 m-0 text-center",
+    playersCount === 10 && `text-[35px]`,
+    playersCount === 9 && `text-[35px]`,
+    playersCount === 8 && `text-[40px]`,
+    playersCount === 7 && `text-[40px]`,
+    playersCount === 6 && `text-[40px]`,
+    playersCount === 5 && `text-[40px]`,
+    playersCount === 4 && `text-[40px]`,
+    playersCount === 3 && `text-[60px]`,
+    playersCount === 2 && `text-[80px]`,
+    playersCount === 1 && `text-[110px]`
+  );
+  return classFontSizeMultiplyNumber;
+};

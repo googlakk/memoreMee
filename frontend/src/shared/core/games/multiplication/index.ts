@@ -63,7 +63,8 @@ export class MultiCore {
 
     let operand1: number = 0;
     let operand2: number = 0;
-
+    let newAnswer = 0
+    
     switch (operation) {
       case OPERATIONS.MULTIPLY:
         if (numberDepth2 > numberDepth1) {
@@ -71,10 +72,10 @@ export class MultiCore {
         }
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
         operand2 = this.generateRandomNumber(usedNumbers2, numberDepth2);
-        this.answer = operand1 * operand2;
+        newAnswer = operand1 * operand2;
         this.numbers = [operand1, operand2];
+        this.setAnswer(newAnswer)
         return { operand1, operand2 };
-
       case OPERATIONS.DIVIDE:
         if (numberDepth2 > numberDepth1) {
           throw new Error("NUmber depth 2 cannot be more then depth 1");
@@ -86,34 +87,40 @@ export class MultiCore {
             1
           );
           const maxAnswer = Math.max(Math.floor(10 ** numberDepth1 - 1 / 2), 1);
-          this.answer = random(minAnswer, maxAnswer);
-
+           newAnswer = random(minAnswer, maxAnswer);
           operand1 = operand2 * this.answer;
         } while (this.answer === 1);
 
         this.numbers = [operand1, operand2];
+        this.setAnswer(newAnswer)
         return { operand1, operand2 };
       case OPERATIONS.SQUAERE:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
-        this.answer = operand1 ** 2;
+        newAnswer = operand1 ** 2;
+        this.setAnswer(this.answer)
         this.numbers = [operand1, operand2];
+        this.setAnswer(newAnswer)
         return { operand1, operand2: 0 };
       case OPERATIONS.CUBE:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1);
-        this.answer = operand1 ** 3;
+        newAnswer = operand1 ** 3;
         this.numbers = [operand1];
+        this.setAnswer(newAnswer)
         return { operand1, operand2: 0 };
       case OPERATIONS.QUAEREROOT:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 2;
-        this.answer = Math.sqrt(operand1);
+        newAnswer = Math.sqrt(operand1);
         this.numbers = [operand1];
+        this.setAnswer(newAnswer)
         return { operand1, operand2: 0 };
       case OPERATIONS.CUBEROOT:
         operand1 = this.generateRandomNumber(usedNumbers1, numberDepth1) ** 3;
-        this.answer = Math.cbrt(operand1);
+        newAnswer = Math.cbrt(operand1); 
         this.numbers = [operand1];
+        this.setAnswer(newAnswer)
         return { operand1, operand2: 0 };
     }
+   
   }
 
   private generateRandomNumber(numbers: number[], depth: number) {
@@ -128,6 +135,7 @@ export class MultiCore {
         .join("")
     );
   }
+  
   getScore() {
     return this.score;
   }
@@ -139,33 +147,3 @@ export class MultiCore {
     this.answer = 0;
   }
 }
-const Test = new MultiCore({
-  usedNumbers1: [1],
-  usedNumbers2: [1],
-  numberDepth1: 2,
-  numberDepth2: 2,
-  operation: OPERATIONS.DIVIDE,
-});
-const { operand1, operand2 } = Test.generateNumbers();
-const answer = Test.getAnswer();
-let testing = operand1 / operand2 === answer;
-operand1;
-operand2;
-answer;
-testing;
-
-/*
-  1) Установка настроек. first render компонент "Setup", где также можно выбрать кол-во игроков->
-  -> После нажатия на кнопку start ->
-  -> Показать компонент "Tasks", с полем для ввода ответа->
-  -> После ввода ответа ->
-  -> Показать компонент "Result", с результатом того правильно или не правильно решили задание.
-  2) States for games: 
-  
-  PREVIEW
-  GAME
-  ANSWER
-  RESULT
-  SETTINGS
-
-*/

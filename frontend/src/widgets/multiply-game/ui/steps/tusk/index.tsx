@@ -1,9 +1,14 @@
 import { Button, Card, Form, Input } from "react-daisyui";
 import { FC, useCallback, useEffect, useState } from "react";
+import { MultiCore, OPERATIONS } from "@shared/core/games/multiplication";
+import {
+  getClassFontSizeMultiplyNumber,
+  getClassFontSizeStarter,
+} from "@widgets/anzang-game/ui/steps/counter/stylesUttils";
 
-import { MultiCore } from "@shared/core/games/multiplication";
+import { FaCheck } from "react-icons/fa6";
 import StopWatches from "@widgets/ui-kit/stopwatches";
-import { getClassFontSizeStarter } from "@widgets/anzang-game/ui/steps/counter/stylesUttils";
+import { reSizes } from "@app/uttils";
 
 interface MultiTusksProps {
   game: MultiCore;
@@ -26,12 +31,13 @@ const MultiTusk: FC<MultiTusksProps> = ({
     num2: 0,
   });
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const classFontSizeStarter = getClassFontSizeStarter(playersCount);
+  const classFontSizeNUmber = getClassFontSizeMultiplyNumber(playersCount);
   useEffect(() => {
     const { operand1, operand2 } = game.generateNumbers();
+
     setNums({ num1: operand1, num2: operand2 });
   }, []);
-
+  
   useEffect(() => {
     const handleClickEnter = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
@@ -63,53 +69,111 @@ const MultiTusk: FC<MultiTusksProps> = ({
     // Передаем значение в родительский компонент
     setTotalSeconds(value);
   };
+  const renderTask = () => {
+    switch (game.config.operation) {
+      case OPERATIONS.QUAEREROOT:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>
+              {`√${nums.num1}`}
+            </div>
+          </>
+        );
+      case OPERATIONS.DIVIDE:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num1}</div>
+            <h3 className="font-roboto text-3xl">{`/`}</h3>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num2}</div>
+          </>
+        );
+      case OPERATIONS.SQUAERE:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num1}</div>
+          </>
+        );
+      case OPERATIONS.MULTIPLY:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num1}</div>
+            <h3 className="font-roboto text-3xl">{`x`}</h3>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num2}</div>
+          </>
+        );
+      case OPERATIONS.CUBE:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>{nums.num1}</div>
+          </>
+        );
+      case OPERATIONS.CUBEROOT:
+        return (
+          <>
+            <div className={`${classFontSizeNUmber} m-0 p-0 `}>
+              {`√${nums.num1}`}
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+  const backgroundSize = reSizes(playersCount);
   return (
     <Card
-      className={`   rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-base-100 bg-[#E0F4FF] brightness-90`}
+      className={` rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0 `}
     >
-      <div className="absolute left-5 top-0 font-jura text-xl text-primary ">
-        {name}
-      </div>
-      <div className="absolute right-5 top-0 font-jura text-2xl font-bold text-primary">
-        <StopWatches
-          setTotalSeconds={handleTotalSecondsChange}
-          isStarting={autoStartWatches}
-        />
-      </div>
-      <Card.Body className=" card-body items-center  justify-center text-primary leading-none">
-        <div className=" font-roboto">
-          <div className={`${classFontSizeStarter} m-0 p-0 `}>{nums.num1}</div>
-          <h3 className="font-roboto text-3xl">{}</h3>
-          <div className={`${classFontSizeStarter} m-0 p-0 `}>{nums.num2}</div>
-        </div>
-        <div className=" w-full ">
-          <Form
-            className=" text-center flex flex-col items-center"
-            onSubmit={handleAnswer}
-          >
-            <Input
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              type="number"
-              placeholder="Type here"
-              className="input input-bordered input-primary w-full max-w-xs text-primary h-10"
+      <div
+        className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full  mx-0  `}
+      >
+        <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+          <div className="grid w-64 rounded-xl place-items-center">{name}</div>
+          <div className="indicator-item badge badge-secondary absolute top-0">
+            <StopWatches
+              setTotalSeconds={handleTotalSecondsChange}
+              isStarting={autoStartWatches}
             />
-            <Button
-              className="mt-5 btn-outline hover:bg-primary p-3 w-fit text-[14px]"
-              type="submit"
+          </div>
+        </Card.Title>
+        <Card.Body
+          className={` relative card-body w-full bg-no-repeat bg-contain bg-manyCounterBg bg-center  items-center justify-center p-0 m-0   text-center`}
+          style={{
+            backgroundSize: backgroundSize,
+          }}
+        >
+          <div className=" font-roboto">{renderTask()}</div>
+
+          <div className=" w-full ">
+            <Form
+              className=" text-center flex flex-col items-center"
+              onSubmit={handleAnswer}
             >
-              Ответить
-            </Button>
-          </Form>
-        </div>
-      </Card.Body>
+              <Input
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                type="number"
+                placeholder="Type here"
+                className="border-b-2  focus:outline-none focus:ring-0 focus:border-primary w-[80%] max-w-xs text-primary h-10"
+              />
+
+              <Button
+                className="btn btn-ghost bg-transparent bg-btnWideBg bg-contain bg-no-repeat bg-center hover:bg-transparent  "
+                type="submit"
+              >
+                <FaCheck className=" w-8 font-bold text-xl text-[#CA1028]" />
+              </Button>
+            </Form>
+          </div>
+        </Card.Body>
+      </div>
     </Card>
   );
 };
 
 const StarterCounter: FC<{
   onDone: () => void;
-  playersCount?: number;
+  playersCount: number;
 }> = ({ onDone, playersCount }) => {
   const [steps, setSteps] = useState(["На старт", "Внимание", "Марш!"]);
 
@@ -133,13 +197,24 @@ const StarterCounter: FC<{
     }
   }, [steps]);
   const classFontSizeStarter = getClassFontSizeStarter(playersCount);
+  const backgroundSize = reSizes(playersCount);
   return (
     <Card
-      className={`   rounded-3xl overflow-hidden relative card w-full lg:w-full xl:w-full items-center justify-center font-arena  shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] text-base-100 bg-[#E0F4FF] brightness-90`}
+      className={` rounded-3xl flex flex-col items-center overflow-hidden relative card w-[100%] m-0 p-0 `}
     >
-      <Card.Body className=" card-body items-center justify-center text-primary">
-        <div className={classFontSizeStarter}>{steps[0]}</div>
-      </Card.Body>
+      <div
+        className={`flex flex-col items-center rounded-3xl overflow-hidden relative card w-[100%] h-full  mx-0  `}
+      >
+        <Card.Title className=" w-fit top-10 py-3 text-left bg-btnLongBg bg-contain bg-no-repeat bg-center ">
+          <div className="grid w-64 rounded-xl place-items-center"></div>
+        </Card.Title>
+        <Card.Body
+          className={` relative card-body w-full bg-no-repeat bg-contain bg-manyCounterBg bg-center  items-center justify-center p-0 m-0   text-center`}
+          style={{ backgroundSize: backgroundSize }}
+        >
+          <div className={classFontSizeStarter}>{steps[0]}</div>
+        </Card.Body>
+      </div>
     </Card>
   );
 };

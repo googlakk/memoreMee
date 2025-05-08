@@ -27,6 +27,7 @@ export class AnzanCore {
   private answer = 0;
   private numbers: number[] = [];
   private score = 0;
+
   constructor(config: AnzanConfig) {
     this.config = config;
   }
@@ -65,18 +66,27 @@ export class AnzanCore {
         const operation = operations[random(operations.length)];
         const numberDepth =
           operation === OPERATIONS.MINUS ? numberDepthMinus : numberDepthPlus;
-        const numbers = new Array(numberDepth).fill(0).map((_) => {
-          let newUsedNumbers: number[] =
-            operation === OPERATIONS.MINUS
-              ? this.config.usedNumberMinus
-              : this.config.usedNumberPlus;
+        const newUsedNumbers =
+          operation === OPERATIONS.MINUS
+            ? [...this.config.usedNumberMinus, 0]
+            : [...this.config.usedNumberPlus, 0];
 
+        // Создаем массив цифр с учетом разряда
+        const numbers = new Array(numberDepth).fill(0).map((_, index) => {
+          // На первой позиции нельзя использовать 0
+          if (index === 0 && newUsedNumbers.includes(0)) {
+            return newUsedNumbers.filter((num) => num !== 0)[
+              random(newUsedNumbers.length - 1)
+            ];
+          }
           return newUsedNumbers[random(newUsedNumbers.length)];
         });
-        
+
+        // Формируем итоговое число с учетом операции
         number = Number.parseInt(`${operation}${numbers.join("")}`);
       }
     }
+
     this.answer = this.answer + number;
     return number;
   }

@@ -29,14 +29,20 @@ const AnzanHeadSettingForm: FC<{
   onModalToggle: (isOpen: boolean) => void;
   games: AnzanCore[];
   defaultConfig: AnzanConfig;
-  setAllConfigs: (config: AnzanConfig) => void
-}> = ({ onSave, onModalToggle, games, setPlayerConfig, defaultConfig, setAllConfigs }) => {
+  setAllConfigs: (config: AnzanConfig) => void;
+}> = ({
+  onSave,
+  onModalToggle,
+  games,
+  setPlayerConfig,
+  defaultConfig,
+  setAllConfigs,
+}) => {
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<AnzanConfig>(defaultConfig);
 
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [playersCount, setPlayersCount] = useState(games.length);
-
 
   useEffect(() => {
     setConfig(config);
@@ -62,7 +68,7 @@ const AnzanHeadSettingForm: FC<{
     });
   };
 
-  const handlePLayerDiccrement = () => {    
+  const handlePLayerDiccrement = () => {
     setPlayersCount((prevCount) => {
       const newCount = prevCount - 1;
       if (newCount >= 1) {
@@ -71,7 +77,6 @@ const AnzanHeadSettingForm: FC<{
         return prevCount;
       }
     });
-    
   };
   const handleSpeedIncrement = () => {
     games.forEach((game, idx) => {
@@ -83,8 +88,6 @@ const AnzanHeadSettingForm: FC<{
         idx
       );
     });
-
-
   };
 
   const handleSpeedDecrement = () => {
@@ -97,7 +100,6 @@ const AnzanHeadSettingForm: FC<{
         idx
       );
     });
-
   };
 
   const handleNumbersCountIncrement = () => {
@@ -110,7 +112,6 @@ const AnzanHeadSettingForm: FC<{
         idx
       );
     });
-
   };
 
   const handleNumbersCountDecrement = () => {
@@ -123,7 +124,6 @@ const AnzanHeadSettingForm: FC<{
         idx
       );
     });
-
   };
 
   const handleChangeSpeed = (speed: number) => {
@@ -195,7 +195,7 @@ const AnzanHeadSettingForm: FC<{
 
   const handleSaveConfig = useCallback(() => {
     onSave({ config: config, playersCount });
-    setAllConfigs(config)
+    setAllConfigs(config);
     handleCloseModal();
   }, [onSave, config, playersCount]);
 
@@ -277,7 +277,12 @@ const AnzanHeadSettingForm: FC<{
                     <div>
                       <Button
                         type="button"
-                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        className={` bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent ${
+                          config.operations.length === 1 &&
+                          config.operations[0] === OPERATIONS.PLUS
+                            ? "text-[#4338ca]"
+                            : " text-[#e5e5e5]"
+                        } `}
                         onClick={() => handleChangeOperation([OPERATIONS.PLUS])}
                         active={
                           config.operations.length === 1 &&
@@ -290,7 +295,12 @@ const AnzanHeadSettingForm: FC<{
                       </Button>
                       <Button
                         type="button"
-                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        className={`bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent ${
+                          config.operations.length === 1 &&
+                          config.operations[0] === OPERATIONS.MINUS
+                            ? "text-[#4338ca]"
+                            : " text-[#e5e5e5]"
+                        } `}
                         active={
                           config.operations.length === 1 &&
                           config.operations[0] === OPERATIONS.MINUS
@@ -305,7 +315,11 @@ const AnzanHeadSettingForm: FC<{
                       </Button>
                       <Button
                         type="button"
-                        className=" bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent "
+                        className={`bg-transparent border-none p-0 w-20 text-xl  hover:bg-transparent ${
+                          config.operations.length === 2
+                            ? "text-[#4338ca]"
+                            : " text-[#e5e5e5]"
+                        } `}
                         active={config.operations.length === 2}
                         onClick={() =>
                           handleChangeOperation([
@@ -330,28 +344,31 @@ const AnzanHeadSettingForm: FC<{
                         Используемые числа (+)
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
+                    <div className="flex  box-border flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
                       {USED_NUMBERS_PLUS &&
                         USED_NUMBERS_PLUS.map((num) => (
-                          <button
+                          <Button
                             type="button"
-                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
+                            className={` box-border w-16 min-h-[30px] max-h-[30px] bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
                               config.usedNumberPlus.includes(num)
-                                ? "text-base-100"
-                                : " text-neutral-900"
+                                ? "text-[#4338ca]"
+                                : " text-[#e5e5e5]"
                             } `}
                             key={num}
                             onClick={() => handleChangeUsedNumbersPlus(num)}
                           >
                             <div
-                              className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
-                              style={{ backgroundSize: "56px 30px" }}
+                              className="  box-border w-16 h-[30px] p-0 m-0 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                              style={{
+                                backgroundSize: "56px 30px",
+                                lineHeight: "30px",
+                              }}
                             >
                               {num}
                             </div>
-                          </button>
+                          </Button>
                         ))}
-                      <button
+                      <Button
                         className=" bg-transparent   flex items-start border-none p-0 h-fit w-12 m-0 gap-0 hover:bg-transparent "
                         type="button"
                         onClick={handleToggleAllNumbersPlus}
@@ -359,7 +376,7 @@ const AnzanHeadSettingForm: FC<{
                         <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
                           all
                         </div>
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -375,14 +392,17 @@ const AnzanHeadSettingForm: FC<{
                     <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0 ">
                       {USED_NUMBERS_MINUS &&
                         USED_NUMBERS_MINUS.map((num) => (
-                          <button
+                          <Button
                             type="button"
-                            className={`flex items-start  h-fit bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent ${
+                            className={`flex items-start  min-h-[30px] max-h-[30px] bg-transparent border-none p-0 m-0  hover:bg-transparent disabled:bg-transparent  ${
                               config.usedNumberMinus.includes(num)
-                                ? "text-base-100"
-                                : " text-neutral-900"
+                                ? "text-[#4338ca]"
+                                : " text-[#e5e5e5]"
                             } `}
-                            disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
+                            disabled={
+                              config.operations.length === 1 &&
+                              config.operations[0] === OPERATIONS.PLUS
+                            }
                             key={num}
                             onClick={() => handleChangeUsedNumbersMinus(num)}
                           >
@@ -392,17 +412,17 @@ const AnzanHeadSettingForm: FC<{
                             >
                               {num}
                             </div>
-                          </button>
+                          </Button>
                         ))}
-                      <button
-                        className=" bg-transparent   flex items-start border-none p-0 h-fit w-12 m-0 gap-0 hover:bg-transparent "
+                      <Button
+                        className=" bg-transparent   flex items-start border-none p-0 min-h-[30px] max-h-[30px] w-12 m-0 gap-0 hover:bg-transparent "
                         type="button"
                         onClick={handleToggleAllNumbersMinus}
                       >
                         <div className=" w-full py-1 bg-btnSettingBg bg-contain bg-center text-center bg-no-repeat text-sm">
                           all
                         </div>
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -414,25 +434,28 @@ const AnzanHeadSettingForm: FC<{
                         Количество игроков
                       </h1>
                     </div>
-                    <div className="flex flex-wrap justify-center gap-y-2 gap-x-1 p-0 m-0">
+                    <div className="flex flex-wrap justify-center gap-y-0 gap-x-1 p-0 m-0">
                       {PLAYERS_COUNT.map((cnt) => (
-                        <button
+                        <Button
                           type="button"
                           key={cnt}
                           onClick={() => setPlayersCount(cnt)}
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                          className={`flex items-center justify-center min-h-[30px] max-h-[30px] bg-transparent border-none p-0 m-0 hover:bg-transparent disabled:bg-transparent  ${
                             playersCount === cnt
-                              ? "text-base-100"
-                              : " text-neutral-900"
+                              ? "text-[#4338ca]"
+                              : "text-[#e5e5e5]"
                           }`}
                         >
                           <div
-                            className=" w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold "
-                            style={{ backgroundSize: "56px 30px" }}
+                            className="box-border w-16 h-[30px] p-0 m-0 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
+                            style={{
+                              backgroundSize: "56px 30px",
+                              lineHeight: "30px", // выравнивание текста по вертикали
+                            }}
                           >
                             {cnt}
                           </div>
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -451,12 +474,12 @@ const AnzanHeadSettingForm: FC<{
                     </div>
                     <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
                       {DEPTH_PLUS.map((depth) => (
-                        <button
+                        <Button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                          className={` flex items-start min-h-[30px] max-h-[30px] bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
                             config.numberDepthPlus === depth
-                              ? `text-base-100`
-                              : `text-neutral-700`
+                              ? "text-[#4338ca]"
+                              : " text-[#e5e5e5]"
                           }`}
                           key={depth}
                           onClick={() => handleChangeNumberDepthPlus(depth)}
@@ -467,7 +490,7 @@ const AnzanHeadSettingForm: FC<{
                           >
                             {depth}
                           </div>
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -482,16 +505,19 @@ const AnzanHeadSettingForm: FC<{
                     </div>
                     <div className="flex flex-wrap justify-center gap-y-5 gap-x-1 p-0 m-0">
                       {DEPTH_MINUS.map((depth) => (
-                        <button
+                        <Button
                           type="button"
-                          className={` flex items-start max-h-5  bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
+                          className={` flex items-start min-h-[30px] max-h-[30px] bg-transparent border-none p-0  w-16 m-0  hover:bg-transparent ${
                             config.numberDepthMinus === depth
-                              ? `text-base-100`
-                              : `text-neutral-900`
+                              ? "text-[#4338ca]"
+                              : " text-[#e5e5e5]"
                           }`}
                           key={depth}
                           onClick={() => handleChangeNumberDepthMinus(depth)}
-                          disabled={config.operations.length === 1 && config.operations[0] === OPERATIONS.PLUS}
+                          disabled={
+                            config.operations.length === 1 &&
+                            config.operations[0] === OPERATIONS.PLUS
+                          }
                         >
                           <div
                             className="w-16 h-[30px] py-1 bg-btnSettingBg bg-contain bg-center bg-no-repeat text-sm font-bold"
@@ -499,7 +525,7 @@ const AnzanHeadSettingForm: FC<{
                           >
                             {depth}
                           </div>
-                        </button>
+                        </Button>
                       ))}
                     </div>
                   </div>

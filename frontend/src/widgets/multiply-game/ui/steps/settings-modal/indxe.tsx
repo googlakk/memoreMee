@@ -13,7 +13,7 @@ export const MultiGameSettings: React.FC<{
   onCancel: () => void;
   playersCount: number;
 }> = ({ onSave, defaultSettings, open, onCancel }) => {
-  const divideLogo = "/img/divide.svg";
+
   // Устонавливаем значение по умолчанию
   const [config, setConfig] = useState<MultiConfig>(defaultSettings);
   const [maxDepth, setMaxDepth] = useState(0);
@@ -58,6 +58,7 @@ export const MultiGameSettings: React.FC<{
       numberDepth2: number,
     }));
   };
+  
   const handleSaveConfig = useCallback(() => {
     onSave(config);
   }, [onSave, config]);
@@ -83,14 +84,16 @@ export const MultiGameSettings: React.FC<{
                   className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                   onClick={() => handleChangeOperation(OPERATIONS.MULTIPLY)}
                   active={config.operation[0] === OPERATIONS.MULTIPLY}
-                ></Button>
+                >
+                  *
+                </Button>
                 <Button
                   type="button"
                   className="shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
                   active={config.operation === OPERATIONS.DIVIDE}
                   onClick={() => handleChangeOperation(OPERATIONS.DIVIDE)}
                 >
-                  <img src={divideLogo} alt="" />
+                 /
                 </Button>
                 <Button
                   type="button"

@@ -54,6 +54,10 @@ const AnzanResult: FC<FuncProps> = ({
   const [isOpenResult, setIsOpenResult] = useState(false);
   const [config, setConfig] = useState<AnzanConfig>(_game.config);
 
+  useEffect(() => {
+    setConfig(_game.config);
+  }, [_game.config]);
+
   const game = useMemo(() => _game, []);
 
   useEffect(() => {
@@ -77,23 +81,12 @@ const AnzanResult: FC<FuncProps> = ({
     if (game.getAnswer() === userAnwer) {
       SoundRight.play();
 
-      setPoints((prevPoint) => prevPoint + 10);;
+      setPoints((prevPoint) => prevPoint + 10);
     } else {
       console.log("Неправильный ответ. Очки остаются:", points);
       SoundWrong.play();
     }
   }, [userAnwer]);
-  // useEffect(() => {
-  //   if (game.getAnswer() === userAnwer) {
-  //     SoundRight.play();
-  //     game.incrementScore();
-  //     setPoints(game.getScore());
-  //     console.log(game.getScore());
-  //   } else {
-  //     setPoints(game.getScore());
-  //     SoundWrong.play();
-  //   }
-  // }, [userAnwer, game]);
 
   useEffect(() => {
     if (!user || playersCount > 1) return;
@@ -202,7 +195,7 @@ const AnzanResult: FC<FuncProps> = ({
         >
           <div className="w-fit  absolute top-0">
             <div className="h-12 w-56 flex justify-between items-start gap-x-9">
-              <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center text-center ">
+              <div className="flex items-center bg-btnLongBg bg-contain bg-no-repeat bg-center text-center ">
                 <label className="absolute  -top-1 text-base-100 font-semibold text-[12px]">
                   Скорость
                 </label>
@@ -213,8 +206,9 @@ const AnzanResult: FC<FuncProps> = ({
                     backgroundColor: "transparent",
                   }}
                 >
-                  <span className=" bg-center w-4 font-bold ">{`+`}</span>
+                  <span className=" bg-center w-4 font-bold text-primary ">{`+`}</span>
                 </Button>
+                <span className=" font-bold text-primary">{config.speed}</span>
                 <Button
                   className=" border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
                   onClick={handleSpeedDecrement}
@@ -222,11 +216,11 @@ const AnzanResult: FC<FuncProps> = ({
                     backgroundColor: "transparent",
                   }}
                 >
-                  <span className=" bg-center w-4  ">{`-`}</span>
+                  <span className=" bg-center w-4 font-bold text-primary ">{`-`}</span>
                 </Button>
               </div>
 
-              <div className="flex bg-btnLongBg bg-contain bg-no-repeat bg-center">
+              <div className="flex items-center bg-btnLongBg bg-contain bg-no-repeat bg-center">
                 <label className="absolute -top-1 text-[12px] font-semibold text-base-100 w-full">
                   Кол-во действий
                 </label>
@@ -237,8 +231,11 @@ const AnzanResult: FC<FuncProps> = ({
                     backgroundColor: "transparent",
                   }}
                 >
-                  <span className=" bg-center w-4  ">{`+`}</span>
+                  <span className=" bg-center w-4 text-primary  ">{`+`}</span>
                 </Button>
+                <span className=" font-bold text-primary">
+                  {config.numbersCount}
+                </span>
                 <Button
                   className=" border-none flex items-center hover:bg-transparent hover:border-none   hover:text-base-100"
                   onClick={handleNumberCountMinus}
@@ -246,7 +243,7 @@ const AnzanResult: FC<FuncProps> = ({
                     backgroundColor: "transparent",
                   }}
                 >
-                  <span className=" bg-center w-4  ">{`-`}</span>
+                  <span className=" bg-center w-4 font-bold text-primary  ">{`-`}</span>
                 </Button>
               </div>
             </div>
@@ -353,10 +350,6 @@ const AnzanResult: FC<FuncProps> = ({
                 <IoMdCheckmarkCircleOutline />
               </Button>
             </div>
-          </div>
-
-          <div className=" absolute left-0 top-0 bg-primary mask mask-squircle p-2 m-0 flex justify-center items-center">
-            <div className={classFontSizeNumber}></div>
           </div>
         </Card.Body>
       </Card>

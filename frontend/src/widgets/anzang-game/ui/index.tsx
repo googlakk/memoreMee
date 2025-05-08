@@ -98,10 +98,10 @@ export const AnzanGame: React.FC<AnzanGameProps> = ({
           onChangeConfig(config);
         }}
         onSetVisible={setVisible}
+        visible={visible}
         onStart={() => setStep(ANZAN_STEPS.COUNTER)}
         onSettings={() => setIsOpenSettings(true)}
         userAnwer={userAnswer}
-        visible={visible}
         name={name}
         game={game}
         playersCount={playersCount}
